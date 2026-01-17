@@ -12,10 +12,32 @@ const sectionsData = [
         subtitle: '從法規到政策的實質推進',
         description: '我們不只發現問題，更直指問題核心，推動長遠的法規與政策改變，為台灣奠定永續基礎。',
         cards: [
-            { icon: 'map-pin', title: '國土計畫', text: '透過跨領域分享會，系統性說明國土計畫改革對環境治理的意義，串連環境組織、學界、業界、政府智庫，建立國土治理轉型的公共討論基礎。' },
-            { icon: 'sun', title: '屋頂光電', text: '透過拜會立委與媒體行動，促成全國性的屋頂光電修法通過，讓再生能源成為更具韌性與全民共享的友善能源。' },
-            { icon: 'bar-chart', title: '產業轉型', text: '倡議產業轉型以達成2050淨零目標，呼籲政府檢討高碳排產業減碳措施及政策，如中油四輕更新擴產計畫應審慎評估並加強減污與減碳。' },
-            { icon: 'home', title: '校園空污與空品標準', text: '針對校園空污威脅學童健康，舉辦論壇、記者會，透過國會遊說及公眾參與機制提出政策建言。<br><br>促成政府對鄰近校園的高風險工業區執行空污監測、溯源之體檢，加強推動校園周邊設立空氣品質維護區。<br><br>成功促使空氣品質標準加嚴，包括PM2.5的24小時標準及AQI警戒值修訂。' }
+            {
+                icon: 'mountain',
+                title: '國土計畫',
+                text: '透過<b style="color: #009d7e;">跨領域分享會</b>，系統性說明國土計畫改革對環境治理的意義，串連環境組織、學界、業界、政府智庫，<b style="color: #009d7e;">建立國土治理轉型的公共討論基礎</b>。',
+                stat: { number: 3, unit: '場', label: '分享會', icon: 'book' }
+            },
+            {
+                icon: 'sun',
+                title: '屋頂光電',
+                text: '透過拜會立委與媒體行動，促成<b style="color: #009d7e;">全國性的屋頂光電修法通過</b>，讓再生能源成為更具韌性與全民共享的友善能源。',
+                stats: [
+                    { number: 3, unit: '場', label: '記者會', icon: 'mic' },
+                    { number: 3, unit: '篇', label: '聲明', icon: 'book' }
+                ]
+            },
+            {
+                icon: 'bar-chart',
+                title: '產業轉型',
+                text: '倡議產業轉型以達成2050淨零目標，呼籲政府檢討高碳排產業減碳措施及政策，如<b style="color: #009d7e;">中油四輕更新擴產計畫應審慎評估並加強減污與減碳</b>。'
+            },
+            {
+                icon: 'wind',
+                title: '校園空污與空品標準',
+                text: '針對校園空污威脅學童健康，舉辦論壇、記者會，透過國會遊說及公眾參與機制提出政策建言。<br><br>促成政府對鄰近校園的高風險工業區執行空污監測、溯源之體檢，加強推動<b style="color: #009d7e;">校園周邊設立空氣品質維護區</b>。<br><br>成功促使<b style="color: #009d7e;">空氣品質標準加嚴</b>，包括PM2.5的24小時標準及AQI警戒值修訂。',
+                stat: { number: 3, unit: '場', label: '記者會', icon: 'mic' }
+            }
         ]
     },
     {
@@ -25,11 +47,33 @@ const sectionsData = [
         subtitle: '從環境現場出發，守護土地與人權',
         description: '環境問題，往往也關乎人們的生存。我們深入受影響的環境現場支援，確保轉型跟開發過程的公平與正義。',
         cards: [
-            { icon: 'layers', title: '花東發展與氣候調適', text: '持續關注與參與花東地區觀光、礦業、能源等各類開發案與制度倡議，提供在地居民法規制度諮詢、捍衛自然主權，與花東地方社群共同探索可行發展方式。於花蓮馬太鞍災區現場協助調度志工累積千名人次、前進堰塞湖現場勘查紀錄。' },
-            { icon: 'sun', title: '屋頂光電', text: '透過官方溝通及在地方辦理屋頂光電講座，推動高雄後勁舊社區納入市府淨零示範區規劃，促使台灣最大污染廠址積極進行治理重建。' },
-            { icon: 'briefcase', title: '台積電環評', text: '促使環評委員關注台積電於高雄開發帶來的耗電問題、衍生的社會影響，及生態公園等課題。' },
-            { icon: 'edit', title: '南高雄污染', text: '監督高雄新的工業開發，參加於大林蒲的新材料循環園區環評，發言要求嚴審進駐產業，並盡全力減污減碳。' },
-            { icon: 'alert-triangle', title: '非核行動', text: '在核三重啟公投過程中，深度串連屏東在地社群，深化地方反核行動主體性，開出全國最高反對票。', fullWidth: true }
+            {
+                icon: 'layers',
+                title: '花東發展與氣候調適',
+                text: '持續關注與參與花東地區觀光、礦業、能源等各類開發案與制度倡議，提供在地居民法規制度諮詢、捍衛自然主權，與花東地方社群共同探索可行發展方式。<br><br>於<b style="color: #009d7e;">花蓮馬太鞍災區現場協助調度志工</b>、<b style="color: #009d7e;">前進堰塞湖現場勘查紀錄</b>。'
+            },
+            {
+                icon: 'sun',
+                title: '屋頂光電',
+                text: '透過官方溝通及在地方辦理屋頂光電講座，推動<b style="color: #009d7e;">高雄後勁舊社區納入市府淨零示範區規劃</b>，促使台灣最大污染廠址積極進行治理重建。'
+            },
+            {
+                icon: 'briefcase',
+                title: '台積電環評',
+                text: '促使環評委員關注台積電於高雄開發帶來的<b style="color: #009d7e;">耗電問題、衍生的社會影響及生態公園等課題</b>。'
+            },
+            {
+                icon: 'edit',
+                title: '南高雄污染',
+                text: '監督高雄新的工業開發，<b style="color: #009d7e;">參加於大林蒲的新材料循環園區環評</b>，發言要求嚴審進駐產業，並盡全力減污減碳。'
+            },
+            {
+                icon: 'alert-triangle',
+                title: '非核行動',
+                text: '在核三重啟公投過程中，深度串連屏東在地社群，深化地方反核行動主體性，<b style="color: #009d7e;">開出全國最高反對票</b>。',
+                pic: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20250116-001.webp',
+                stat: { number: 3, unit: '場', label: '集會活動', icon: 'mic' }
+            }
         ]
     },
     {
@@ -39,8 +83,16 @@ const sectionsData = [
         subtitle: '緊盯污染源與行政怠惰，落實數據透明',
         description: '我們扮演生態環境守門員的角色，運用調查數據與行政監督，迫使政府與企業面對真相。',
         cards: [
-            { icon: 'home', title: '違章工廠', text: '完成違章工廠調查並送交重點6縣市，其中彰化與高雄已回覆案件核對，分別為206件與27件。<br><br>於2025年4月拜會監察院，指出地方政府在裁罰率、拆除率、人力配置與權責分工的缺失，並建請啟動專案調查。 多次拜會國土署改善違章工廠裁罰資料格式，避免案件無故下架。<br><br>追查「農業及農地資源盤查結果」的數據落差問題，以提升農地變化判讀精準度，減緩新增的農地違章工廠。 ' },
-            { icon: 'sun', title: '空污監測與污染改善', text: '監督石化工業區有害空污監測機制及結果，要求完整數據公開以落實社區知情權，促進各界重視工業區與社區相鄰之環境風險與環境正義。<br><br>持續督促政府加強對高雄鋼鐵業空污的管制，促進業者盡速汰除老舊設備、強化推動減污減碳轉型。<br><br>持續監督半導體和高污染產業的社會責任，例如納入PFAS 與空污監測。<br><br>追蹤高雄工業管線治理，推動管線資訊公開、整合防災應變及宣導資訊。' }
+            {
+                icon: 'home',
+                title: '違章工廠',
+                text: '完成違章工廠調查並送交重點6縣市，其中彰化與高雄已回覆案件核對，分別為<b style="color: #009d7e;">206件與27件</b>。<br><br>於2025年4月拜會監察院，指出地方政府在裁罰率、拆除率、人力配置與權責分工的缺失，並建請<b style="color: #009d7e;">啟動專案調查</b>。<br><br>多次拜會國土署改善違章工廠裁罰資料格式，避免案件無故下架。<br><br>追查「農業及農地資源盤查結果」的數據落差問題，以提升農地變化判讀精準度，<b style="color: #009d7e;">減緩新增的農地違章工廠</b>。 '
+            },
+            {
+                icon: 'wind',
+                title: '空污監測與污染改善',
+                text: '監督<b style="color: #009d7e;">石化工業區有害空污監測機制及結果</b>，要求完整數據公開以落實社區知情權，促進各界重視工業區與社區相鄰之環境風險與環境正義。<br><br>持續督促政府加強對<b style="color: #009d7e;">高雄鋼鐵業空污的管制</b>，促進業者盡速汰除老舊設備、強化推動減污減碳轉型。<br><br>持續監督半導體和高污染產業的社會責任，例如納入PFAS 與空污監測。<br><br>追蹤高雄工業管線治理，推動管線資訊公開、整合防災應變及宣導資訊。'
+            }
         ]
     }
     // 「擴大社會共鳴」區塊已移至 HTML 進行特殊設計
@@ -48,7 +100,8 @@ const sectionsData = [
 
 // Icon SVG definitions
 const iconSvgs = {
-    'map-pin': '<path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle>',
+    'mountain': '<path d="M15 5l-5 8L6 8 1 21h22L15 5z"></path>',
+    'wind': '<path d="M3 6h12m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-12 8h17m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4zm-17 6h7m0 0a2 2 0 1 0 0 4 2 2 0 0 0 0-4z"/></path>',
     'sun': '<circle cx="12" cy="12" r="5"></circle><line x1="12" y1="1" x2="12" y2="3"></line><line x1="12" y1="21" x2="12" y2="23"></line><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"></line><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"></line><line x1="1" y1="12" x2="3" y2="12"></line><line x1="21" y1="12" x2="23" y2="12"></line><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"></line><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"></line>',
     'bar-chart': '<path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path>',
     'home': '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>',
@@ -59,18 +112,60 @@ const iconSvgs = {
 };
 
 // Generate card HTML
+// 文字卡片可選額外參數：
+// - pic: 圖片URL，會顯示在文字下方
+// - stat: 統計數據物件 {number, unit, label, icon}，會顯示在文字下方
 function generateCardHTML(card) {
-    const colClass = card.fullWidth ? 'col-12' : 'col-12 col-lg-6';
-    return `
-        <div class="${colClass}">
-            <div class="h-100 p-4" style="background-color: rgba(255,255,255,0.95); border-radius: 20px; border-left: 5px solid #009d7e;">
-                <div class="mb-3" style="width: 50px; height: 50px; background-color: rgba(0,157,126,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center;">
-                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#009d7e" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                        ${iconSvgs[card.icon] || iconSvgs['map-pin']}
-                    </svg>
+    // fullWidth 在瀑布流中無效，所有卡片都是同寬
+
+    // 圖片區塊（可選）
+    let picHTML = '';
+    if (card.pic) {
+        picHTML = `
+            <div class="mt-3">
+                <img src="${card.pic}" alt="${card.title || ''}" class="img-fluid" style="border-radius: 12px; width: 100%;">
+            </div>
+        `;
+    }
+
+    // 統計區塊（可選，支援單一 stat 或 stats 陣列）
+    let statHTML = '';
+    // 相容舊格式 stat 或新格式 stats 陣列
+    const statsArray = card.stats || (card.stat ? [card.stat] : []);
+    if (statsArray.length > 0) {
+        const statsItems = statsArray.slice(0, 3).map(s => `
+            <div class="text-center">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                    ${statsIconSvgs[s.icon] || statsIconSvgs['bar-chart']}
+                </svg>
+                <div class="mt-1 d-flex align-items-baseline justify-content-center" style="white-space: nowrap;">
+                    <h3 class="font-900 mb-0" style="font-size: 1.8rem; color: #333;">${s.number}</h3>
+                    <span class="font-700" style="font-size: 0.9rem; color: #333; margin-left: 0.2rem;">${s.unit}</span>
                 </div>
-                <h4 class="font-700 mb-3" style="color: #2d3748;">${card.title}</h4>
+                <p class="mb-0 px-0 text-center" style="color: #666; font-size: 0.85rem;">${s.label}</p>
+            </div>
+        `).join('');
+        statHTML = `
+            <div class="mt-3 pt-3 d-flex justify-content-center" style="border-top: 1px solid #e2e8f0; gap: 2rem;">
+                ${statsItems}
+            </div>
+        `;
+    }
+
+    return `
+        <div class="masonry-item">
+            <div class="h-100 p-4" style="background-color: rgba(255,255,255,0.95); border-radius: 20px; border-left: 5px solid #35A97C;">
+                <div class="d-flex align-items-center mb-3" style="gap: 0.75rem;">
+                    <h4 class="font-700 mb-0" style="color: #2d3748;">${card.title}</h4>
+                    <div style="width: 45px; height: 45px; background-color: rgba(0,157,126,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
+                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#35A97C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                            ${iconSvgs[card.icon] || iconSvgs['mountain']}
+                        </svg>
+                    </div>
+                </div>
                 <p class="mb-0 px-0" style="color: #4a5568; text-align: left;">${card.text}</p>
+                ${picHTML}
+                ${statHTML}
             </div>
         </div>
     `;
@@ -84,11 +179,11 @@ function generateSectionHTML(section, index) {
         <section>
             <div class="container-fluid px-0">
                 <!-- Header Area -->
-                <div class="section-hero" style="background-image: url('${section.headerBg}');">
+                <div class="section-hero" style="background-image: linear-gradient(to bottom, transparent 60%, ${section.cardsBg} 100%), url('${section.headerBg}');">
                     <div class="container-readable">
                         <div class="row mx-3 mx-lg-0">
                             <div class="col-12">
-                                <div class="text-center p-4" style="background-color: rgba(255,255,255,0); border-radius: 15px;">
+                                <div class="text-center" style="background-color: rgba(255,255,255,0); border-radius: 15px;">
                                     <h2 class="font-900 heading-2 mb-4 decorated-title">${section.title}</h2>
                                     <h4 class="font-500 mb-3" style="color: #fff;">${section.subtitle}</h4>
                                     <p class="text-center mb-0 px-3" style="font-size: 1.1rem; color: #fff;">${section.description}</p>
@@ -98,9 +193,9 @@ function generateSectionHTML(section, index) {
                     </div>
                 </div>
                 <!-- Cards Area -->
-                <div class="py-2 pb-5 mb-0" style="background-size: cover; background-position: top center; background-repeat: no-repeat; background-color: ${section.cardsBg};">
+                <div class="pt-4 pb-5 mb-0 px-3" style="background-size: cover; background-position: top center; background-repeat: no-repeat; background-color: ${section.cardsBg};">
                     <div class="container-readable">
-                        <div class="row g-4 mx-3 mx-lg-0">
+                        <div class="masonry-container">
                             ${cardsHTML}
                         </div>
                     </div>
@@ -195,7 +290,7 @@ const statisticsData = [
 // Stats Icon SVG definitions
 const statsIconSvgs = {
     'bar-chart': '<path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path>',
-    'clock': '<circle cx="12" cy="12" r="10"></circle><path d="M12 6v6l4 2"></path>',
+    'clock': '<path d="M12.001 2C6.47813 2 2.00098 6.47715 2.00098 12C2.00098 16.9913 5.65783 21.1283 10.4385 21.8785V14.8906H7.89941V12H10.4385V9.79688C10.4385 7.29063 11.9314 5.90625 14.2156 5.90625C15.3097 5.90625 16.4541 6.10156 16.4541 6.10156V8.5625H15.1931C13.9509 8.5625 13.5635 9.33334 13.5635 10.1242V12H16.3369L15.8936 14.8906H13.5635V21.8785C18.3441 21.1283 22.001 16.9913 22.001 12C22.001 6.47715 17.5238 2 12.001 2Z"></path>',
     'play': '<polygon points="5 3 19 12 5 21 5 3"></polygon>',
     'monitor': '<rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line>',
     'book': '<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>',
@@ -212,7 +307,7 @@ function generateStatHTML(stat, index) {
                 <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                     ${statsIconSvgs[stat.icon] || statsIconSvgs['bar-chart']}
                 </svg>
-                <div class="mt-2 mb-1 d-flex align-items-baseline justify-content-center">
+                <div class="mt-2 mb-1 d-flex align-items-baseline justify-content-center" style="white-space: nowrap;">
                     <h3 class="font-900 stat-number mb-0" data-target="${stat.number}" style="font-size: 2.5rem; color: #333;">0</h3>
                     <span class="font-700" style="font-size: 1.2rem; color: #333; margin-left: 0.3rem;">${stat.unit}</span>
                 </div>
@@ -277,6 +372,33 @@ function initCountUpObserver() {
 }
 
 // ========================================
+// CEO Story 裝飾圖片動畫
+// ========================================
+function initCeoDecoAnimation() {
+    const decoImages = document.querySelectorAll('.ceo-deco-img');
+    if (decoImages.length === 0) return;
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                // 當區塊進入視窗時，為所有裝飾圖片加上動畫 class
+                decoImages.forEach(img => {
+                    img.classList.add('animate-in');
+                });
+                // 只觸發一次
+                observer.disconnect();
+            }
+        });
+    }, { threshold: 0.2 });
+
+    // 觀察第一張裝飾圖片的父容器
+    const parentContainer = decoImages[0].closest('.container-fluid');
+    if (parentContainer) {
+        observer.observe(parentContainer);
+    }
+}
+
+// ========================================
 // Initialize All on DOM Ready
 // ========================================
 document.addEventListener('DOMContentLoaded', function () {
@@ -296,4 +418,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // Scroll down arrow
     initScrollDown();
+
+    // CEO Story 裝飾圖片動畫
+    initCeoDecoAnimation();
 });
