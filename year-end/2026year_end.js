@@ -166,12 +166,12 @@ function generateCardHTML(card) {
         <div class="masonry-item">
             <div class="h-100 p-4" style="background-color: rgba(255,255,255,0.95); border-radius: 20px; border-left: 5px solid #35A97C;">
                 <div class="d-flex align-items-center mb-3" style="gap: 0.75rem;">
-                    <h4 class="font-700 mb-0" style="color: #2d3748;">${card.title}</h4>
                     <div style="width: 45px; height: 45px; background-color: rgba(0,157,126,0.1); border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0;">
                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#35A97C" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                             ${iconSvgs[card.icon] || iconSvgs['mountain']}
                         </svg>
                     </div>
+                    <h4 class="font-700 mb-0" style="color: #2d3748;">${card.title}</h4>
                 </div>
                 <p class="mb-0 px-0" style="color: #4a5568; text-align: left;">${card.text}</p>
                 ${picHTML}
@@ -297,7 +297,7 @@ const eduCarouselData = [
         ]
     },
     {
-        image: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260121-002.webp',
+        image: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260122-004.webp',
         title: '《森之旅》系列講座',
         desc: '邁入第四年的森之旅，持續與社會共同走進山林，從山林中的傳統知識到現今的環境永續，開啟人與自然共生的想像與可能。',
         stats: [
@@ -306,11 +306,20 @@ const eduCarouselData = [
         ]
     },
     {
-        image: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260119-002.webp',
+        image: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260122-002.webp',
         title: '馬太鞍',
         desc: '梳理馬太鞍溪流域環境風險資訊，提供在地社群與社會大眾理解環境變遷，以多元視角理解災變事件。',
         stats: [
             { number: "10+", unit: '場', label: '講座', icon: 'book' }
+        ]
+    },
+    {
+        image: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260122-001.webp',
+        title: '花東山海系列講座',
+        desc: '從花東視角出發，透過不同行動者的觀察與實踐。認識東台灣在海與陸、縱谷與山林之間，展開深度的對話與想像，並走進震後太魯閣，理解自然災害與居民的交織。',
+        stats: [
+            { number: 2, unit: '場', label: '講座', icon: 'book' },
+            { number: 1, unit: '場', label: '小旅行', icon: 'book' }
         ]
     }
 ];
