@@ -62,7 +62,7 @@ const sectionsData = [
                 text: '透過官方溝通及在地方辦理屋頂光電講座，推動<b style="color: #009d7e;">高雄後勁舊社區納入市府淨零示範區規劃</b>，促使台灣最大污染廠址積極進行治理重建。'
             },
             {
-                icon: 'briefcase',
+                icon: 'factory',
                 title: '台積電環評',
                 text: '促使環評委員關注台積電於高雄開發帶來的<b style="color: #009d7e;">耗電問題、衍生的社會影響及生態公園等課題</b>。',
                 stat: { number: 3, unit: '篇', label: '聲明', icon: 'book' }
@@ -116,7 +116,7 @@ const iconSvgs = {
     'bar-chart': '<path d="M18 20V10"></path><path d="M12 20V4"></path><path d="M6 20v-6"></path>',
     'home': '<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline>',
     'layers': '<polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline>',
-    'briefcase': '<rect x="2" y="7" width="20" height="14" rx="2" ry="2"></rect><path d="M16 21V5a2 2 0 0 0-2-2h-4a2 2 0 0 0-2 2v16"></path>',
+    'factory': '<path d="M2 20V8l6 3V8l6 3V8l6 3v9H2z"></path><path d="M2 20h18"></path><rect x="6" y="14" width="3" height="3"></rect><rect x="12" y="14" width="3" height="3"></rect>',
     'edit': '<path d="M20.24 12.24a6 6 0 0 0-8.49-8.49L5 10.5V19h8.5z"></path><line x1="16" y1="8" x2="2" y2="22"></line><line x1="17.5" y1="15" x2="9" y2="15"></line>',
     'alert-triangle': '<path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line>'
 };
@@ -307,8 +307,8 @@ const eduCarouselData = [
     },
     {
         image: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260122-002.webp',
-        title: '馬太鞍',
-        desc: '梳理馬太鞍溪流域環境風險資訊，提供在地社群與社會大眾理解環境變遷，以多元視角理解災變事件。',
+        title: '理解馬太鞍',
+        desc: '堰塞湖災後的獵奇敘事，掩蓋了真正重要的監測與防災討論。要邁向更成熟的治理與復原能力，台灣社會該怎麼看待這次災害中的個人與群體。<br>我們透過梳理馬太鞍溪流域環境風險資訊，提供在地社群與社會大眾理解環境變遷，以多元視角理解災變事件。',
         stats: [
             { number: "10+", unit: '場', label: '講座', icon: 'book' }
         ]
