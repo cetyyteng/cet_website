@@ -6,7 +6,7 @@
 // ========================================
 const sectionsData = [
     {
-        headerBg: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/glazed-builder/20220609-13.jpg',
+        headerBg: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260119-004.webp',
         cardsBg: '#e5e5e5',
         title: '促成制度變革',
         subtitle: '從法規到政策的實質推進',
@@ -16,15 +16,16 @@ const sectionsData = [
                 icon: 'mountain',
                 title: '國土計畫',
                 text: '透過<b style="color: #009d7e;">跨領域分享會</b>，系統性說明國土計畫改革對環境治理的意義，串連環境組織、學界、業界、政府智庫，<b style="color: #009d7e;">建立國土治理轉型的公共討論基礎</b>。',
-                stat: { number: 3, unit: '場', label: '分享會', icon: 'book' }
+                stat: { number: 11, unit: '篇', label: '媒體投書', icon: 'book' }
             },
             {
                 icon: 'sun',
                 title: '屋頂光電',
                 text: '透過拜會立委與媒體行動，促成<b style="color: #009d7e;">全國性的屋頂光電修法通過</b>，讓再生能源成為更具韌性與全民共享的友善能源。',
+                pic: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260126-003.webp',
                 stats: [
-                    { number: 3, unit: '場', label: '記者會', icon: 'mic' },
-                    { number: 3, unit: '篇', label: '聲明', icon: 'book' }
+                    { number: 1, unit: '場', label: '記者會', icon: 'mic' },
+                    { number: 1, unit: '篇', label: '聲明', icon: 'book' }
                 ]
             },
             {
@@ -36,12 +37,15 @@ const sectionsData = [
                 icon: 'wind',
                 title: '校園空污與空品標準',
                 text: '針對校園空污威脅學童健康，舉辦論壇、記者會，透過國會遊說及公眾參與機制提出政策建言。<br><br>促成政府對鄰近校園的高風險工業區執行空污監測、溯源之體檢，加強推動<b style="color: #009d7e;">校園周邊設立空氣品質維護區</b>。<br><br>成功促使<b style="color: #009d7e;">空氣品質標準加嚴</b>，包括PM2.5的24小時標準及AQI警戒值修訂。',
-                stat: { number: 3, unit: '場', label: '記者會', icon: 'mic' }
+                stats: [
+                    { number: 1, unit: '場', label: '記者會', icon: 'mic' },
+                    { number: 1, unit: '篇', label: '聲明', icon: 'book' }
+                ]
             }
         ]
     },
     {
-        headerBg: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/glazed-builder/20210609-12.jpg',
+        headerBg: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260119-001.webp',
         cardsBg: '#c8d3d0',
         title: '捍衛環境正義',
         subtitle: '從環境現場出發，守護土地與人權',
@@ -60,7 +64,8 @@ const sectionsData = [
             {
                 icon: 'briefcase',
                 title: '台積電環評',
-                text: '促使環評委員關注台積電於高雄開發帶來的<b style="color: #009d7e;">耗電問題、衍生的社會影響及生態公園等課題</b>。'
+                text: '促使環評委員關注台積電於高雄開發帶來的<b style="color: #009d7e;">耗電問題、衍生的社會影響及生態公園等課題</b>。',
+                stat: { number: 3, unit: '篇', label: '聲明', icon: 'book' }
             },
             {
                 icon: 'edit',
@@ -71,13 +76,17 @@ const sectionsData = [
                 icon: 'alert-triangle',
                 title: '非核行動',
                 text: '在核三重啟公投過程中，深度串連屏東在地社群，深化地方反核行動主體性，<b style="color: #009d7e;">開出全國最高反對票</b>。',
-                pic: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20250116-001.webp',
-                stat: { number: 3, unit: '場', label: '集會活動', icon: 'mic' }
+                pic: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260126-005.webp',
+                stats: [
+                    { number: 6, unit: '場', label: '集會活動', icon: 'mic' },
+                    { number: 4, unit: '篇', label: '聯合聲明', icon: 'book' },
+                    { number: 9, unit: '場', label: '聯合記者會', icon: 'mic' }
+                ]
             }
         ]
     },
     {
-        headerBg: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/glazed-builder/20220609-13.jpg',
+        headerBg: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260119-002.webp',
         cardsBg: '#e5e5e5',
         title: '監督治理課責',
         subtitle: '緊盯污染源與行政怠惰，落實數據透明',
@@ -91,7 +100,8 @@ const sectionsData = [
             {
                 icon: 'wind',
                 title: '空污監測與污染改善',
-                text: '監督<b style="color: #009d7e;">石化工業區有害空污監測機制及結果</b>，要求完整數據公開以落實社區知情權，促進各界重視工業區與社區相鄰之環境風險與環境正義。<br><br>持續督促政府加強對<b style="color: #009d7e;">高雄鋼鐵業空污的管制</b>，促進業者盡速汰除老舊設備、強化推動減污減碳轉型。<br><br>持續監督半導體和高污染產業的社會責任，例如納入PFAS 與空污監測。<br><br>追蹤高雄工業管線治理，推動管線資訊公開、整合防災應變及宣導資訊。'
+                text: '監督<b style="color: #009d7e;">石化工業區有害空污監測機制及結果</b>，要求完整數據公開以落實社區知情權，促進各界重視工業區與社區相鄰之環境風險與環境正義。<br><br>持續督促政府加強對<b style="color: #009d7e;">高雄鋼鐵業空污的管制</b>，促進業者盡速汰除老舊設備、強化推動減污減碳轉型。<br><br>持續監督半導體和高污染產業的社會責任，例如納入PFAS 與空污監測。<br><br>追蹤高雄工業管線治理，推動管線資訊公開、整合防災應變及宣導資訊。',
+                stat: { number: 2, unit: '篇', label: '聲明', icon: 'book' }
             }
         ]
     }
@@ -274,6 +284,38 @@ function initScrollDown() {
 }
 
 // ========================================
+// 教推成果輪播牆資料
+// ========================================
+const eduCarouselData = [
+    {
+        image: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260121-001.webp',
+        title: '《歸零—無人提起的真相》展覽',
+        desc: '與台南、高雄、屏東在地店家與團體合作，針對核三不重啟舉辦系列講座與展覽、集會，讓更多人以「犧牲」的視角，重新認識核電議題。',
+        stats: [
+            { number: 4, unit: '間', label: '合作店家', icon: 'book' },
+            { number: "2000+", unit: '人次', label: '互動', icon: 'users' }
+        ]
+    },
+    {
+        image: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260121-002.webp',
+        title: '《森之旅》系列講座',
+        desc: '邁入第四年的森之旅，持續與社會共同走進山林，從山林中的傳統知識到現今的環境永續，開啟人與自然共生的想像與可能。',
+        stats: [
+            { number: 3, unit: '場', label: '講座', icon: 'book' },
+            { number: "2000+", unit: '人次', label: '參與', icon: 'users' }
+        ]
+    },
+    {
+        image: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260119-002.webp',
+        title: '馬太鞍',
+        desc: '梳理馬太鞍溪流域環境風險資訊，提供在地社群與社會大眾理解環境變遷，以多元視角理解災變事件。',
+        stats: [
+            { number: "10+", unit: '場', label: '講座', icon: 'book' }
+        ]
+    }
+];
+
+// ========================================
 // Statistics Data and Count-Up Animation
 // ========================================
 const statisticsData = [
@@ -399,6 +441,155 @@ function initCeoDecoAnimation() {
 }
 
 // ========================================
+// 教推成果輪播牆
+// ========================================
+
+// 生成單個輪播 slide 的 HTML
+function generateEduSlideHTML(item, index) {
+    const statsHTML = item.stats.map(s => `
+        <div class="text-center">
+            <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#666" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                ${statsIconSvgs[s.icon] || statsIconSvgs['bar-chart']}
+            </svg>
+            <div class="mt-1 d-flex align-items-baseline justify-content-center" style="white-space: nowrap;">
+                <h3 class="font-900 mb-0" style="font-size: 1.8rem; color: #333;">${s.number}</h3>
+                <span class="font-700" style="font-size: 0.9rem; color: #333; margin-left: 0.2rem;">${s.unit}</span>
+            </div>
+            <p class="mb-0 px-0 text-center" style="color: #666; font-size: 0.85rem;">${s.label}</p>
+        </div>
+    `).join('');
+
+    return `
+        <div class="edu-slide ${index === 0 ? 'active' : ''}">
+            <div class="edu-slide-content">
+                <div class="edu-slide-image">
+                    <img src="${item.image}" alt="${item.title}">
+                </div>
+                <div class="edu-slide-text">
+                    <h3 class="edu-slide-title">${item.title}</h3>
+                    <p class="edu-slide-desc">${item.desc}</p>
+                    <div class="edu-slide-stats">
+                        ${statsHTML}
+                    </div>
+                </div>
+            </div>
+        </div>
+    `;
+}
+
+// 渲染輪播牆內容
+function renderEduCarousel() {
+    const track = document.getElementById('eduCarouselTrack');
+    const dotsContainer = document.getElementById('eduCarouselDots');
+
+    if (!track || !dotsContainer) return;
+
+    // 渲染 slides
+    track.innerHTML = eduCarouselData.map((item, index) => generateEduSlideHTML(item, index)).join('');
+
+    // 渲染導航點
+    dotsContainer.innerHTML = eduCarouselData.map((_, index) => `
+        <span class="edu-dot ${index === 0 ? 'active' : ''}" data-index="${index}"></span>
+    `).join('');
+}
+
+function initEduCarousel() {
+    // 先渲染輪播內容
+    renderEduCarousel();
+
+    const track = document.getElementById('eduCarouselTrack');
+    const dots = document.querySelectorAll('.edu-dot');
+    const prevBtn = document.getElementById('eduPrev');
+    const nextBtn = document.getElementById('eduNext');
+
+    if (!track) return;
+
+    const slides = track.querySelectorAll('.edu-slide');
+    if (slides.length === 0) return;
+
+    let currentIndex = 0;
+    let autoPlayInterval = null;
+    const autoPlayDelay = 5000; // 5秒自動切換
+
+    // 切換到指定幻燈片
+    function goToSlide(index) {
+        // 確保索引在有效範圍內
+        if (index < 0) index = slides.length - 1;
+        if (index >= slides.length) index = 0;
+
+        // 移除所有 active 狀態
+        slides.forEach(slide => slide.classList.remove('active'));
+        dots.forEach(dot => dot.classList.remove('active'));
+
+        // 添加新的 active 狀態
+        slides[index].classList.add('active');
+        if (dots[index]) dots[index].classList.add('active');
+
+        currentIndex = index;
+    }
+
+    // 下一張
+    function nextSlide() {
+        goToSlide(currentIndex + 1);
+    }
+
+    // 上一張
+    function prevSlide() {
+        goToSlide(currentIndex - 1);
+    }
+
+    // 開始自動播放
+    function startAutoPlay() {
+        stopAutoPlay();
+        autoPlayInterval = setInterval(nextSlide, autoPlayDelay);
+    }
+
+    // 停止自動播放
+    function stopAutoPlay() {
+        if (autoPlayInterval) {
+            clearInterval(autoPlayInterval);
+            autoPlayInterval = null;
+        }
+    }
+
+    // 綁定按鈕事件
+    if (prevBtn) {
+        prevBtn.addEventListener('click', () => {
+            prevSlide();
+            startAutoPlay(); // 重置自動播放計時器
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', () => {
+            nextSlide();
+            startAutoPlay();
+        });
+    }
+
+    // 綁定導航點事件
+    dots.forEach((dot, index) => {
+        dot.addEventListener('click', () => {
+            goToSlide(index);
+            startAutoPlay();
+        });
+    });
+
+    // 滑鼠懸停時暫停自動播放
+    const container = track.closest('.edu-carousel-container');
+    if (container) {
+        container.addEventListener('mouseenter', stopAutoPlay);
+        container.addEventListener('mouseleave', startAutoPlay);
+    }
+
+    // 初始化第一張幻燈片
+    goToSlide(0);
+
+    // 開始自動播放
+    startAutoPlay();
+}
+
+// ========================================
 // Initialize All on DOM Ready
 // ========================================
 document.addEventListener('DOMContentLoaded', function () {
@@ -421,4 +612,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // CEO Story 裝飾圖片動畫
     initCeoDecoAnimation();
+
+    // 教推成果輪播牆
+    initEduCarousel();
 });
