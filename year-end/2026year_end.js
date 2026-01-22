@@ -288,7 +288,7 @@ function initScrollDown() {
 // ========================================
 const eduCarouselData = [
     {
-        image: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260121-001.webp',
+        image: 'https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260126-006.webp',
         title: '《歸零—無人提起的真相》展覽',
         desc: '與台南、高雄、屏東在地店家與團體合作，針對核三不重啟舉辦系列講座與展覽、集會，讓更多人以「犧牲」的視角，重新認識核電議題。',
         stats: [
