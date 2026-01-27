@@ -39,7 +39,8 @@ const sectionsData = [
                 text: '針對校園空污威脅學童健康，舉辦論壇、記者會，透過國會遊說及公眾參與機制提出政策建言。<br><br>促成政府對鄰近校園的高風險工業區執行空污監測、溯源之體檢，加強推動<b style="color: #009d7e;">校園周邊設立空氣品質維護區</b>。<br><br>成功促使<b style="color: #009d7e;">空氣品質標準加嚴</b>，包括PM2.5的24小時標準及AQI警戒值修訂。',
                 stats: [
                     { number: 1, unit: '場', label: '記者會', icon: 'mic' },
-                    { number: 1, unit: '篇', label: '聲明', icon: 'book' }
+                    { number: 1, unit: '篇', label: '聲明', icon: 'book' },
+                    { number: 9, unit: '場', label: '公聽研商等各類會議', icon: 'users' }
                 ]
             }
         ]
