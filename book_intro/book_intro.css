@@ -308,6 +308,7 @@ p {
 
     .hero-heading-3-container {
         order: 1;
+        margin-left: -7rem;
     }
 
     .hero-heading-3-container img {
@@ -407,7 +408,7 @@ p {
     .hero-heading-2-container {
         width: 66%;
         order: 2;
-        margin-left: 0.8rem;
+        margin-left: 0.1rem;
         flex-shrink: 1;
         min-height: 0;
         display: flex;
@@ -1214,6 +1215,8 @@ author 設定
     display: flex;
     justify-content: center;
     align-items: center;
+    width: 100%;
+    /* 確保容器佔滿父元素寬度 */
 }
 
 .recommend-img {
@@ -1502,5 +1505,19 @@ author 設定
 
     .event-time {
         font-size: 0.85rem;
+    }
+}
+
+.event-speaker {
+    font-size: 0.85rem;
+    color: var(--dark-green);
+    font-weight: 400;
+    margin-top: 0.5rem;
+    margin-bottom: 0;
+}
+
+@media (max-width: 767.98px) {
+    .event-speaker {
+        font-size: 0.8rem;
     }
 }
