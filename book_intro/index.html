@@ -1,0 +1,671 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8">
+    <meta name="format-detection" content="telephone=no">
+    <meta http-equiv="x-dns-prefetch-control" content="on">
+    <title>此岸與彼岸 - 地球公民基金會</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
+    <link rel="preconnect" href="https://www.cet-taiwan.org">
+    <link rel="dns-prefetch" href="https://font.emtech.cc">
+    <!-- CSS 异步加载 polyfill -->
+    <script>
+        /*! loadCSS. [c]2017 Filament Group, Inc. MIT License */
+        (function (w) { "use strict"; var loadCSS = function (href, before, media, attributes) { var doc = w.document; var ss = doc.createElement("link"); var ref; if (before) { ref = before } else { var refs = (doc.body || doc.getElementsByTagName("head")[0]).childNodes; ref = refs[refs.length - 1]; } var sheets = doc.styleSheets; ss.rel = "stylesheet"; ss.href = href; ss.media = "only x"; if (attributes) { for (var att in attributes) { if (attributes.hasOwnProperty(att)) { ss.setAttribute(att, attributes[att]); } } } function ready(cb) { if (doc.body) { return cb(); } setTimeout(function () { ready(cb); }, 9); } ready(function () { ref.parentNode.insertBefore(ss, before ? ref : ref.nextSibling); }); var onloadcssdefined = function (cb) { var resolvedHref = ss.href; var i = sheets.length; while (i--) { if (sheets[i].href === resolvedHref) { return cb(); } } setTimeout(function () { onloadcssdefined(cb); }); }; function onload() { ss.onload = null; ss.media = media || "all"; } if (ss.addEventListener) { ss.addEventListener("load", onload); } ss.onloadcssdefined = onloadcssdefined; onloadcssdefined(onload); return ss; }; if (typeof exports !== "undefined") { exports.loadCSS = loadCSS; } else { w.loadCSS = loadCSS; } }(typeof global !== "undefined" ? global : this));
+    </script>
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css" as="style"
+        onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+            integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+    </noscript>
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500&display=swap"
+        as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+        <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;500&display=swap" rel="stylesheet">
+    </noscript>
+</head>
+
+<body>
+    <!--以上正式時註解  -->
+    <p style="display: none;">
+        看見環境運動者在理念與現實拉扯中，穿越衝突、失落與希望，從金門到高雄、從藝術到社運、從耗損到修復，寫下成為完整自己的旅程。如果你正在為了理想努力，卻感到迷惘與掙扎，《此岸與彼岸》正是寫給這樣的你。</p>
+    <!-- 背景圖片 -->
+    <link rel="preload" fetchpriority="high" as="image" type="image/webp"
+        href="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251224-03-75.webp"
+        media="(max-width: 767.98px)"
+        imagesrcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251224-03-75.webp"
+        imagesizes="100vw" />
+    <link rel="preload" fetchpriority="high" as="image" type="image/webp"
+        href="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251224-04-75.webp" media="(min-width: 768px)"
+        imagesrcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251224-04-75.webp"
+        imagesizes="100vw" />
+    <!-- 一個來自金門的 -->
+    <link rel="preload" fetchpriority="high" as="image" type="image/webp"
+        href="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-04.webp"
+        media="(max-width: 767.98px)" />
+    <link rel="preload" fetchpriority="high" as="image"
+        href="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-08.webp" media="(min-width: 768px)" />
+    <!-- 你不知道的李根政 -->
+    <link rel="preload" fetchpriority="high" as="image" type="image/webp"
+        href="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-02.webp"
+        media="(max-width: 767.98px)" />
+    <link rel="preload" fetchpriority="high" as="image"
+        href="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-10.webp" media="(min-width: 768px)" />
+    <!-- 附贈 -->
+    <link rel="preload" fetchpriority="high" as="image" type="image/webp"
+        href="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-03.webp"
+        media="(max-width: 767.98px)" />
+    <link rel="preload" fetchpriority="high" as="image"
+        href="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-09.webp" media="(min-width: 768px)" />
+
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.1/dist/css/bootstrap.min.css"
+        integrity="sha384-F3w7mX95PdgyTmZZMECAngseQB83DfGTowi0iMjiWaeVhAn4FJkqJByhZMI3AhiU" crossorigin="anonymous">
+
+    <!-- 插入字體 script -->
+    <script>
+        (function () {
+            function initObserver() {
+                const target = document.querySelector('#product');
+                if (!target) return false;
+
+                let started = false;
+
+                function runFontOnce() {
+                    if (started) return;
+                    started = true;
+
+                    (async function () {
+                        const WORDS =
+                            "012346QAacgimnorsuv" +
+                            "新書限時限量募款專案誠摯推薦捐款常見，祈願臺灣與每個人都能六六大順首刷版coming soon…" +
+                            "《》｜認購一份元此岸與彼岸一個社會運動者的身心之旅李根政手寫春聯共兩款任選一新書神秘小禮物見面會特別場優先報名機會" +
+                            "為何無法完成線上捐款何時會收到回饋禮是否可認捐兩份以上地球公民將用於哪些環境專案我如何知道基金會年度使用明細財務報告受到哪些單位的審核是否會有收據會員了解會務與行動成果";
+
+                        async function gen(weight) {
+                            const res = await fetch("https://font.emtech.cc/g/GenRyuMinTW", {
+                                method: "POST",
+                                headers: { "Content-Type": "application/json" },
+                                body: JSON.stringify({ words: WORDS, weight, min: true, format: "woff2" })
+                            });
+                            if (!res.ok) throw new Error("emfont API failed: " + res.status);
+                            const data = await res.json();
+                            return data.location;
+                        }
+
+                        const [locM, locB, locH] = await Promise.all([gen(500), gen(700), gen(900)]);
+                        const srcM = locM.map(u => `url("${u}") format("woff2")`).join(", ");
+                        const srcB = locB.map(u => `url("${u}") format("woff2")`).join(", ");
+                        const srcH = locH.map(u => `url("${u}") format("woff2")`).join(", ");
+
+                        const style = document.createElement("style");
+                        style.textContent = `
+        @font-face{font-family:"GenRyuMin2 TW M";src:${srcM};font-weight:500;font-style:normal;font-display:swap;}
+        @font-face{font-family:"GenRyuMin2 TW B";src:${srcB};font-weight:700;font-style:normal;font-display:swap;}
+        @font-face{font-family:"GenRyuMin2 TW H";src:${srcH};font-weight:900;font-style:normal;font-display:swap;}
+        `;
+                        document.head.appendChild(style);
+
+                        document.documentElement.classList.add('font-ready');
+                    })().catch((e) => { console.warn('[font] failed', e); });
+                }
+
+                const io = new IntersectionObserver((entries) => {
+                    if (entries.some(e => e.isIntersecting)) {
+                        io.disconnect();
+                        runFontOnce();
+                    }
+                }, { rootMargin: '400px 0px' });
+
+                io.observe(target);
+                return true;
+            }
+
+            // 1) DOM ready 後先試一次
+            function start() {
+                if (initObserver()) return;
+
+                // 2) 抓不到就重試：每 200ms 一次，最多 5 秒
+                const startAt = Date.now();
+                const timer = setInterval(() => {
+                    if (initObserver()) return clearInterval(timer);
+                    if (Date.now() - startAt > 5000) clearInterval(timer);
+                }, 200);
+            }
+
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', start, { once: true });
+            } else {
+                start();
+            }
+        })();
+    </script>
+    <p><template id="tpl">
+            <link rel="stylesheet" href="book_intro.css">
+
+            <div class="container-fluid px-0 " id="custom-container" style="background-color: var(--white);">
+                <!--  -->
+                <section class="hero" id="hero">
+                    <!-- 背景圖片：使用 picture 標籤，瀏覽器只會下載匹配的圖片 -->
+                    <picture class="hero-bg">
+                        <source type="image/webp" media="(max-width: 767.98px)"
+                            srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251224-03-75.webp"
+                            sizes="100vw" />
+                        <source type="image/webp" media="(min-width: 768px)"
+                            srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251224-04-75.webp"
+                            sizes="100vw" />
+                        <source media="(max-width: 767.98px)"
+                            srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251224-03.png"
+                            sizes="100vw" />
+                        <source media="(min-width: 768px)"
+                            srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251224-04.jpg"
+                            sizes="100vw" />
+                        <img src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251224-03.png" alt=""
+                            fetchpriority="high" decoding="async" />
+                    </picture>
+                    <div class="hero-container-1">
+                        <!-- 你不知道的李根政 -->
+                        <div class="hero-heading-1-container">
+                            <picture>
+                                <source type="image/webp" media="(max-width: 767.98px)"
+                                    srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-02.webp" />
+                                <source type="image/webp" media="(min-width: 768px)"
+                                    srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-10.webp" />
+                                <source media="(max-width: 767.98px)"
+                                    srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-02.png" />
+                                <source media="(min-width: 768px)"
+                                    srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-10.png" />
+                                <img alt="" class="shadow-heading-1"
+                                    src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-02.png"
+                                    decoding="async" loading="eager" />
+                            </picture>
+                        </div>
+                    </div>
+                    <div class="hero-container-2">
+                        <div class="hero-2-3-container">
+
+
+                            <!-- 一個來自金門的 -->
+                            <div class="hero-heading-2-container">
+                                <picture>
+                                    <source type="image/webp" media="(max-width: 767.98px)"
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-04.webp" />
+                                    <source type="image/webp" media="(min-width: 768px)"
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-08.webp" />
+                                    <source media="(max-width: 767.98px)"
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-04.png" />
+                                    <source media="(min-width: 768px)"
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-08.png" />
+                                    <img alt="" class="shadow-heading-2"
+                                        src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-04.png"
+                                        decoding="async" fetchpriority="high" width="186" height="648" />
+                                </picture>
+                            </div>
+                            <!-- 附贈 -->
+                            <div class="hero-heading-3-container">
+                                <picture>
+                                    <source type="image/webp" media="(max-width: 767.98px)"
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-03.webp" />
+                                    <source type="image/webp" media="(min-width: 768px)"
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-09.webp" />
+                                    <source media="(max-width: 767.98px)"
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-03.png" />
+                                    <source media="(min-width: 768px)"
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-09.png" />
+                                    <img alt="" class="shadow-heading-3"
+                                        src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-03.png"
+                                        decoding="async" />
+                                </picture>
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <!-- 桌機左側包裹 -->
+                </section>
+                <section class="mt-3 mt-md-4" id="map">
+                    <!-- 鳥插圖 -->
+                    <div class="map-bird-img-container d-none d-md-block">
+                        <picture>
+                            <source type="image/webp" media="(min-width: 768px)"
+                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251225-13.webp" />
+
+                            <img alt="" decoding="async" loading="lazy"
+                                src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251225-13.png" />
+                        </picture>
+                    </div>
+
+                    <!-- 地圖背景層 -->
+                    <div class="map-taiwan-img-container">
+                        <picture>
+                            <source type="image/webp" media="(max-width: 767.98px)"
+                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251229-02-75.webp" />
+                            <source type="image/webp" media="(min-width: 768px)"
+                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251229-01-75.webp" />
+                            <source media="(max-width: 767.98px)"
+                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251229-02.png" />
+                            <source media="(min-width: 768px)"
+                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251229-01.png" />
+                            <img src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251229-02.png" alt=""
+                                decoding="async" />
+                        </picture>
+                    </div>
+
+                    <!-- 文字區塊 -->
+                    <div class="map-paragraph mb-3 mb-md-0 d-none d-md-block">
+                        <p>在媒體報導或抗爭現場，我們看見的運動者，<br />總是拿著麥克風侃侃而談，訴說理想世界的樣貌。<br />他們眼神堅定，彷彿對前進的方向不曾有過懷疑。<br />但放下麥克風，他們也必須回到生活裡，<br />日夜面對與你我相同的生命探問&mdash;&mdash;我是誰？<br />我正在走的，仍然是我想走的那條路嗎？<br />透過李根政在<span
+                                style="color: var(--green);font-family: GenRyuMin2 TW M;font-weight: 500;">《此岸與彼岸》</span>的書寫，<br />我們得以剝除議題立場，看見運動者如何面對理念與現實的拉扯，<br />在反覆的衝突、失落與希望中，持續探尋自我。<br />如果你正在為了理想努力，卻感到迷惘與掙扎，<br />《此岸與彼岸》正是寫給這樣的你。<br />有感於臺灣的沈重命運與工業城市的傷痕，<br />李根政寫下他在公民運動途中的生命經驗，以及他如何成為完整的自己。
+                        </p>
+                    </div>
+                    <div class="map-paragraph px-3 mb-3 mb-md-0 d-block d-md-none mx-auto">
+                        <p>在媒體報導或抗爭現場，我們看見的運動者， 總是拿著麥克風侃侃而談，訴說理想世界的樣貌。</p>
+                        <p>他們眼神堅定，彷彿對前進的方向不曾有過懷疑。</p>
+                        <p>但放下麥克風，他們也必須回到生活裡， 日夜面對與你我相同的生命探問&mdash;&mdash;我是誰？ 我正在走的，仍然是我想走的那條路嗎？</p>
+                        <p>透過李根政在《此岸與彼岸》的書寫， 我們得以剝除議題立場，看見運動者如何面對理念與現實的拉扯， 在反覆的衝突、失落與希望中，持續探尋自我。</p>
+                        <p>如果你正在為了理想努力，卻感到迷惘與掙扎， 《此岸與彼岸》正是寫給這樣的你。</p>
+                        <p>有感於臺灣的沈重命運與工業城市的傷痕，李根政寫下他在公民運動途中的生命經驗，以及他如何成為完整的自己。</p>
+                    </div>
+                    <!-- 你是否也曾納悶 -->
+
+                    <div class="map-heading-container">
+                        <picture>
+                            <source type="image/webp" media="(max-width: 767.98px)"
+                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-01.webp" />
+                            <source type="image/webp" media="(min-width: 768px)"
+                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-02.webp" />
+                            <source media="(max-width: 767.98px)"
+                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-01.png" />
+                            <source media="(min-width: 768px)"
+                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-02.png" />
+                            <img alt="" class="map-heading-img"
+                                src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-01.png"
+                                decoding="async" loading="lazy" />
+                        </picture>
+                    </div>
+                    <!-- 手機森林 -->
+                    <div class="map-foreset-img-container d-block d-md-none">
+                        <picture>
+                            <source type="image/webp" media="(max-width: 767.98px)"
+                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-03-75.webp" />
+                            <img alt="" decoding="async" loading="lazy"
+                                src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251226-03.png" />
+                        </picture>
+                    </div>
+                </section>
+                <section id="quote">
+                    <div class="container-1">
+                        <!-- 桌面版：保持 grid 布局 -->
+                        <div class="row quote-row g-0 g-md-5 d-none d-md-flex">
+                            <div class="col-12 col-sm-4 quote-col mt-0">
+                                <div class="quote-img-container">
+                                    <picture>
+                                        <source type="image/webp" media="(min-width: 768px)"
+                                            srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-01-75.webp" />
+                                        <source media="(min-width: 768px)"
+                                            srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-01.png" />
+                                        <img alt="" class="img-fluid" decoding="async" loading="lazy"
+                                            src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-01.png" />
+                                    </picture>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4 quote-col mt-0">
+                                <div class="quote-img-container">
+                                    <picture>
+                                        <source type="image/webp" media="(min-width: 768px)"
+                                            srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-02.webp" />
+                                        <source media="(min-width: 768px)"
+                                            srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-02.png" />
+                                        <img alt="" class="img-fluid" decoding="async" loading="lazy"
+                                            src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-02.png" />
+                                    </picture>
+                                </div>
+                            </div>
+                            <div class="col-12 col-sm-4 quote-col mt-0">
+                                <div class="quote-img-container">
+                                    <picture>
+                                        <source type="image/webp" media="(min-width: 768px)"
+                                            srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-03.webp" />
+                                        <source media="(min-width: 768px)"
+                                            srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-03.png" />
+                                        <img alt="" class="img-fluid" decoding="async" loading="lazy"
+                                            src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-03.png" />
+                                    </picture>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- 手机版：Bootstrap 轮播 -->
+                        <div class="carousel slide d-md-none " data-bs-ride="carousel" id="quoteCarousel">
+                            <div class="carousel-inner">
+                                <div class="carousel-item active" data-bs-interval="7000">
+                                    <div class="quote-img-container">
+                                        <picture>
+                                            <source type="image/webp" media="(max-width: 767.98px)"
+                                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-01-75.webp" />
+                                            <source media="(max-width: 767.98px)"
+                                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-01.png" />
+                                            <img alt="" class="img-fluid" decoding="async" loading="lazy"
+                                                src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-01.png" />
+                                        </picture>
+                                    </div>
+                                </div>
+                                <div class="carousel-item" data-bs-interval="7000">
+                                    <div class="quote-img-container">
+                                        <picture>
+                                            <source type="image/webp" media="(max-width: 767.98px)"
+                                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-02.webp" />
+                                            <source media="(max-width: 767.98px)"
+                                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-02.png" />
+                                            <img alt="" class="img-fluid" decoding="async" loading="lazy"
+                                                src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-02.png" />
+                                        </picture>
+                                    </div>
+                                </div>
+                                <div class="carousel-item" data-bs-interval="7000">
+                                    <div class="quote-img-container">
+                                        <picture>
+                                            <source type="image/webp" media="(max-width: 767.98px)"
+                                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-03.webp" />
+                                            <source media="(max-width: 767.98px)"
+                                                srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-03.png" />
+                                            <img alt="" class="img-fluid" decoding="async" loading="lazy"
+                                                src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251222-03.png" />
+                                        </picture>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 圓形轮播指示器 -->
+                            <div class="carousel-indicators">
+                                <button type="button" data-bs-target="#quoteCarousel" data-bs-slide-to="0"
+                                    class="active" aria-current="true" aria-label="Slide 1"></button>
+                                <button type="button" data-bs-target="#quoteCarousel" data-bs-slide-to="1"
+                                    aria-label="Slide 2"></button>
+                                <button type="button" data-bs-target="#quoteCarousel" data-bs-slide-to="2"
+                                    aria-label="Slide 3"></button>
+                            </div>
+                            <!-- 左箭头按钮 -->
+                            <button class="carousel-control-prev" type="button" data-bs-target="#quoteCarousel"
+                                data-bs-slide="prev">
+                                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Previous</span>
+                            </button>
+                            <!-- 右箭头按钮 -->
+                            <button class="carousel-control-next" type="button" data-bs-target="#quoteCarousel"
+                                data-bs-slide="next">
+                                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                                <span class="visually-hidden">Next</span>
+                            </button>
+                        </div>
+                    </div>
+                </section>
+                <section class="d-none d-md-block" style="height: 2.1875rem;background-color: var(--white);">
+                </section>
+                <section id="about-author">
+                    <!-- style="background-color: red;" -->
+                    <!-- 桌機版左側容器 -->
+                    <div class="about-author-left d-block d-md-grid">
+                        <div class="food-illust-img-container">
+                            <!-- style="background-color: green;" -->
+                            <picture>
+                                <source type="image/webp" media="(max-width: 767.98px)"
+                                    srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251225-08.webp" />
+                                <source type="image/webp" media="(min-width: 768px)"
+                                    srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251229-001.webp" />
+                                <source media="(max-width: 767.98px)"
+                                    srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251225-08.png" />
+                                <source media="(min-width: 768px)"
+                                    srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20251229-001.png" />
+                                <img alt="食物插畫"
+                                    src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251225-08.png"
+                                    decoding="async" loading="lazy" />
+                            </picture>
+                        </div>
+                        <div id="about-author-img-container">
+                            <div class="author-heading-img-container">
+                                <picture>
+                                    <source type="image/webp"
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251225-07.webp 382w, https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251225-10.webp 721w"
+                                        sizes="(max-width:767.98px) 50vw, 37vw" />
+                                    <source type="image/webp"
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251225-07.png 382w, https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251225-10.gif 721w"
+                                        sizes="(max-width:767.98px) 50vw, 37vw" />
+                                    <img alt="誰是李根政" decoding="async" loading="lazy"
+                                        sizes="(max-width:767.98px) 50vw, 37vw"
+                                        src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251225-07.png" />
+
+                                </picture>
+
+
+                            </div>
+                            <div class="author-img-container">
+                                <picture>
+                                    <source type="image/webp"
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260110-01-75.webp 385w, https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-05.webp 513w"
+                                        sizes="(max-width:767.98px) 50vw, 27vw" />
+                                    <source
+                                        srcset="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260110-01.png 385w, https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260107-05.png 513w"
+                                        sizes="(max-width:767.98px) 50vw, 27vw" />
+                                    <img alt="李根政買菜" decoding="async" loading="lazy"
+                                        src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20260110-01.png" />
+                                </picture>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="author-introduce-grid-area">
+                        <div class="author-introduce-text-container px-3 px-md-0">
+                            <p>李根政是地球公民基金會的董事長，但除去這個身分，以下是每天在辦公室的他&mdash;&mdash;</p>
+                            <ul>
+                                <li>便當裡的一尾魚可以從買魚、煮魚聊到金門的魚</li>
+                                <li>學會用 iPad 電繪，就興奮分享新作品</li>
+                                <li>看到植物就停下來，直接把午餐時間變成自然課</li>
+                            </ul>
+                            <p>這些生活片段，拼湊出一個從金門來到高雄，辭去教職走入環境與民主運動現場的生命歷程。</p>
+                            <p>而李根政的故事，只是台灣千千萬萬運動者的其中之一。<br />地球公民基金會，正是由許多背景不同、生命經驗各異的運動者所組成。<br />每一次政策監督、每一份公共發聲的背後，都有一段未必被看見卻持續付出的生命故事。<br />《此岸與彼岸》呈現出了其中一個運動者立體的故事，更提醒我們，台灣需要能承接不同生命狀態、不同參與方式的公民組織，才能讓更多人持續投入，讓倡議走得長久。<br />邀請你一同成為讀者，承接這些故事，讓台灣的環境倡議走得更長更遠。
+                            </p>
+
+                        </div>
+
+
+                    </div>
+                </section>
+                <section id="recommend" style="background-color:#e5e5e5;">
+                    <h2 class="recommend-heading orange-heading text-center mb-0 mb-md-3">
+                        <span>誠</span><span>摯</span><span>推</span><span>薦</span>
+                    </h2>
+                    <div class="container-readable-2">
+                        <div class="row row-cols-3 row-cols-md-4 row-cols-xl-5 align-items-start justify-content-center gy-4"
+                            id="recommend-list">
+                            <!-- 這邊用js code 把推薦人插入 #recommend-list裡面，code比較好整理 -->
+                        </div>
+                    </div>
+                </section>
+                <section id="sell" style="background-color: var(--beige);">
+                    <h2 class="recommend-heading orange-heading text-center mb-3">
+                        <span>銷</span><span>售</span><span>通</span><span>路</span>
+                    </h2>
+                    <div class="container-readable-2">
+                        <div class="row align-items-center">
+                            <!-- 左邊：標題 + 按鈕 -->
+                            <div class="col-12 col-md-7 order-2 order-md-1 text-center">
+
+                                <div class="sell-buttons-container mb-2">
+                                    <div class="row g-3 justify-content-center">
+                                        <div class="col-6">
+                                            <a href="https://www.kingstone.com.tw/basic/2017830248678/" class="sell-btn"
+                                                style="color: white;" target="_blank" rel="noopener noreferrer">
+                                                <span>金石堂網路書店</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="https://www.books.com.tw/products/0011043017" class="sell-btn"
+                                                style="color: white;" target="_blank" rel="noopener noreferrer">
+                                                <span>博客來網路書店</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="https://www.eslite.com/product/10012010632683077266005"
+                                                class="sell-btn" style="color: white;" target="_blank"
+                                                rel="noopener noreferrer">
+                                                <span>誠品網路書店</span>
+                                            </a>
+                                        </div>
+                                        <div class="col-6">
+                                            <a href="https://www.taaze.tw/products/11101082280.html" class="sell-btn"
+                                                style="color: white;" target="_blank" rel="noopener noreferrer">
+                                                <span>TAZZE讀冊生活</span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- 右邊：圖片 -->
+                            <div class="col-12 col-md-5 order-1 order-md-2 text-center my-3 mb-md-0">
+                                <img src="https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260130-002.webp"
+                                    alt="書封面" class="sell-header-img">
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <section class="FAQ container-fluid" style="background-color:#e5e5e5">
+                    <div class="container-readable">
+                        <h2 class="text-center orange-heading mb-4 ">
+                            <span>新</span><span>書</span><span>分</span><span>享</span><span>會</span>
+                        </h2>
+                        <div class="event-list mb-0 px-3 px-md-0 w-100">
+                            <div class="event-item">
+                                <a href="#" class="event-name" target="_blank">《此岸與彼岸》新書分享會</a>
+                                <p class="event-location">台北信義金石堂</p>
+                                <p class="event-time">1/09（四）19:00-20:30</p>
+                            </div>
+                            <div class="event-item">
+                                <a href="#" class="event-name" target="_blank">《此岸與彼岸》新書分享會</a>
+                                <p class="event-location">台中誠品園道店</p>
+                                <p class="event-time">1/11（六）14:00-15:30</p>
+                            </div>
+                            <div class="event-item">
+                                <a href="#" class="event-name" target="_blank">《此岸與彼岸》新書分享會</a>
+                                <p class="event-location">高雄駁二誠品</p>
+                                <p class="event-time">1/12（日）14:00-15:30</p>
+                            </div>
+                            <div class="event-item">
+                                <a href="#" class="event-name" target="_blank">《此岸與彼岸》新書分享會</a>
+                                <p class="event-location">台南政大書城</p>
+                                <p class="event-time">1/18（六）14:00-15:30</p>
+                            </div>
+                            <div class="event-item">
+                                <a href="#" class="event-name" target="_blank">《此岸與彼岸》新書分享會</a>
+                                <p class="event-location">花蓮時光二手書店</p>
+                                <p class="event-time">1/25（六）14:00-15:30</p>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0/dist/js/bootstrap.bundle.min.js"
+                    defer></script>
+                <script>
+                    // 處理 carousel 圖片淡入效果
+                    (function () {
+                        function initCarouselImages() {
+                            const carousel = document.querySelector('#quoteCarousel');
+                            if (!carousel) return;
+
+                            const images = carousel.querySelectorAll('.quote-img-container img');
+
+                            images.forEach(function (img) {
+                                // 如果圖片已經載入完成
+                                if (img.complete && img.naturalHeight !== 0) {
+                                    img.classList.add('loaded');
+                                } else {
+                                    // 監聽載入完成事件
+                                    img.addEventListener('load', function () {
+                                        this.classList.add('loaded');
+                                    });
+                                    // 處理載入失敗的情況
+                                    img.addEventListener('error', function () {
+                                        this.classList.add('loaded'); // 即使失敗也顯示，避免一直空白
+                                    });
+                                }
+                            });
+
+                            // 監聽輪播切換事件，預載入下一張圖片
+                            carousel.addEventListener('slide.bs.carousel', function (e) {
+                                const nextIndex = e.to;
+                                const nextItem = carousel.querySelectorAll('.carousel-item')[nextIndex];
+                                if (nextItem) {
+                                    const nextImg = nextItem.querySelector('img');
+                                    if (nextImg && !nextImg.complete) {
+                                        // 預載入下一張圖片
+                                        // 優先使用 webp 版本，如果瀏覽器支持的話
+                                        const picture = nextImg.closest('picture');
+                                        let preloadUrl = nextImg.src; // 預設使用 fallback
+
+                                        if (picture) {
+                                            // 尋找 webp 的 source 標籤
+                                            const webpSource = picture.querySelector('source[type="image/webp"]');
+                                            if (webpSource && webpSource.srcset) {
+                                                // 使用 webp 版本
+                                                preloadUrl = webpSource.srcset.split(' ')[0]; // 取第一個 URL（去掉寬度描述）
+                                            } else if (nextImg.currentSrc) {
+                                                // 如果瀏覽器已經解析了 picture，使用 currentSrc
+                                                preloadUrl = nextImg.currentSrc;
+                                            }
+                                        } else if (nextImg.currentSrc) {
+                                            preloadUrl = nextImg.currentSrc;
+                                        }
+
+                                        const preloadImg = new Image();
+                                        preloadImg.src = preloadUrl;
+                                        preloadImg.onload = function () {
+                                            nextImg.classList.add('loaded');
+                                        };
+                                    }
+                                }
+                            });
+                        }
+
+                        // DOM 載入完成後執行
+                        if (document.readyState === 'loading') {
+                            document.addEventListener('DOMContentLoaded', initCarouselImages);
+                        } else {
+                            initCarouselImages();
+                        }
+                    })();
+                </script>
+            </div>
+        </template></p>
+
+
+
+
+    <style type="text/css">
+        /* 初始隱藏 main，等 JS 插入 tpl 後再顯示 */
+        body.frontend.page-civicrm #main {
+            visibility: hidden;
+        }
+
+        a.element-invisible:not(:focus) {
+            width: 0 !important;
+            overflow: hidden !important;
+        }
+
+        .progress-text {
+            filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.5));
+        }
+
+        .logo-img {
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+        }
+    </style>
+
+    </p>
+    <!-- 以下正式時註解 -->
+    <script src="book_intro.js"></script>
+</body>
+
+</html>

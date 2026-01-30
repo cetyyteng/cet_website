@@ -1,0 +1,1506 @@
+div p:last-of-type {
+    margin-bottom: 0;
+}
+
+.container-1,
+.container-readable,
+.container-readable-2 {
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+}
+
+
+/* =========================
+   基本設定
+========================= */
+:root {
+    /* 手機 / 平板 */
+    --font-base-size: 16px;
+    font-size: calc(var(--font-base-size) * 1);
+    --navbar-height: 70px;
+    /* 預設 fallback 避免閃爍 */
+    --green: #00A83B;
+    --dark-green: #508d71;
+    --orange: #f15a24;
+    --beige: #f7f4ef;
+    --white: #ffffff;
+    --brown: #736357;
+    --yellow: #d7e6a3;
+    --black: #666666;
+}
+
+#custom-container {
+    overflow-x: hidden;
+}
+
+body {
+    background-color: var(--white);
+    --header-font-size-prop: 1;
+    font-family: "Noto Sans TC";
+}
+
+a,
+a:hover,
+a:visited,
+a:link,
+a:active {
+    text-decoration: none;
+    color: var(--dark-green);
+}
+
+p {
+    padding: 0 1rem 0rem 1rem;
+    text-align: justify;
+    font-family: "Noto Sans TC";
+    font-weight: 300;
+    color: var(--black);
+    font-size: 1rem * var(--font-size-prop);
+}
+
+li {
+    color: var(--black);
+    font-weight: 300;
+    font-family: "Noto Sans TC";
+}
+
+footer p {
+    font-size: 1rem;
+    font-weight: 400;
+}
+
+@media (max-width: 767.98px) {
+    footer p {
+        font-size: 0.875rem;
+    }
+}
+
+@media (min-width: 768px) and (max-width: 1899.98px) {
+    body {
+        --header-font-size-prop: 0.5;
+    }
+}
+
+@media (min-width: 1900px) {
+    body {
+        --header-font-size-prop: 0.7;
+    }
+}
+
+/* 橘色字外框設定 */
+.orange-heading {
+    display: flex;
+    color: var(--orange);
+    font-weight: 900;
+    font-family: "GenRyuMin2 TW H";
+
+}
+
+.orange-heading span {
+    display: inline-grid;
+    place-items: center;
+    width: auto;
+    padding: 0.05rem 0.025rem;
+    border-top: 1px solid #F15A24;
+    border-left: 1px solid #F15A24;
+    border-bottom: 1px solid #F15A24;
+    color: #F15A24;
+    font-weight: 900;
+    font-family: "GenRyuMin2 TW H";
+    font-size: max(2rem, calc(7.1875rem * var(--header-font-size-prop)));
+}
+
+.orange-heading span:last-child {
+    border-right: 1px solid #F15A24;
+}
+
+#recommend,
+#sell,
+.FAQ {
+    padding: 5rem 0;
+}
+
+@media screen and (max-width: 767.98px) {
+
+    #recommend,
+    #sell {
+        padding: 1.5rem 0 1rem 0;
+    }
+
+    .FAQ {
+        padding: 3rem 0;
+    }
+}
+
+/* =========================
+   容器設定
+========================= */
+:root {
+    --page-padding: clamp(24px, 6vw, 38px);
+}
+
+@media (min-width: 1200px) {
+    :root {
+        /* 桌機以上 */
+        --page-padding: clamp(30px, 4vw, 54px);
+    }
+}
+
+@media (max-width: 1199px) {
+    #quote .container-1 {
+        --page-padding: 0;
+    }
+}
+
+.container-1 {
+    box-sizing: border-box;
+    padding-inline: var(--page-padding);
+}
+
+.container-readable,
+.container-readable-2 {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+@media(min-width:1024px) {
+
+    .container-readable,
+    .author-introduce-text-container,
+    .map-paragraph {
+        width: min(480px, 80%);
+    }
+
+    .container-readable-2 {
+        width: 800px;
+    }
+}
+
+@media(max-width:1023px) {
+
+    .container-readable,
+    .author-introduce-text-container,
+    .map-paragraph {
+        max-width: 480px;
+    }
+
+    .container-readable-2 {
+        width: min(800px, 80%);
+    }
+}
+
+/* =========================
+   文字設定
+========================= */
+body {
+    font-family: "Noto Sans TC";
+}
+
+h1 {
+    font-family: "Noto Sans TC";
+}
+
+h2,
+h3 {
+    font-family: "GenRyuMin2 TW M";
+    font-weight: 500;
+}
+
+p {
+    font-family: Noto Sans TC;
+}
+
+/* =========================
+   hero 設定
+========================= */
+
+#hero {
+    color: var(--dark-green);
+    position: relative !important;
+    overflow: hidden;
+    box-sizing: border-box;
+}
+
+#hero .hero-bg {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    z-index: 0;
+    margin: 0 !important;
+    padding: 0 !important;
+    display: block !important;
+}
+
+#hero>*:not(.hero-bg) {
+    position: relative;
+    z-index: 1;
+}
+
+#hero .hero-bg img {
+    width: 100% !important;
+    height: 100% !important;
+    object-fit: cover !important;
+    object-position: center;
+    display: block !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+@media (max-width: 767.98px) {
+    #hero {
+        margin-left: 0;
+        margin-right: 0;
+        padding-left: 0;
+        padding-right: 0;
+    }
+}
+
+#hero>* {
+    min-width: 0;
+}
+
+@media (min-width: 768px) {
+
+    /*  */
+    #hero {
+        padding: 2.1875rem 0 4.4rem 3rem;
+        height: 100vh !important;
+        min-height: 100vh !important;
+        max-height: 100vh !important;
+        display: flex;
+        justify-content: space-between;
+        box-sizing: border-box;
+
+    }
+
+    .hero-container-1 {
+        max-width: min(30%);
+        max-height: min(30%);
+        order: 2;
+
+    }
+
+    .hero-heading-1-container {
+        height: 100%;
+    }
+
+    .hero-2-3-container {
+        order: 1;
+        display: flex;
+        height: 100%;
+    }
+
+    .hero-heading-2-container {
+        order: 2;
+        height: 100%;
+
+    }
+
+    .shadow-heading-2 {
+        aspect-ratio: 221 / 921;
+    }
+
+    .hero-heading-3-container {
+        order: 1;
+    }
+
+    .hero-heading-3-container img {
+        object-fit: contain;
+
+    }
+
+    .hero-heading-1-container img,
+    .hero-heading-2-container img {
+        height: 100%;
+        object-fit: contain;
+
+    }
+
+
+}
+
+@media (max-width: 767.98px) {
+    #hero {
+        display: flex;
+        flex-direction: column;
+        padding-top: 2rem;
+        padding-bottom: 1.5rem;
+        color: var(--dark-green);
+        height: 100vh !important;
+        min-height: 100vh !important;
+        max-height: 100vh !important;
+        box-sizing: border-box;
+    }
+
+    .shadow-heading-2 {
+        aspect-ratio: 31 / 108;
+    }
+
+    #hero .hero-bg {
+        position: absolute !important;
+        top: 0 !important;
+        right: 0 !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        z-index: 0;
+        pointer-events: none;
+    }
+
+
+    #hero .hero-bg img {
+        width: 100% !important;
+        height: 100% !important;
+        object-fit: cover !important;
+    }
+
+    .hero-container-1 {
+        width: 100%;
+        display: flex;
+        justify-content: end;
+        flex-shrink: 0;
+
+    }
+
+    .hero-heading-1-container {
+        max-width: 25%;
+        max-height: 25%;
+        margin-right: 0.8rem;
+
+    }
+
+    .hero-heading-1-container img,
+    .hero-heading-2-container img,
+    .hero-heading-3-container img {
+        width: 100%;
+        height: auto;
+        object-fit: contain;
+
+    }
+
+    .hero-container-2 {
+        flex: 1 1 auto;
+        display: flex;
+        align-items: stretch;
+        min-height: 0;
+        max-height: 100%;
+        position: static;
+    }
+
+    .hero-2-3-container {
+        display: flex;
+        flex-direction: column;
+
+        max-width: 45%;
+        width: 100%;
+        height: 100%;
+        min-height: 0;
+    }
+
+    .hero-heading-2-container {
+        width: 66%;
+        order: 2;
+        margin-left: 0.8rem;
+        flex-shrink: 1;
+        min-height: 0;
+        display: flex;
+    }
+
+    .hero-heading-3-container {
+        margin-bottom: 1.5rem;
+        width: 100%;
+        order: 1;
+        flex-shrink: 1;
+        min-height: 0;
+        display: flex;
+    }
+
+    .hero-heading-2-container img,
+    .hero-heading-3-container img {
+        width: 100%;
+        height: auto;
+        max-height: 100%;
+        object-fit: contain;
+    }
+
+    .shadow-heading-1 {
+        filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+    }
+
+    .shadow-heading-2 {
+        filter: drop-shadow(0 2px 2px rgba(0, 0, 0, 0.75));
+    }
+
+    .shadow-heading-3 {
+        filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.75));
+    }
+
+}
+
+/* =========================
+   map設定
+========================= */
+#map>* {
+    min-width: 0;
+}
+
+#map p {
+    font-size: 1rem;
+}
+
+@media (min-width: 768px) {
+    #map {
+        display: flex;
+        justify-content: space-between;
+        padding: 2.1875rem 0;
+        height: 100vh;
+        position: relative;
+    }
+
+    .map-heading-container {
+        height: 100%;
+    }
+
+    .map-taiwan-img-container {
+        height: 100%;
+    }
+
+    .map-bird-img-container {
+        max-width: 20%;
+    }
+
+    .map-paragraph {
+        position: absolute;
+        bottom: 40%;
+        transform: translateY(50%);
+        left: 3rem;
+    }
+
+    .map-heading-container img {
+        height: 100%;
+        width: auto;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .map-bird-img-container img {
+        width: 100%;
+        object-fit: contain;
+    }
+
+    .map-taiwan-img-container img {
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+
+    }
+}
+
+@media (max-width: 767.98px) {
+    #map {
+        display: flex;
+        flex-direction: column;
+    }
+
+    #map p {
+        font-size: 0.875rem;
+    }
+
+    .map-heading-container {
+        order: 1;
+        width: 100%;
+    }
+
+    .map-taiwan-img-container {
+        width: 100%;
+        padding: 1rem 1rem;
+        order: 2;
+    }
+
+    .map-paragraph {
+        order: 3;
+    }
+
+    .map-foreset-img-container {
+        width: 100%;
+        object-fit: contain;
+        order: 4;
+    }
+
+    .map-heading-container img,
+    .map-foreset-img-container img {
+        width: 100%;
+    }
+
+    .map-taiwan-img-container img {
+        object-fit: contain;
+        width: 100%;
+        height: 100%;
+
+    }
+
+}
+
+/* =========================
+   quote 設定
+========================= */
+#quote {
+    background-color: #fff;
+}
+
+/* 手機版才做逐步顯示 */
+@media (max-width: 1199px) {
+    #quote .container-1 {
+        --page-padding: 0;
+    }
+}
+
+/* 輪播箭頭按鈕樣式 */
+#quote .carousel-control-prev,
+#quote .carousel-control-next {
+    width: 40px;
+    height: 40px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: transparent !important;
+    border-radius: 50%;
+    opacity: 0.8;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+#quote .carousel-control-prev:hover,
+#quote .carousel-control-next:hover {
+    opacity: 1;
+    background-color: rgba(222, 231, 227, 0.3) !important;
+}
+
+#quote .carousel-control-prev:active,
+#quote .carousel-control-next:active,
+#quote .carousel-control-prev:focus,
+#quote .carousel-control-next:focus {
+    background-color: transparent !important;
+    opacity: 0.8;
+}
+
+#quote .carousel-control-prev {
+    left: 10px;
+}
+
+#quote .carousel-control-next {
+    right: 10px;
+}
+
+#quote .carousel-control-prev-icon,
+#quote .carousel-control-next-icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+}
+
+/* 圓形輪播指示器樣式 - 顯示在圖片下方 */
+#quote .carousel-indicators {
+    position: relative;
+    bottom: auto;
+    margin-top: 0.5rem;
+    margin-bottom: 0.5rem;
+    padding-bottom: 0;
+}
+
+#quote .carousel-indicators button {
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background-color: rgba(0, 0, 0, 0.3);
+    border: none;
+    margin: 0 5px;
+}
+
+#quote .carousel-indicators button.active {
+    background-color: rgba(0, 0, 0, 0.7);
+}
+
+/* 手機版 carousel 圖片容器 aspect ratio 設定 */
+@media (max-width: 767.98px) {
+    #quote .carousel .quote-img-container {
+        aspect-ratio: 375 / 403;
+        width: 100%;
+        position: relative;
+        background-color: var(--beige);
+        /* 預設背景色，避免空白閃現 */
+    }
+
+    #quote .carousel .quote-img-container img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        opacity: 0;
+        transition: opacity 0.4s ease-in-out;
+    }
+
+    /* 第一張圖片（active）立即顯示，其他圖片等待載入 */
+    #quote .carousel .carousel-item.active .quote-img-container img {
+        opacity: 1;
+    }
+
+    #quote .carousel .quote-img-container img.loaded {
+        opacity: 1;
+    }
+}
+
+/* =========================
+author 設定
+========================= */
+#about-author {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    height: auto;
+    align-content: stretch;
+    background-color: var(--beige);
+}
+
+@media (min-width: 768px) {
+    #about-author {
+        grid-template-rows: 1fr;
+        align-items: stretch;
+        min-height: 90vh;
+    }
+
+    /* 左側容器：內部 grid 布局 */
+    .about-author-left {
+        grid-column: 1;
+        grid-row: 1;
+        position: relative;
+        min-height: 90vh;
+        height: 100%;
+        overflow: hidden;
+    }
+
+    /* 食物插畫：貼著左上角 */
+    .about-author-left .food-illust-img-container {
+        position: absolute;
+        top: 0;
+        left: 0;
+        z-index: 1;
+        max-width: min(30%, 388px);
+        max-height: min(30%, 278px);
+    }
+
+    .about-author-left .food-illust-img-container img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    /* 右側：介紹文字 */
+    .author-introduce-grid-area {
+        grid-column: 2;
+        grid-row: 1;
+        height: 100%;
+        position: relative;
+    }
+
+    .author-introduce-text-container {
+        padding-right: 1.5rem;
+        position: absolute;
+        bottom: 15%;
+    }
+
+    #about-author-img-container {
+        position: absolute;
+        right: 15%;
+        bottom: 15%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        z-index: 2;
+        max-width: calc(731px*0.6);
+        width: fit-content;
+        height: fit-content;
+
+    }
+
+    /* 誰是李根政 img：在上面 */
+    .author-heading-img-container {
+        margin-bottom: 0;
+        transform: translateX(15%);
+        object-fit: contain;
+        width: 100%;
+    }
+
+    /* 李根政 img：緊貼著下面 */
+    .author-img-container {
+        margin-top: 0;
+        width: 70%;
+    }
+
+    .author-img-container img,
+    .author-heading-img-container img {
+        width: 100%;
+        display: block;
+        object-fit: contain;
+    }
+}
+
+#about-author>* {
+    min-height: 0;
+    min-width: 0;
+}
+
+@media (max-width: 767.98px) {
+    #about-author {
+        display: block;
+    }
+
+    /* 左側容器：內部 grid 布局 */
+    .about-author-left {
+        position: relative;
+        display: block;
+        margin-top: 2rem;
+    }
+
+    #about-author-img-container {
+        display: flex;
+        align-items: flex-end;
+        z-index: 2;
+        width: 100%;
+    }
+
+
+    /* 李根政 */
+    .about-author-left .author-img-container {
+        z-index: 2;
+        width: calc(50% - 1.5rem);
+        order: 1;
+    }
+
+    /* 誰是李根政 img*/
+    .author-heading-img-container {
+        object-fit: contain;
+        order: 2;
+
+        width: calc(50% + 1.5rem - 2px);
+        padding-right: 1.5rem;
+        padding-left: 2px;
+    }
+
+    .author-img-container img,
+    .author-heading-img-container img {
+        width: 100%;
+        display: block;
+        object-fit: contain;
+    }
+
+    /* 食物插畫 */
+    .about-author-left .food-illust-img-container {
+        position: absolute;
+        top: calc(-2rem - 3px);
+        right: 0;
+        z-index: 2;
+        width: calc(50%);
+        padding-left: 3rem;
+    }
+
+    .about-author-left .food-illust-img-container img {
+        width: auto;
+        height: auto;
+        max-width: 100%;
+        object-fit: contain;
+    }
+
+    .author-introduce-text-container {
+        padding: 1rem 1.5rem 2rem 1.5rem;
+        margin: 0 auto;
+    }
+
+    .author-introduce-text-container p,
+    .author-introduce-text-container li {
+        font-size: 0.875rem;
+    }
+}
+
+/* =========================
+   product 設定
+========================= */
+/* ========== 基本設定 ========== */
+.product-text p {
+    color: black;
+}
+
+.product-row {
+    display: block;
+}
+
+.product-footer {
+    text-align: center;
+}
+
+/* 文字 */
+.product-text p {
+    margin: 0;
+    line-height: 1.8;
+}
+
+.section-heading-triangle-container {
+    background-image: url("https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251223-11.jpg");
+    background-repeat: repeat;
+}
+
+/* ========== 桌機版 ========== */
+@media (min-width: 768px) {
+    .product-row {
+        display: flex;
+        gap: 3rem;
+        padding-bottom: 1.8rem;
+        justify-content: center;
+        margin: 0 auto;
+    }
+
+    .product-row-inner {
+        max-width: 1200px;
+        width: 100%;
+        margin-inline: auto;
+        display: flex;
+        align-items: stretch;
+    }
+
+    .product-col {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .product-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: minmax(240px, 1fr);
+        padding-top: 1.5rem;
+        padding-bottom: 1rem;
+    }
+
+    /* 圖片容器等高 */
+    .product-image-container {
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .product-image-container img {
+        max-height: 220px;
+        width: auto;
+        object-fit: contain;
+    }
+
+    .product-text {
+        align-self: center;
+    }
+
+    .product-footer {
+        margin-top: auto;
+    }
+
+    .q-mark {
+        width: 25%;
+    }
+
+    #row-2 {
+        background-image: url("https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251223-11.jpg");
+    }
+
+    #row-2 p {
+        padding: 0;
+    }
+
+    #row-3 {
+        background-image: url("https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251223-12.jpg");
+    }
+}
+
+.product-row p {
+    color: var(--white);
+    text-align: center;
+}
+
+/* ========== 手機版 ========== */
+@media (max-width: 767px) {
+    .product-grid {
+        display: block;
+    }
+
+    .product-image-container {
+        text-align: center;
+        margin-bottom: 1.25rem;
+    }
+
+    .product-text {
+        text-align: center;
+    }
+
+    .book-col,
+    .spring-col {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .book-col {
+        padding-top: 1.5rem;
+        padding-bottom: 2rem;
+    }
+
+    .spring-col,
+    .q-mark-col {
+        padding-bottom: 2rem;
+        padding-top: 2rem;
+    }
+
+    .book-col {
+        background-image: url("https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251223-10.jpg");
+    }
+
+    .spring-col {
+        background-image: url("https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251223-11.jpg");
+    }
+
+    .q-mark-col {
+        background-image: url("https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251223-12.jpg");
+    }
+
+    .product-row p {
+        font-size: 0.875rem;
+    }
+
+    .book-col p {
+        color: var(--black);
+    }
+
+    .icon-container {
+        padding-top: 1.5rem;
+        padding-bottom: 2rem;
+    }
+
+    #first-edition,
+    #coming-soon-mobile {
+        font-family: "GenRyuMin2 TW H";
+        font-weight: 900;
+    }
+
+    #first-edition {
+        color: var(--dark-green);
+    }
+}
+
+/* 文字設定 */
+.section-heading {
+    background-image: url("https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251223-10.jpg");
+    background-repeat: repeat;
+    text-align: center;
+}
+
+.section-heading-content {
+    max-width: 1200px;
+    display: inline-grid;
+    grid-template-columns: minmax(0, max-content);
+    justify-content: center;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.product-heading-3,
+.heading-highlight-container {
+    grid-column: 1;
+    justify-self: end;
+}
+
+.product-heading-1,
+.product-heading-2,
+.product-heading-3 {
+    font-weight: 900;
+    font-family: "GenRyuMin2 TW H";
+}
+
+.product-heading-1 {
+    font-size: max(calc(2.75rem* var(--header-font-size-prop)), 1.5rem);
+    color: var(--orange);
+    grid-column: 1;
+    justify-self: start;
+}
+
+.product-heading-2 {
+    grid-column: 1;
+    justify-self: center;
+}
+
+.product-heading-3 {
+    font-size: max(calc(2.25rem* var(--header-font-size-prop)), 1.25rem);
+    color: var(--brown);
+}
+
+.product-heading-4 {
+    font-size: max(calc(2.25rem* var(--header-font-size-prop)), 1.25rem);
+    color: var(--white);
+    background-color: var(--brown);
+    padding: 0.3rem 0.6rem;
+    font-weight: 700;
+}
+
+.product-heading-1,
+.product-heading-3,
+.product-heading-4,
+#first-edition {
+    letter-spacing: 1px;
+}
+
+.heading-highlight {
+    display: inline-block;
+    padding: 0.15rem 0.4rem;
+    letter-spacing: 0.0625rem;
+    font-family: "GenRyuMin2 TW B";
+}
+
+.heading-highlight-green {
+    background-color: var(--dark-green);
+    color: var(--white);
+    font-weight: 700;
+    font-size: 1.3rem;
+
+}
+
+@media (min-width: 768px) and (max-width: 1899.98px) {
+    .heading-highlight-green {
+        font-size: 1.125rem;
+    }
+}
+
+/* 第二row */
+.red-scroll-img,
+.book-img {
+    filter: drop-shadow(3px 3px 3px rgba(0, 0, 0, 0.55));
+}
+
+/* ai */
+@media (max-width: 767.98px) {
+
+    .section-heading {
+        padding-top: 2rem;
+    }
+
+    .product-heading-1 {
+        font-size: 1.125rem;
+        color: var(--orange);
+    }
+
+    .product-heading-3 {
+        font-size: 0.875rem;
+        color: var(--brown);
+        font-weight: 700;
+    }
+
+    .product-heading-4 {
+        font-size: 0.875rem;
+        color: var(--white);
+        font-weight: 700;
+    }
+
+    .heading-highlight-green {
+        color: var(--yellow);
+        font-size: 0.875rem;
+    }
+
+    .q-mark {
+        width: 30%;
+    }
+
+    .red-scroll-img {
+        width: 45%;
+    }
+
+    .heading-highlight {
+        font-size: 0.875rem;
+    }
+
+    .book-img {
+        width: 30%;
+    }
+
+    .book-col-triangle-container {
+        background-image: url("https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251223-11.jpg");
+    }
+
+    .spring-col-triangle-container {
+        background-image: url("https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u422/20251223-12.jpg");
+    }
+
+    .q-mark-col-triangle-container {
+        background: var(--beige);
+    }
+
+    /* 手機版三角形空隙問題 */
+    .book-col-triangle-container,
+    .spring-col-triangle-container,
+    .q-mark-col-triangle-container {
+        margin: 0;
+        padding: 0;
+        line-height: 0;
+    }
+
+    .book-col-triangle-container picture,
+    .spring-col-triangle-container picture,
+    .q-mark-col-triangle-container picture {
+        display: block;
+        margin: 0;
+        padding: 0;
+        line-height: 0;
+    }
+
+    .book-col-triangle-container img,
+    .spring-col-triangle-container img,
+    .q-mark-col-triangle-container img {
+        display: block;
+        width: 100%;
+        height: auto;
+        margin: 0;
+        padding: 0;
+    }
+}
+
+/* =========================
+   推薦人 設定
+========================= */
+#recommend,
+#sell {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+    background-color: var(--beige);
+}
+
+#recommend p,
+#sell p {
+    padding-left: 0;
+    padding-right: 0;
+    margin-top: 0;
+    margin-bottom: 0;
+}
+
+.recommend-name {
+    font-size: 1.3125rem;
+    font-weight: 500;
+}
+
+.recommend-title {
+    font-size: 1rem;
+    font-weight: 300;
+}
+
+.photo-credit {
+    font-size: 0.625rem;
+    font-weight: 300;
+    color: rgb(187, 182, 182);
+}
+
+.recommend-img-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.recommend-img {
+    max-width: 75%;
+    height: auto;
+}
+
+@media (max-width: 767.98px) {
+    .recommend-name {
+        font-size: 0.875rem;
+        font-weight: 500;
+    }
+
+    .recommend-title {
+        font-size: 0.625rem;
+        font-weight: 300;
+    }
+
+    .photo-credit {
+        font-size: 0.625rem;
+        font-weight: 300;
+    }
+
+    .orange-heading span {
+        font-size: 2rem;
+    }
+}
+
+@media (max-width: 374.98px) {
+    .orange-heading span {
+        font-size: 1.75rem;
+    }
+}
+
+/* =========================
+   reset設定
+========================= */
+#navbar {
+    display: none;
+}
+
+.row {
+    margin: 0 !important;
+}
+
+/* =========================
+   捐款水滴
+========================= */
+.simple-fixed-icon {
+    position: fixed;
+    right: 40px;
+    bottom: 40px;
+    width: 65px;
+    z-index: 9999;
+    transition: transform 0.3s ease;
+}
+
+.simple-fixed-icon:hover {
+    transform: scale(1.1);
+    /* 滑鼠移上去會稍微放大 */
+}
+
+.simple-fixed-icon img {
+    width: 100%;
+    height: auto;
+}
+
+/* 如果在手機上覺得太大，可以稍微縮小 */
+@media (max-width: 767.98px) {
+    .simple-fixed-icon {
+        width: 50px;
+        right: 15px;
+        bottom: 15px;
+    }
+}
+
+/* =========================
+   faq
+========================= */
+.FAQ {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+.FAQ button {
+    border: none;
+    box-shadow: none;
+    background: none;
+    color: var(--black);
+    text-align: left;
+    font-size: 1rem;
+}
+
+@media (max-width: 767.98px) {
+    .FAQ button {
+        font-size: 0.875rem;
+    }
+}
+
+.FAQ .accordion-item {
+    margin-bottom: 15px;
+}
+
+.FAQ .faq-w {
+    margin-bottom: 0;
+    padding: 0rem 0rem;
+    font-size: 0.875rem;
+}
+
+.FAQ .accordion-header {
+    padding: 1rem 1.5rem;
+    display: flex;
+    align-items: center;
+}
+
+.FAQ .accordion-body {
+    padding: 1rem 1.5rem;
+    align-items: center;
+}
+
+.FAQ .faq-img {
+    margin-top: 0.5rem;
+}
+
+.FAQ .faq-img img {
+    display: block;
+    width: 100%;
+    height: auto;
+}
+
+.FAQ .collapsed {
+    color: var(--black);
+}
+
+/* =========================
+   銷售通路 設定
+========================= */
+#sell {
+    padding: 3rem 0;
+    background-image: url("https://www.cet-taiwan.org/sites/cet-taiwan.org/files/u355/20260130-001.webp");
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 80vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+@media (max-width: 767.98px) {
+    #sell {
+        min-height: auto;
+        padding: 4rem 0;
+    }
+}
+
+.sell-header {
+    margin-bottom: 1.5rem;
+}
+
+.sell-header-img {
+    max-width: 100%;
+    height: auto;
+    max-height: 200px;
+}
+
+.sell-buttons-container {
+    width: 100%;
+    padding: 1.5rem 0;
+}
+
+.sell-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    width: 100%;
+    padding: 0.875rem 1.25rem;
+    background-color: var(--dark-green);
+    color: var(--white);
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.2);
+}
+
+.sell-btn:hover {
+    color: var(--white);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.sell-btn:active {
+    transform: translateY(0);
+}
+
+.sell-btn .external-icon {
+    width: 16px;
+    height: 16px;
+    flex-shrink: 0;
+}
+
+@media (max-width: 767.98px) {
+    #sell {
+        padding: 2rem 0;
+    }
+
+    .sell-btn {
+        padding: 0.75rem 1rem;
+        font-size: 0.875rem;
+    }
+
+    .sell-btn .external-icon {
+        width: 14px;
+        height: 14px;
+    }
+}
+
+/* =========================
+   新書分享會 活動列表
+========================= */
+.event-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.event-item {
+    background-color: var(--white);
+    padding: 1.25rem 1.5rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    transition: all 0.3s ease;
+}
+
+.event-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.event-name {
+    display: block;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--dark-green);
+    text-decoration: none;
+    margin-bottom: 0.5rem;
+    transition: color 0.3s ease;
+}
+
+.event-name:hover {
+    color: var(--green);
+    text-decoration: underline;
+}
+
+.event-location {
+    font-size: 0.95rem;
+    color: var(--gray);
+    margin-bottom: 0.25rem;
+}
+
+.event-time {
+    font-size: 0.9rem;
+    color: var(--orange);
+    font-weight: 500;
+    margin-bottom: 0;
+}
+
+@media (max-width: 767.98px) {
+    .event-item {
+        padding: 1rem 1.25rem;
+    }
+
+    .event-name {
+        font-size: 1rem;
+    }
+
+    .event-location {
+        font-size: 0.9rem;
+    }
+
+    .event-time {
+        font-size: 0.85rem;
+    }
+}
