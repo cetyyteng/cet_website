@@ -55,23 +55,10 @@
         if (eventContainer) {
             const eventData = [
                 {
-                    name: "藝術家也能從事社會運動嗎？《此岸與彼岸－一個社會運動者的身心之旅》新書發表會",
-                    location: "台北世界貿易中心展覽一館 C728 讀字公民區（台北市信義區信義路五段5號）",
-                    time: "2/08（日）11:00-12:00",
-                    link: "https://www.cet-taiwan.org/events/4782"
-                },
-                {
-                    name: "「作家x倡議工作者」雙重身分的跨世代對談",
-                    location: "現場＋直播｜台北世界貿易中心展覽一館 A1203 直播室（台北市信義區信義路五段5號）",
-                    time: "2/08（日）15:00-15:30",
-                    link: "https://www.cet-taiwan.org/events/4783",
-                    speaker: "與談：許恩恩｜作家"
-                },
-                {
                     name: "新書分享會——高雄場",
                     location: "地球公民基金會高雄總部（高雄市前金區中華四路282號5樓）",
                     time: "3/07（六）14:30-16:30",
-                    link: "#",
+                    link: "https://www.cet-taiwan.org/events/4798?utm_source=event&utm_campaign=general&utm_content=20260210_kh_page",
                     speaker: "與談：南方運動夥伴"
                 },
                 {
@@ -84,7 +71,7 @@
                     name: "新書分享會——台北場",
                     location: "紀州庵文學森林（臺北市中正區同安街107號）",
                     time: "3/14（六）19:00-21:00",
-                    link: "#",
+                    link: "https://www.cet-taiwan.org/events/4799?utm_source=event&utm_campaign=general&utm_content=20260210_tp_IG",
                     speaker: "與談：陳信聰｜華視新媒體部經理、前公視有話好說製作人及主持人"
                 },
                 {
@@ -92,6 +79,19 @@
                     location: "地球公民台北辦公室（臺北市中正區北平東路28號9F-2）",
                     time: "3/12（四）19:00-21:00",
                     link: "https://www.cet-taiwan.org/events/4791"
+                },
+                {
+                    name: "藝術家也能從事社會運動嗎？《此岸與彼岸－一個社會運動者的身心之旅》新書發表會",
+                    location: "台北世界貿易中心展覽一館 C728 讀字公民區（台北市信義區信義路五段5號）",
+                    time: "2/08（日）11:00-12:00",
+                    link: "https://www.cet-taiwan.org/events/4782"
+                },
+                {
+                    name: "「作家x倡議工作者」雙重身分的跨世代對談",
+                    location: "現場＋直播｜台北世界貿易中心展覽一館 A1203 直播室（台北市信義區信義路五段5號）",
+                    time: "2/08（日）15:00-15:30",
+                    link: "https://www.cet-taiwan.org/events/4783",
+                    speaker: "與談：許恩恩｜作家"
                 }
             ];
             const eventHtml = eventData.map(event => `
