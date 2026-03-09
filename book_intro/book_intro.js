@@ -105,8 +105,152 @@
                     location: "地球公民台北辦公室（臺北市中正區北平東路28號9F-2）",
                     time: "3/12（四）19:00-21:00",
                     link: "https://www.cet-taiwan.org/events/4791"
+                },
+                {
+                    area: "北部",
+                    region: "台北",
+                    name: "《此岸與彼岸 —— 一個社會運動者的身心之旅》新書分享會",
+                    location: "台灣獨立建國聯盟台北市分部（台北市中正區青島西路11號14樓之1）",
+                    time: "3/26 (四) 19:00-21:00",
+                    link: ""
+                },
+                {
+                    area: "外島",
+                    region: "金門",
+                    name: "「心與環境的對話錄」－在金門，一個環境關懷者如何起身行動",
+                    location: "蓊蓊書店（金門）",
+                    time: "3/21(六)",
+                    link: ""
+                },
+                {
+                    area: "東部",
+                    region: "台東",
+                    name: "《此岸與彼岸 —— 一個社會運動者的身心之旅》新書分享會",
+                    location: "晃晃二手書店（950台東市漢陽南路139-1號）",
+                    time: "4/9 (四) 19:00-20:30",
+                    link: ""
+                },
+                {
+                    area: "北部",
+                    region: "新竹",
+                    name: "《此岸與彼岸 —— 一個社會運動者的身心之旅》新書分享會",
+                    location: "江山藝改所（新竹市東區興達街1號）",
+                    time: "4/11 (六)",
+                    link: ""
+                },
+                {
+                    area: "外島",
+                    region: "澎湖",
+                    name: "即將公布（三天共三場）",
+                    location: "澎湖",
+                    time: "4/16 (五) - 4/18（日）",
+                    link: ""
+                },
+                {
+                    area: "南部",
+                    region: "高雄",
+                    name: "大河的浸潤 —— 看見高雄三十年",
+                    location: "三餘書店（高雄市新興區中正二路214號）",
+                    time: "5/2 (六)",
+                    link: ""
+                },
+                {
+                    area: "中部",
+                    region: "南投",
+                    name: "《此岸與彼岸 —— 一個社會運動者的身心之旅》新書分享會",
+                    location: "南投文巢獨立書店（南投市民族路322巷19號）",
+                    time: "6/7 (日)",
+                    link: ""
+                },
+                {
+                    area: "南部",
+                    region: "嘉義",
+                    name: "《此岸與彼岸 —— 一個社會運動者的身心之旅》新書分享會",
+                    location: "島呼冊店（嘉義市中山路257號）",
+                    time: "6/14 (日)",
+                    link: ""
+                },
+                {
+                    area: "南部",
+                    region: "高雄",
+                    name: "日常的書法藝術 —— 李根政的書法課",
+                    location: "日閱書局（高雄市苓雅區義勇路46號二樓）",
+                    time: "6/5 (五) 19:00-21:00",
+                    link: ""
+                },
+                {
+                    area: "中部",
+                    region: "台中",
+                    name: "《此岸與彼岸 —— 一個社會運動者的身心之旅》新書分享會",
+                    location: "街仔尾冊店（台中梧棲區民生街91巷4號）",
+                    time: "6/27 (六) 13:30-15:30",
+                    link: ""
+                },
+                {
+                    area: "北部",
+                    region: "桃園",
+                    name: "《此岸與彼岸 —— 一個社會運動者的身心之旅》",
+                    location: "桃園苔蘚視角（桃園市平鎮區金陵路280號）",
+                    time: "7/4 (六) 14:00-16:00",
+                    link: ""
+                },
+                {
+                    area: "東部",
+                    region: "花蓮",
+                    name: "《此岸與彼岸 —— 一個社會運動者的身心之旅》",
+                    location: "孩好書屋（花蓮縣花蓮市中山路71號(花蓮鐵道文化園區一館典藏室)）",
+                    time: "7/10 (五) 19:00-21:00",
+                    link: ""
+                },
+                {
+                    area: "東部",
+                    region: "台東",
+                    name: "《此岸與彼岸 —— 一個社會運動者的身心之旅》新書分享會",
+                    location: "都蘭地下書店（臺東縣東河鄉112號B1）",
+                    time: "7/11 (六) 14:00-16:00",
+                    link: ""
                 }
             ];
+
+            // 取得今日日期（不含時間）
+            const today = new Date();
+            today.setHours(0, 0, 0, 0);
+            const currentYear = today.getFullYear();
+
+            // 為每個活動解析日期並標記未來或過去
+            eventData.forEach(event => {
+                const match = event.time.match(/(\d{1,2})\/(\d{1,2})/);
+                if (match) {
+                    const month = parseInt(match[1], 10);
+                    const date = parseInt(match[2], 10);
+                    const eventDate = new Date(currentYear, month - 1, date);
+                    event.parsedDateObj = eventDate;
+                    event.isFuture = eventDate >= today;
+                } else {
+                    // 若無符合的日期格式，視為過去且放到最後
+                    event.parsedDateObj = new Date(0);
+                    event.isFuture = false;
+                }
+            });
+
+            // 進行排序
+            eventData.sort((a, b) => {
+                // 1. 未來的排在前面，過去的排在後面
+                if (a.isFuture && !b.isFuture) return -1;
+                if (!a.isFuture && b.isFuture) return 1;
+
+                // 2. 若都是未來：時間越近（日期較小）越前面
+                if (a.isFuture && b.isFuture) {
+                    return a.parsedDateObj - b.parsedDateObj;
+                }
+
+                // 3. 若都是過去：時間越近（日期較大）越前面
+                if (!a.isFuture && !b.isFuture) {
+                    return b.parsedDateObj - a.parsedDateObj;
+                }
+
+                return 0;
+            });
 
             function renderEvents(filterArea = "all") {
                 const filteredData = filterArea === "all"
