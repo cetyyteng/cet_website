@@ -52,57 +52,108 @@
 
         // --- 活動列表動態插入 ---
         const eventContainer = document.querySelector("#event-list");
+        const eventTabsContainer = document.querySelector("#event-tabs");
         if (eventContainer) {
             const eventData = [
                 {
-                    name: "新書分享會——高雄場",
-                    location: "地球公民基金會高雄總部（高雄市前金區中華四路282號5樓）",
-                    time: "3/07（六）14:30-16:30",
-                    link: "https://www.cet-taiwan.org/events/4798?utm_source=event&utm_campaign=general&utm_content=20260210_kh_page",
-                    speaker: "與談：南方運動夥伴"
-                },
-                {
-                    name: "募款專案限定—根政煮飯給你吃－煮一道家常料理",
-                    location: "地球公民高雄總部（高雄市前金區中華四路282號5樓）",
-                    time: "3/08（日）14:30-16:30",
-                    link: "https://www.cet-taiwan.org/events/4791"
-                },
-                {
-                    name: "新書分享會——台北場",
-                    location: "紀州庵文學森林（臺北市中正區同安街107號）",
-                    time: "3/14（六）19:00-21:00",
-                    link: "https://www.cet-taiwan.org/events/4799?utm_source=event&utm_campaign=general&utm_content=20260210_tp_IG",
-                    speaker: "與談：陳信聰｜華視新媒體部經理、前公視有話好說製作人及主持人"
-                },
-                {
-                    name: "募款專案限定—根政寫字給你看！書法筆下的運動軌跡",
-                    location: "地球公民台北辦公室（臺北市中正區北平東路28號9F-2）",
-                    time: "3/12（四）19:00-21:00",
-                    link: "https://www.cet-taiwan.org/events/4791"
-                },
-                {
+                    area: "北部",
+                    region: "台北",
                     name: "藝術家也能從事社會運動嗎？《此岸與彼岸－一個社會運動者的身心之旅》新書發表會",
                     location: "台北世界貿易中心展覽一館 C728 讀字公民區（台北市信義區信義路五段5號）",
                     time: "2/08（日）11:00-12:00",
                     link: "https://www.cet-taiwan.org/events/4782"
                 },
                 {
+                    area: "北部",
+                    region: "台北",
                     name: "「作家x倡議工作者」雙重身分的跨世代對談",
                     location: "現場＋直播｜台北世界貿易中心展覽一館 A1203 直播室（台北市信義區信義路五段5號）",
                     time: "2/08（日）15:00-15:30",
                     link: "https://www.cet-taiwan.org/events/4783",
                     speaker: "與談：許恩恩｜作家"
+                },
+                {
+                    area: "南部",
+                    region: "高雄",
+                    name: "新書分享會——高雄場",
+                    location: "地球公民基金會高雄總部（高雄市前金區中華四路282號5樓）",
+                    time: "3/07（六）14:30-16:30",
+                    link: "https://www.cet-taiwan.org/events/4798",
+                    speaker: "與談：南方運動夥伴"
+                },
+                {
+                    area: "南部",
+                    region: "高雄",
+                    name: "募款專案限定—根政煮飯給你吃－煮一道家常料理",
+                    location: "地球公民高雄總部（高雄市前金區中華四路282號5樓）",
+                    time: "3/08（日）14:30-16:30",
+                    link: "https://www.cet-taiwan.org/events/4791"
+                },
+                {
+                    area: "北部",
+                    region: "台北",
+                    name: "新書分享會——台北場",
+                    location: "紀州庵文學森林（臺北市中正區同安街107號）",
+                    time: "3/14（六）19:00-21:00",
+                    link: "https://www.cet-taiwan.org/events/4798",
+                    speaker: "與談：陳信聰｜華視新媒體部經理、前公視有話好說製作人及主持人"
+                },
+                {
+                    area: "北部",
+                    region: "台北",
+                    name: "募款專案限定—根政寫字給你看！書法筆下的運動軌跡",
+                    location: "地球公民台北辦公室（臺北市中正區北平東路28號9F-2）",
+                    time: "3/12（四）19:00-21:00",
+                    link: "https://www.cet-taiwan.org/events/4791"
                 }
             ];
-            const eventHtml = eventData.map(event => `
+
+            function renderEvents(filterArea = "all") {
+                const filteredData = filterArea === "all"
+                    ? eventData
+                    : eventData.filter(event => event.area === filterArea);
+
+                const eventHtml = filteredData.map(event => {
+                    const isClickable = event.link && event.link !== "#";
+                    const titleTag = isClickable
+                        ? `<a href="${event.link}" class="event-name" target="_blank">${event.name}</a>`
+                        : `<span class="event-name unclickable">${event.name}</span>`;
+
+                    return `
                 <div class="event-item">
-                    <a href="${event.link}" class="event-name" target="_blank">${event.name}</a>
+                    ${event.region ? `<span class="event-region">${event.region}</span>` : ''}
+                    ${titleTag}
                     <p class="event-location">${event.location}</p>
                     <p class="event-time">${event.time}</p>
                     ${event.speaker ? `<p class="event-speaker">${event.speaker}</p>` : ''}
                 </div>
-            `).join('');
-            eventContainer.innerHTML = eventHtml;
+                    `;
+                }).join('');
+
+                if (filteredData.length === 0) {
+                    eventContainer.innerHTML = '<p class="text-center w-100 mt-3" style="color: #666;">目前該地區尚無活動</p>';
+                } else {
+                    eventContainer.innerHTML = eventHtml;
+                }
+            }
+
+            // 初始渲染
+            renderEvents("all");
+
+            // 標籤點擊事件
+            if (eventTabsContainer) {
+                eventTabsContainer.addEventListener("click", (e) => {
+                    if (e.target.tagName === "BUTTON") {
+                        // 移除所有 active
+                        eventTabsContainer.querySelectorAll("button").forEach(btn => btn.classList.remove("active"));
+                        // 加入當前 active
+                        e.target.classList.add("active");
+                        // 重新渲染
+                        const area = e.target.getAttribute("data-area");
+                        renderEvents(area);
+                    }
+                });
+            }
         }
     }
 

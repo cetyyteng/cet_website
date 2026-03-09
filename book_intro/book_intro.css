@@ -1521,3 +1521,39 @@ author 設定
         font-size: 0.8rem;
     }
 }
+
+/* 新書分享會頁籤 */
+#event-tabs .nav-link {
+    border: 1px solid var(--orange);
+    color: var(--orange);
+    background-color: transparent;
+    transition: all 0.3s ease;
+}
+
+#event-tabs .nav-link.active,
+#event-tabs .nav-link:hover {
+    background-color: var(--orange);
+    color: var(--white);
+}
+
+.event-region {
+    display: inline-block;
+    background-color: var(--beige);
+    color: var(--orange);
+    padding: 0.2rem 0.6rem;
+    border-radius: 4px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+}
+
+.event-name.unclickable {
+    cursor: default;
+}
+
+.event-name.unclickable:hover {
+    color: var(--dark-green);
+    /* 不變色 */
+    text-decoration: none;
+    /* 沒有底線 */
+}
