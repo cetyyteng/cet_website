@@ -1,0 +1,1095 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>貼文觀看時間成效分析</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Outfit:wght@500;600;700&family=Noto+Sans+TC:wght@400;500;700&display=swap');
+
+        :root {
+            /* Dark Theme Default */
+            --bg-primary: #090d16;
+            --bg-secondary: #111927;
+            --bg-card: #162235;
+            --border-color: #1f2e46;
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --accent-primary: #10b981;
+            --accent-primary-hover: #34d399;
+            --accent-secondary: #3b82f6;
+            --accent-secondary-hover: #60a5fa;
+            --accent-orange: #f59e0b;
+            --hover-row: #1d2a3f;
+            --input-bg: #162235;
+            --danger: #ef4444;
+            --card-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        body.light-theme {
+            --bg-primary: #f1f5f9;
+            --bg-secondary: #ffffff;
+            --bg-card: #f8fafc;
+            --border-color: #cbd5e1;
+            --text-primary: #0f172a;
+            --text-secondary: #64748b;
+            --accent-primary: #059669;
+            --accent-primary-hover: #10b981;
+            --accent-secondary: #2563eb;
+            --accent-secondary-hover: #3b82f6;
+            --accent-orange: #d97706;
+            --hover-row: #f1f5f9;
+            --input-bg: #f1f5f9;
+            --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.15);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+        }
+
+        body {
+            font-family: 'Inter', 'Noto Sans TC', -apple-system, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        /* Header Style */
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .header-title h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2.2rem;
+            font-weight: 700;
+            background: linear-gradient(135deg, #10b981, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 0.25rem;
+        }
+
+        .header-title p {
+            color: var(--text-secondary);
+            font-size: 0.95rem;
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        /* Theme Toggle */
+        .btn-theme-toggle {
+            background: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.6rem;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: var(--card-shadow);
+        }
+        .btn-theme-toggle:hover {
+            border-color: var(--accent-primary);
+        }
+        .btn-theme-toggle svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+        body.light-theme .sun-icon, body:not(.light-theme) .moon-icon {
+            display: none;
+        }
+
+        /* Stats Cards */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--card-shadow);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .stat-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 4px;
+            height: 100%;
+        }
+
+        .stat-card.sc-watch::before { background-color: var(--accent-primary); }
+        .stat-card.sc-reach::before { background-color: var(--accent-secondary); }
+        .stat-card.sc-views::before { background-color: #8b5cf6; }
+        .stat-card.sc-duration::before { background-color: var(--accent-orange); }
+
+        .stat-title {
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-desc {
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+
+        .stat-desc span {
+            font-weight: bold;
+            color: var(--text-primary);
+        }
+
+        /* Controls Block */
+        .controls-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 1.25rem 1.5rem;
+            margin-bottom: 1.5rem;
+            box-shadow: var(--card-shadow);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+
+        .filter-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            flex-grow: 1;
+            flex-wrap: wrap;
+        }
+
+        .search-wrapper {
+            position: relative;
+            min-width: 250px;
+        }
+        .search-wrapper input {
+            width: 100%;
+            background-color: var(--input-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-primary);
+            padding: 0.6rem 1rem 0.6rem 2.2rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            outline: none;
+        }
+        .search-wrapper input:focus {
+            border-color: var(--accent-secondary);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+        }
+        .search-icon {
+            position: absolute;
+            left: 0.75rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-secondary);
+            width: 16px;
+            height: 16px;
+            pointer-events: none;
+        }
+
+        .quick-filters {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-filter {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: var(--text-secondary);
+            padding: 0.5rem 0.9rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 500;
+            cursor: pointer;
+        }
+        .btn-filter:hover, .btn-filter.active {
+            background-color: var(--bg-card);
+            border-color: var(--accent-primary);
+            color: var(--text-primary);
+        }
+
+        .btn-export {
+            background-color: var(--accent-secondary);
+            color: #ffffff;
+            border: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 8px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            box-shadow: var(--card-shadow);
+        }
+        .btn-export:hover {
+            background-color: var(--accent-secondary-hover);
+        }
+
+        /* Table Card */
+        .table-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            box-shadow: var(--card-shadow);
+            overflow: hidden;
+            margin-bottom: 2rem;
+        }
+
+        .table-container {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        th {
+            background-color: var(--bg-card);
+            border-bottom: 1px solid var(--border-color);
+            padding: 1rem 0.8rem;
+            color: var(--text-secondary);
+            font-weight: 600;
+            font-size: 0.82rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            cursor: pointer;
+            user-select: none;
+            position: relative;
+            white-space: nowrap;
+        }
+        th:hover {
+            color: var(--text-primary);
+            background-color: var(--hover-row);
+        }
+        .sort-icon {
+            margin-left: 0.25rem;
+            font-size: 0.75rem;
+            display: inline-block;
+            opacity: 0.5;
+        }
+        th.sorted-asc .sort-icon, th.sorted-desc .sort-icon {
+            opacity: 1;
+            color: var(--accent-primary);
+        }
+
+        td {
+            padding: 1rem 0.8rem;
+            border-bottom: 1px solid var(--border-color);
+            vertical-align: middle;
+        }
+
+        .table-row {
+            cursor: pointer;
+        }
+        .table-row:hover {
+            background-color: var(--hover-row);
+        }
+
+        .cell-no {
+            color: var(--text-secondary);
+            width: 40px;
+            text-align: center;
+            font-size: 0.8rem;
+        }
+
+        .cell-title {
+            min-width: 250px;
+            max-width: 400px;
+        }
+        .title-text {
+            font-weight: 500;
+            color: var(--text-primary);
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+            margin-bottom: 0.25rem;
+        }
+        .cell-date {
+            min-width: 110px;
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+        }
+
+        .cell-watch {
+            min-width: 140px;
+        }
+        .val-container {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .val-text {
+            font-weight: 600;
+        }
+        .font-numeric {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .bar-bg {
+            background-color: rgba(255, 255, 255, 0.08);
+            height: 6px;
+            border-radius: 4px;
+            overflow: hidden;
+            width: 100%;
+        }
+        body.light-theme .bar-bg {
+            background-color: rgba(0, 0, 0, 0.06);
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 4px;
+        }
+        .watch-bar {
+            background: linear-gradient(90deg, var(--accent-primary), #059669);
+        }
+
+        .cell-reach {
+            min-width: 150px;
+        }
+        .ad-badge {
+            font-size: 0.7rem;
+            background-color: rgba(59, 130, 246, 0.15);
+            color: var(--accent-secondary-hover);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            padding: 0.1rem 0.3rem;
+            border-radius: 4px;
+            align-self: flex-start;
+            font-weight: 500;
+        }
+        body.light-theme .ad-badge {
+            background-color: rgba(37, 99, 235, 0.1);
+            color: var(--accent-secondary);
+        }
+
+        .dual-bar {
+            display: flex;
+        }
+        .organic-bar {
+            background-color: var(--accent-primary);
+        }
+        .paid-bar {
+            background-color: var(--accent-secondary);
+        }
+
+        .cell-engagements {
+            min-width: 240px;
+        }
+        .eng-icons {
+            display: flex;
+            gap: 0.75rem;
+            font-size: 0.8rem;
+            color: var(--text-secondary);
+        }
+        .eng-icons span {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+        .icon {
+            font-size: 0.95rem;
+            opacity: 0.8;
+        }
+
+        /* Modal Style */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: rgba(5, 8, 15, 0.85);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+        }
+        .modal-overlay.active {
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .modal-card {
+            background-color: var(--bg-secondary);
+            border: 1px solid var(--border-color);
+            width: 90%;
+            max-width: 800px;
+            border-radius: 16px;
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            max-height: 85vh;
+            transform: scale(0.95);
+            transition: transform 0.3s ease;
+        }
+        .modal-overlay.active .modal-card {
+            transform: scale(1);
+        }
+
+        .modal-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+        .modal-header-title {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+        }
+        .modal-header-title h3 {
+            font-size: 1.2rem;
+            font-weight: 700;
+        }
+        .modal-close {
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 0.2rem;
+        }
+        .modal-close:hover {
+            color: var(--text-primary);
+        }
+
+        .modal-body {
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: grid;
+            grid-template-columns: 1.2fr 1fr;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 768px) {
+            .modal-body {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .post-content-section {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        .post-content-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-secondary);
+            text-transform: uppercase;
+        }
+        .post-text {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 1rem;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            overflow-y: auto;
+            max-height: 350px;
+        }
+
+        .metrics-section {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        .metrics-grid-details {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 0.75rem;
+        }
+        .metric-detail-box {
+            background-color: var(--bg-card);
+            border: 1px solid var(--border-color);
+            padding: 0.8rem 1rem;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .mdb-title {
+            font-size: 0.75rem;
+            color: var(--text-secondary);
+            margin-bottom: 0.25rem;
+        }
+        .mdb-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        .mdb-breakdown {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.68rem;
+            color: var(--text-secondary);
+            margin-top: 0.25rem;
+        }
+        .mdb-breakdown .organic { color: var(--accent-primary-hover); }
+        .mdb-breakdown .paid { color: var(--accent-secondary-hover); }
+
+        /* Footer Style */
+        footer {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 0.8rem;
+            padding: 2rem 0 1rem;
+            border-top: 1px solid var(--border-color);
+        }
+    </style>
+</head>
+<body>
+    <div class="container fade-in">
+        <header>
+            <div class="header-title">
+                <h1>貼文觀看時間成效分析</h1>
+                <p>已為您解析資料並篩選有「觀看時間」的影片貼文項目 (共 25 項)</p>
+            </div>
+            <div class="header-actions">
+                <button class="btn-theme-toggle" id="theme-toggle" title="切換深淺色主題">
+                    <!-- Sun icon -->
+                    <svg class="sun-icon" viewBox="0 0 24 24"><path d="M12 7c-2.76 0-5 2.24-5 5s2.24 5 5 5 5-2.24 5-5-2.24-5-5-5zM2 13h2c.55 0 1-.45 1-1s-.45-1-1-1H2c-.55 0-1 .45-1 1s.45 1 1 1zm18 0h2c.55 0 1-.45 1-1s-.45-1-1-1h-2c-.55 0-1 .45-1 1s.45 1 1 1zM11 2v2c0 .55.45 1 1 1s1-.45 1-1V2c0-.55-.45-1-1-1s-1 .45-1 1zm0 18v2c0 .55.45 1 1 1s1-.45 1-1v-2c0-.55-.45-1-1-1s-1 .45-1 1zM5.99 4.58c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41L5.99 4.58zm12.37 12.37c-.39-.39-1.03-.39-1.41 0s-.39 1.03 0 1.41l1.06 1.06c.39.39 1.03.39 1.41 0s.39-1.03 0-1.41l-1.06-1.06zm1.06-12.37c-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06c.39-.39.39-1.03 0-1.41zm-12.37 12.37c-.39-.39-1.03-.39-1.41 0l-1.06 1.06c-.39.39-.39 1.03 0 1.41s1.03.39 1.41 0l1.06-1.06c.39-.39.39-1.03 0-1.41z"/></svg>
+                    <!-- Moon icon -->
+                    <svg class="moon-icon" viewBox="0 0 24 24"><path d="M12.3 2.1c-.5-.1-1 .1-1.3.5-.3.4-.3.9 0 1.3.9 1.4 1.4 3.1 1.4 4.8 0 4.7-3.8 8.5-8.5 8.5-1.7 0-3.4-.5-4.8-1.4-.4-.3-.9-.3-1.3 0-.4.3-.6.8-.5 1.3 1.3 4.4 5.3 7.4 10.2 7.4 5.8 0 10.5-4.7 10.5-10.5 0-4.9-3-8.9-7.4-10.2z"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- KPI Cards -->
+        <div class="stats-grid">
+            <div class="stat-card sc-watch">
+                <div>
+                    <div class="stat-title">總觀看時間</div>
+                    <div class="stat-value">73 天 10 小時</div>
+                </div>
+                <div class="stat-desc">最高：<span>地下水能點燃、天空無預警下起「油雨」波及三公里內民...</span> (1,917,518,284)</div>
+            </div>
+            <div class="stat-card sc-reach">
+                <div>
+                    <div class="stat-title">總觸及人數</div>
+                    <div class="stat-value font-numeric">364,808</div>
+                </div>
+                <div class="stat-desc">最高：<span>地下水能點燃、天空無預警下起「油雨」波及三公里內民...</span> (76,800)</div>
+            </div>
+            <div class="stat-card sc-views">
+                <div>
+                    <div class="stat-title">總瀏覽次數</div>
+                    <div class="stat-value font-numeric">483,232</div>
+                </div>
+                <div class="stat-desc">所有篩選項目之瀏覽總和</div>
+            </div>
+            <div class="stat-card sc-duration">
+                <div>
+                    <div class="stat-title">平均影片播放長度</div>
+                    <div class="stat-value font-numeric">11.7 秒</div>
+                </div>
+                <div class="stat-desc">每支影片的平均播放長度</div>
+            </div>
+        </div>
+
+        <!-- Controls -->
+        <div class="controls-card">
+            <div class="filter-left">
+                <div class="search-wrapper">
+                    <!-- Search Icon SVG -->
+                    <svg class="search-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path></svg>
+                    <input type="text" id="search-input" placeholder="搜尋貼文標題...">
+                </div>
+                <div class="quick-filters">
+                    <button class="btn-filter active" onclick="setQuickFilter('all')">所有項目</button>
+                    <button class="btn-filter" onclick="setQuickFilter('high-watch')">高觀看時間 (>10小時)</button>
+                    <button class="btn-filter" onclick="setQuickFilter('high-reach')">高觸及 (>5,000)</button>
+                    <button class="btn-filter" onclick="setQuickFilter('has-ad')">有廣告推廣</button>
+                </div>
+            </div>
+            <button class="btn-export" onclick="exportCSV()">
+                <!-- Download icon -->
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"></path></svg>
+                匯出 CSV
+            </button>
+        </div>
+
+        <!-- Table -->
+        <div class="table-card">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="cell-no">No.</th>
+                            <th id="th-title" onclick="sortBy('title')">貼文標題 <span class="sort-icon">▲</span></th>
+                            <th id="th-date" onclick="sortBy('date_ms')">發佈日期 <span class="sort-icon">▲</span></th>
+                            <th id="th-watch" onclick="sortBy('watch_time_ms')" class="sorted-desc">觀看時間 <span class="sort-icon">▼</span></th>
+                            <th id="th-avg" onclick="sortBy('avg_play_time_sec')">平均播放 <span class="sort-icon">▲</span></th>
+                            <th id="th-reach" onclick="sortBy('reach.total')">觸及人數 <span class="sort-icon">▲</span></th>
+                            <th id="th-views" onclick="sortBy('views.total')">瀏覽次數 <span class="sort-icon">▲</span></th>
+                            <th id="th-er" onclick="sortBy('er')">互動率 (ER) <span class="sort-icon">▲</span></th>
+                            <th class="cell-engagements">互動指標</th>
+                        </tr>
+                    </thead>
+                    <tbody id="table-body">
+                        <!-- Items rendered dynamically by JS -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <footer>
+            <p>貼文觀看時間成效分析工具 &copy; 2026 地球公民基金會 | 數據更新自原中油高煉廠/高雄廠分析報告</p>
+        </footer>
+    </div>
+
+    <!-- Detail Modal -->
+    <div class="modal-overlay" id="detail-modal" onclick="closeModal()">
+        <div class="modal-card" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <div class="modal-header-title">
+                    <h3 id="modal-title-display">貼文詳情</h3>
+                    <span id="modal-date-display" style="font-size: 0.8rem; color: var(--text-secondary);">發佈日期：</span>
+                </div>
+                <button class="modal-close" onclick="closeModal()">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="post-content-section">
+                    <div class="post-content-label">完整貼文內容</div>
+                    <div class="post-text" id="modal-post-text"></div>
+                </div>
+                <div class="metrics-section">
+                    <div class="post-content-label">詳細成效指標</div>
+                    <div class="metrics-grid-details">
+                        <div class="metric-detail-box">
+                            <span class="mdb-title">觀看時間</span>
+                            <span class="mdb-value" id="md-watch-time"></span>
+                        </div>
+                        <div class="metric-detail-box">
+                            <span class="mdb-title">影片平均播放時間</span>
+                            <span class="mdb-value" id="md-avg-play-time"></span>
+                        </div>
+                        <div class="metric-detail-box">
+                            <span class="mdb-title">觸及人數</span>
+                            <span class="mdb-value font-numeric" id="md-reach-total"></span>
+                            <div class="mdb-breakdown">
+                                <span class="organic">自然：<span id="md-reach-org"></span></span>
+                                <span class="paid">廣告：<span id="md-reach-paid"></span></span>
+                            </div>
+                        </div>
+                        <div class="metric-detail-box">
+                            <span class="mdb-title">瀏覽次數</span>
+                            <span class="mdb-value font-numeric" id="md-views-total"></span>
+                            <div class="mdb-breakdown">
+                                <span class="organic">自然：<span id="md-views-org"></span></span>
+                                <span class="paid">廣告：<span id="md-views-paid"></span></span>
+                            </div>
+                        </div>
+                        <div class="metric-detail-box">
+                            <span class="mdb-title">按讚和心情數</span>
+                            <span class="mdb-value font-numeric" id="md-reactions"></span>
+                            <div class="mdb-breakdown">
+                                <span class="organic">自然：<span id="md-reactions-org"></span></span>
+                                <span class="paid">廣告：<span id="md-reactions-paid"></span></span>
+                            </div>
+                        </div>
+                        <div class="metric-detail-box">
+                            <span class="mdb-title">分享次數</span>
+                            <span class="mdb-value font-numeric" id="md-shares"></span>
+                            <div class="mdb-breakdown">
+                                <span class="organic">自然：<span id="md-shares-org"></span></span>
+                                <span class="paid">廣告：<span id="md-shares-paid"></span></span>
+                            </div>
+                        </div>
+                        <div class="metric-detail-box">
+                            <span class="mdb-title">互動率 (ER)</span>
+                            <span class="mdb-value font-numeric" id="md-er"></span>
+                        </div>
+                        <div class="metric-detail-box">
+                            <span class="mdb-title">觀看 3 秒以上次數</span>
+                            <span class="mdb-value font-numeric" id="md-3s-views"></span>
+                        </div>
+                        <div class="metric-detail-box">
+                            <span class="mdb-title">留言數</span>
+                            <span class="mdb-value font-numeric" id="md-comments"></span>
+                        </div>
+                        <div class="metric-detail-box">
+                            <span class="mdb-title">儲存次數</span>
+                            <span class="mdb-value font-numeric" id="md-saves"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Data Injection and Client-Side Logic -->
+    <script>
+        const originalData = [{"id": 1, "title_raw": "地下水能點燃、天空無預警下起「油雨」波及三公里內民宅... 這些難以置信的畫面，都曾真實發生在台積電高雄廠、楠梓產業園區的現址（原中油高煉廠）。\n\n從重度污染的石化業，到如今科技大廠林立，這是後勁居民團結歷經30年抗爭，才為高雄打開的城市轉型契機。在迎來新產業帶動發展的同時，這塊土地曾經歷的傷害與居民對環境共生的期盼，更值得被銘記。\n\n5/30晚上，邀請您來後勁鳳屏宮前聽聽歌，一起回顧這段不可遺忘的土地記憶！🎤\n\n▎《民主之眼》三部曲 #3 重聲　放映會\n　16:00－17:30 (地點：聖雲宮活動中心@鳳屏宮對面)\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　19:00－22:00 (地點：鳳屏宮)\n\n▎ 演出陣容\n　▸謝銘祐\n　▸生祥樂隊\n　▸農村武裝青年\n\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型 Reel 已多文發佈 地球公民基金會、cettw 加強推廣 開啟下拉式功能表  開啟下拉式功能表 ", "title": "地下水能點燃、天空無預警下起「油雨」波及三公里內民宅... 這些難以置信的畫面，都曾真實發生在台積電高雄廠、楠梓產業園區的現址（原中油高煉廠）。\n\n從重度污染的石化業，到如今科技大廠林立，這是後勁居民團結歷經30年抗爭，才為高雄打開的城市轉型契機。在迎來新產業帶動發展的同時，這塊土地曾經歷的傷害與居民對環境共生的期盼，更值得被銘記。\n\n5/30晚上，邀請您來後勁鳳屏宮前聽聽歌，一起回顧這段不可遺忘的土地記憶！🎤\n\n▎《民主之眼》三部曲 #3 重聲　放映會\n　16:00－17:30 (地點：聖雲宮活動中心@鳳屏宮對面)\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　19:00－22:00 (地點：鳳屏宮)\n\n▎ 演出陣容\n　▸謝銘祐\n　▸生祥樂隊\n　▸農村武裝青年\n\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型", "date_raw": "5月11日 12:01", "date_ms": 1778472060000, "watch_time_raw": "1,917,518,284", "watch_time_ms": 1917518284, "avg_play_time_raw": "23秒", "avg_play_time_sec": 23.0, "reach": {"total": 76800, "paid": 69864, "organic": 6936}, "shares": {"total": 85, "paid": 3, "organic": 82}, "reactions": {"total": 545, "paid": 118, "organic": 427}, "three_sec_views": {"total": 56540, "paid": 0, "organic": 56540}, "distribution_score": {"total": 2.1, "paid": 0, "organic": 2.1}, "interactions": {"total": 674, "paid": 126, "organic": 548}, "comments": {"total": 10, "paid": 5, "organic": 5}, "saves": {"total": 17, "paid": 0, "organic": 17}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 9, "paid": 0, "organic": 9}, "views": {"total": 100233, "paid": 82374, "organic": 17859}, "viewers": {"total": 76248, "paid": 0, "organic": 76248}}, {"id": 2, "title_raw": "屏東人真的都支持核三重啟嗎？聽聽屏東人現身說法。 #核三公投不同意 Reel 地球公民基金會 加強推廣 開啟下拉式功能表 ", "title": "屏東人真的都支持核三重啟嗎？聽聽屏東人現身說法。 #核三公投不同意", "date_raw": "2025年8月12日", "date_ms": 1754928000000, "watch_time_raw": "1,572,778,891", "watch_time_ms": 1572778891, "avg_play_time_raw": "23秒", "avg_play_time_sec": 23.0, "reach": {"total": 56646, "paid": 16149, "organic": 40497}, "shares": {"total": 338, "paid": 25, "organic": 313}, "reactions": {"total": 2764, "paid": 252, "organic": 2512}, "three_sec_views": {"total": 40626, "paid": 0, "organic": 40626}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 3572, "paid": 335, "organic": 3237}, "comments": {"total": 451, "paid": 58, "organic": 393}, "saves": {"total": 19, "paid": 0, "organic": 19}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 0, "paid": 0, "organic": 0}, "views": {"total": 80495, "paid": 21278, "organic": 59217}, "viewers": {"total": 59168, "paid": 0, "organic": 59168}}, {"id": 3, "title_raw": "機率極低的立筊，只要出現一次，通常就代表神明有重大指示。\n而在40年前的「後勁反五輕運動」前夕，地方廟宇竟在短短一個月內顯現了 6 次立筊！\n\n因為如此，爐主向保生大帝請示是否要反五輕，連續擲出 6 個聖筊。\n這份「連神明也反污染」的堅定信仰，讓廟方動用基金大力支援，成為後勁人堅持抗爭、並在 2015 年成功看見五輕關廠的最強後盾。\n\n5 月 30 日，我們在後勁鳳屏宮前，用音樂重溫這段土地與信仰交織的歷史！\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n▎ 演出陣容\n　▸農村武裝青年\n　▸謝銘祐\n　▸生祥樂隊\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型 Reel 地球公民基金會 加強推廣 開啟下拉式功能表 ", "title": "機率極低的立筊，只要出現一次，通常就代表神明有重大指示。\n而在40年前的「後勁反五輕運動」前夕，地方廟宇竟在短短一個月內顯現了 6 次立筊！\n\n因為如此，爐主向保生大帝請示是否要反五輕，連續擲出 6 個聖筊。\n這份「連神明也反污染」的堅定信仰，讓廟方動用基金大力支援，成為後勁人堅持抗爭、並在 2015 年成功看見五輕關廠的最強後盾。\n\n5 月 30 日，我們在後勁鳳屏宮前，用音樂重溫這段土地與信仰交織的歷史！\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n▎ 演出陣容\n　▸農村武裝青年\n　▸謝銘祐\n　▸生祥樂隊\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型", "date_raw": "5月25日 17:31", "date_ms": 1779701460000, "watch_time_raw": "811,399,436", "watch_time_ms": 811399436, "avg_play_time_raw": "18秒", "avg_play_time_sec": 18.0, "reach": {"total": 37704, "paid": 34604, "organic": 3100}, "shares": {"total": 5, "paid": 0, "organic": 5}, "reactions": {"total": 88, "paid": 46, "organic": 42}, "three_sec_views": {"total": 25226, "paid": 0, "organic": 25226}, "distribution_score": {"total": -0.6, "paid": 0, "organic": 0}, "interactions": {"total": 95, "paid": 46, "organic": 49}, "comments": {"total": 1, "paid": 0, "organic": 1}, "saves": {"total": 1, "paid": 0, "organic": 1}, "link_clicks": {"total": 1, "paid": 0, "organic": 1}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 0, "paid": 0, "organic": 0}, "views": {"total": 49700, "paid": 42761, "organic": 6939}, "viewers": {"total": 37885, "paid": 0, "organic": 37885}}, {"id": 4, "title_raw": "在台積電高雄廠附近，藏著一處只有在地人才知道的盆栽秘境！\n\n早年礦區工人把「樹頭」帶回家種，意外發展出後勁的隱藏特色產業。在過去石化污染與反五輕抗爭的苦悶歲月裡，這片綠意成為了療癒居民身心的秘密基地。吸收了半屏山石灰質與獨特風土，這裡的盆栽別具特色，許多更是傳承兩代、照顧數十年的「植物家人」。\n\n想親自感受後勁的在地故事嗎？這個週末一起來聽音樂吧！🎧\n報名：請點留言連結\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n　▸演出陣容：謝銘祐、生祥樂隊、農村武裝青年 Reel 地球公民基金會 加強推廣 開啟下拉式功能表 ", "title": "在台積電高雄廠附近，藏著一處只有在地人才知道的盆栽秘境！\n\n早年礦區工人把「樹頭」帶回家種，意外發展出後勁的隱藏特色產業。在過去石化污染與反五輕抗爭的苦悶歲月裡，這片綠意成為了療癒居民身心的秘密基地。吸收了半屏山石灰質與獨特風土，這裡的盆栽別具特色，許多更是傳承兩代、照顧數十年的「植物家人」。\n\n想親自感受後勁的在地故事嗎？這個週末一起來聽音樂吧！🎧\n報名：請點留言連結\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n　▸演出陣容：謝銘祐、生祥樂隊、農村武裝青年", "date_raw": "5月26日 20:01", "date_ms": 1779796860000, "watch_time_raw": "487,511,667", "watch_time_ms": 487511667, "avg_play_time_raw": "16秒", "avg_play_time_sec": 16.0, "reach": {"total": 27242, "paid": 23719, "organic": 3523}, "shares": {"total": 4, "paid": 2, "organic": 2}, "reactions": {"total": 109, "paid": 48, "organic": 61}, "three_sec_views": {"total": 15991, "paid": 0, "organic": 15991}, "distribution_score": {"total": -2.2, "paid": 0, "organic": 0}, "interactions": {"total": 117, "paid": 50, "organic": 67}, "comments": {"total": 2, "paid": 0, "organic": 2}, "saves": {"total": 2, "paid": 0, "organic": 2}, "link_clicks": {"total": 1, "paid": 1, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 0, "paid": 0, "organic": 0}, "views": {"total": 34202, "paid": 28558, "organic": 5644}, "viewers": {"total": 26756, "paid": 0, "organic": 26756}}, {"id": 5, "title_raw": "來來來，你來！！！\n5/30晚上，邀請您來後勁鳳屏宮前聽聽歌，一起回顧這段不可遺忘的土地記憶！\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　19:00－22:00 (地點：鳳屏宮)\n▎ 演出陣容\n　▸農村武裝青年\n　▸謝銘祐\n　▸生祥樂隊\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型 Reel 地球公民基金會 加強推廣 開啟下拉式功能表 ", "title": "來來來，你來！！！\n5/30晚上，邀請您來後勁鳳屏宮前聽聽歌，一起回顧這段不可遺忘的土地記憶！\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　19:00－22:00 (地點：鳳屏宮)\n▎ 演出陣容\n　▸農村武裝青年\n　▸謝銘祐\n　▸生祥樂隊\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型", "date_raw": "5月22日 17:31", "date_ms": 1779442260000, "watch_time_raw": "371,277,023", "watch_time_ms": 371277023, "avg_play_time_raw": "13秒", "avg_play_time_sec": 13.0, "reach": {"total": 22830, "paid": 20639, "organic": 2191}, "shares": {"total": 6, "paid": 2, "organic": 4}, "reactions": {"total": 121, "paid": 85, "organic": 36}, "three_sec_views": {"total": 15397, "paid": 0, "organic": 15397}, "distribution_score": {"total": -2.2, "paid": 0, "organic": 0}, "interactions": {"total": 129, "paid": 88, "organic": 41}, "comments": {"total": 2, "paid": 1, "organic": 1}, "saves": {"total": 0, "paid": 0, "organic": 0}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 0, "paid": 0, "organic": 0}, "views": {"total": 32084, "paid": 27167, "organic": 4917}, "viewers": {"total": 24084, "paid": 0, "organic": 24084}}, {"id": 6, "title_raw": "趁著工廠停工的這一天，兩人拎著少許工具、手銬，以及一面巨大的白布，趁著廠方跟警察沒發現，爬上17層樓高的中油的廢氣燃燒塔。\n\n石化業煉油過程，會產生大量的有害氣體，燃燒塔幾乎終年都在高雄的上空燃燒有害氣體。他們拉開寫著「反五輕」的大布條，並將自己銬高塔上，媒體前的夥伴接力宣誓，他們要用這條命，反對中油五輕來到後勁。\n\n五輕離開了，現在台積電來了，當年爬上燃燒塔的劉永鈴與楊朝明前輩，如今已經過世，但高雄人對抗石化、對抗高污染的精神，我們都不會忘記。\n\n.\n \n5/30晚上，邀請您來後勁鳳屏宮前聽聽歌，一起回顧這段不可遺忘的土地記憶！\n\n▎《民主之眼》三部曲 #3 重聲　放映會\n　16:00－17:30 (地點：聖雲宮活動中心@鳳屏宮對面)\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　19:00－22:00 (地點：鳳屏宮)\n▎ 演出陣容\n　▸謝銘祐\n　▸生祥樂隊\n　▸農村武裝青年\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型 Reel 地球公民基金會 加強推廣 開啟下拉式功能表 ", "title": "趁著工廠停工的這一天，兩人拎著少許工具、手銬，以及一面巨大的白布，趁著廠方跟警察沒發現，爬上17層樓高的中油的廢氣燃燒塔。\n\n石化業煉油過程，會產生大量的有害氣體，燃燒塔幾乎終年都在高雄的上空燃燒有害氣體。他們拉開寫著「反五輕」的大布條，並將自己銬高塔上，媒體前的夥伴接力宣誓，他們要用這條命，反對中油五輕來到後勁。\n\n五輕離開了，現在台積電來了，當年爬上燃燒塔的劉永鈴與楊朝明前輩，如今已經過世，但高雄人對抗石化、對抗高污染的精神，我們都不會忘記。\n\n.\n \n5/30晚上，邀請您來後勁鳳屏宮前聽聽歌，一起回顧這段不可遺忘的土地記憶！\n\n▎《民主之眼》三部曲 #3 重聲　放映會\n　16:00－17:30 (地點：聖雲宮活動中心@鳳屏宮對面)\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　19:00－22:00 (地點：鳳屏宮)\n▎ 演出陣容\n　▸謝銘祐\n　▸生祥樂隊\n　▸農村武裝青年\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型", "date_raw": "5月20日 17:30", "date_ms": 1779269400000, "watch_time_raw": "279,680,760", "watch_time_ms": 279680760, "avg_play_time_raw": "22秒", "avg_play_time_sec": 22.0, "reach": {"total": 12128, "paid": 8296, "organic": 3832}, "shares": {"total": 19, "paid": 1, "organic": 18}, "reactions": {"total": 76, "paid": 13, "organic": 63}, "three_sec_views": {"total": 8454, "paid": 0, "organic": 8454}, "distribution_score": {"total": -0.9, "paid": 0, "organic": 0}, "interactions": {"total": 96, "paid": 14, "organic": 82}, "comments": {"total": 0, "paid": 0, "organic": 0}, "saves": {"total": 1, "paid": 0, "organic": 1}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 0, "paid": 0, "organic": 0}, "views": {"total": 14087, "paid": 9477, "organic": 4610}, "viewers": {"total": 12082, "paid": 0, "organic": 12082}}, {"id": 7, "title_raw": "這個週末一起來後勁看電影、聽音樂吧！\n\n▎《民主之眼》三部曲 #3 重聲　放映會\n\n　16:00－17:30  (地點：聖雲宮活動中心@鳳屏宮對面)\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n　▸演出陣容：農村武裝青年、謝銘祐、生祥樂隊 Reel 已多文發佈 地球公民基金會、cettw 加強推廣 開啟下拉式功能表  開啟下拉式功能表 ", "title": "這個週末一起來後勁看電影、聽音樂吧！\n\n▎《民主之眼》三部曲 #3 重聲　放映會\n\n　16:00－17:30  (地點：聖雲宮活動中心@鳳屏宮對面)\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n　▸演出陣容：農村武裝青年、謝銘祐、生祥樂隊", "date_raw": "5月28日 12:11", "date_ms": 1779941460000, "watch_time_raw": "244,025,730", "watch_time_ms": 244025730, "avg_play_time_raw": "9秒", "avg_play_time_sec": 9.0, "reach": {"total": 22713, "paid": 19161, "organic": 3552}, "shares": {"total": 24, "paid": 3, "organic": 21}, "reactions": {"total": 136, "paid": 46, "organic": 90}, "three_sec_views": {"total": 11036, "paid": 0, "organic": 11036}, "distribution_score": {"total": -2.9, "paid": 0, "organic": 0}, "interactions": {"total": 164, "paid": 49, "organic": 115}, "comments": {"total": 3, "paid": 0, "organic": 3}, "saves": {"total": 0, "paid": 0, "organic": 0}, "link_clicks": {"total": 6, "paid": 4, "organic": 2}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 0, "paid": 0, "organic": 0}, "views": {"total": 31615, "paid": 22760, "organic": 8855}, "viewers": {"total": 22611, "paid": 0, "organic": 22611}}, {"id": 8, "title_raw": "福島核災至今仍未真正結束，誠摯邀請您與我們一起為311祈禱，家園與健康祈福，並祈願災後的重生與安全的未來！\n\n時間｜2026 年 3 月 11 日（星期三）19:00–20:30\n地點｜台灣基督教長老教會濟南教會（台北市中正區中山南路3號）\n\n共同發起單位：\n台灣基督教長老教會濟南教會、綠色公民行動聯盟、台灣環境保護聯盟、主婦聯盟環境保護基金會、地球公民基金會、台灣環境資訊協會、台灣人權促進會、人本教育基金會、慈林教育基金會、台灣教授協會、台灣教師聯盟\n-\n2011年3月11日「日本福島核電站事故」。\n#環境史上的今天\n-\n🌏按讚追蹤「地球公民」，follow台灣環境的最新近況 🌏\n—\n#地球公民基金會 #cet #地球公民 Reel 已多文發佈 地球公民基金會、cettw 加強推廣 開啟下拉式功能表  開啟下拉式功能表 ", "title": "福島核災至今仍未真正結束，誠摯邀請您與我們一起為311祈禱，家園與健康祈福，並祈願災後的重生與安全的未來！\n\n時間｜2026 年 3 月 11 日（星期三）19:00–20:30\n地點｜台灣基督教長老教會濟南教會（台北市中正區中山南路3號）\n\n共同發起單位：\n台灣基督教長老教會濟南教會、綠色公民行動聯盟、台灣環境保護聯盟、主婦聯盟環境保護基金會、地球公民基金會、台灣環境資訊協會、台灣人權促進會、人本教育基金會、慈林教育基金會、台灣教授協會、台灣教師聯盟\n-\n2011年3月11日「日本福島核電站事故」。\n#環境史上的今天\n-\n🌏按讚追蹤「地球公民」，follow台灣環境的最新近況 🌏\n—\n#地球公民基金會 #cet #地球公民", "date_raw": "3月11日 12:58", "date_ms": 1773205080000, "watch_time_raw": "104,915,965", "watch_time_ms": 104915965, "avg_play_time_raw": "10秒", "avg_play_time_sec": 10.0, "reach": {"total": 8507, "paid": 7100, "organic": 1407}, "shares": {"total": 1, "paid": 0, "organic": 1}, "reactions": {"total": 47, "paid": 6, "organic": 41}, "three_sec_views": {"total": 4934, "paid": 0, "organic": 4934}, "distribution_score": {"total": -5.0, "paid": 0, "organic": 0}, "interactions": {"total": 48, "paid": 6, "organic": 42}, "comments": {"total": 0, "paid": 0, "organic": 0}, "saves": {"total": 0, "paid": 0, "organic": 0}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 1, "paid": 0, "organic": 1}, "views": {"total": 12648, "paid": 9160, "organic": 3488}, "viewers": {"total": 8594, "paid": 0, "organic": 8594}}, {"id": 9, "title_raw": "聽說屏東人都支持核三重啟？聽聽屏東人怎麼說！\n#核三公投不同意 Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "聽說屏東人都支持核三重啟？聽聽屏東人怎麼說！\n#核三公投不同意", "date_raw": "2025年8月12日", "date_ms": 1754928000000, "watch_time_raw": "1 天 1 小時", "watch_time_ms": 90000000, "avg_play_time_raw": "12 秒", "avg_play_time_sec": 12.0, "reach": {"total": 6733, "paid": 0, "organic": 6733}, "shares": {"total": 115, "paid": 0, "organic": 115}, "reactions": {"total": 359, "paid": 0, "organic": 359}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 543, "paid": 0, "organic": 543}, "comments": {"total": 23, "paid": 0, "organic": 23}, "saves": {"total": 15, "paid": 0, "organic": 15}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 13, "paid": 0, "organic": 13}, "views": {"total": 10332, "paid": 0, "organic": 10332}, "viewers": {"total": 0, "paid": 0, "organic": 0}}, {"id": 10, "title_raw": "這不是演戲，而是可能面對的真實未來\n \n台灣最後一座核電廠 —核三即將停機除役\n卻遭藍白聯手強推延役\n \n4/18民眾黨提出重啟公投\n國、眾兩黨在立法院草率審查《核管法》\n \n未形成共識，將10案送出委員會交協商。\n罔顧核安，卻還反對記名表決！\n-\n*影片字幕更正*\n非「9」案，而是10案送出委員會交協商。\n\n#地球公民基金會 #反核 Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "這不是演戲，而是可能面對的真實未來\n \n台灣最後一座核電廠 —核三即將停機除役\n卻遭藍白聯手強推延役\n \n4/18民眾黨提出重啟公投\n國、眾兩黨在立法院草率審查《核管法》\n \n未形成共識，將10案送出委員會交協商。\n罔顧核安，卻還反對記名表決！\n-\n*影片字幕更正*\n非「9」案，而是10案送出委員會交協商。\n\n#地球公民基金會 #反核", "date_raw": "2025年4月25日", "date_ms": 1745510400000, "watch_time_raw": "21 小時 50 分", "watch_time_ms": 78600000, "avg_play_time_raw": "12 秒", "avg_play_time_sec": 12.0, "reach": {"total": 9796, "paid": 3815, "organic": 5981}, "shares": {"total": 43, "paid": 2, "organic": 41}, "reactions": {"total": 319, "paid": 67, "organic": 252}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 388, "paid": 73, "organic": 315}, "comments": {"total": 9, "paid": 2, "organic": 7}, "saves": {"total": 13, "paid": 2, "organic": 11}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 15, "paid": 0, "organic": 15}, "views": {"total": 12705, "paid": 4002, "organic": 8703}, "viewers": {"total": 0, "paid": 0, "organic": 0}}, {"id": 11, "title_raw": "為還沒發生的每一刻，都跨出至關重要的一步！ Reel 地球公民基金會 加強推廣 開啟下拉式功能表 ", "title": "為還沒發生的每一刻，都跨出至關重要的一步！", "date_raw": "2025年11月26日", "date_ms": 1764086400000, "watch_time_raw": "71,056,076", "watch_time_ms": 71056076, "avg_play_time_raw": "7秒", "avg_play_time_sec": 7.0, "reach": {"total": 7123, "paid": 5884, "organic": 1239}, "shares": {"total": 0, "paid": 0, "organic": 0}, "reactions": {"total": 36, "paid": 6, "organic": 30}, "three_sec_views": {"total": 4948, "paid": 0, "organic": 4948}, "distribution_score": {"total": -22.2, "paid": 0, "organic": 0}, "interactions": {"total": 36, "paid": 6, "organic": 30}, "comments": {"total": 0, "paid": 0, "organic": 0}, "saves": {"total": 0, "paid": 0, "organic": 0}, "link_clicks": {"total": 1, "paid": 0, "organic": 1}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 0, "paid": 0, "organic": 0}, "views": {"total": 11932, "paid": 10228, "organic": 1704}, "viewers": {"total": 6943, "paid": 0, "organic": 6943}}, {"id": 12, "title_raw": "獨家方案絕對限時限量！\n真的可以相信！\n-\n馬上點擊連結加入預購！ https://cet.ngo/nBHK\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！\n\n※本影片沒有任何研究員受到傷害 Reel 已多文發佈 地球公民基金會、cettw 加強推廣 開啟下拉式功能表  開啟下拉式功能表 ", "title": "獨家方案絕對限時限量！\n真的可以相信！\n-\n馬上點擊連結加入預購！ https://cet.ngo/nBHK\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！\n\n※本影片沒有任何研究員受到傷害", "date_raw": "1月9日 18:18", "date_ms": 1767953880000, "watch_time_raw": "64,605,533", "watch_time_ms": 64605533, "avg_play_time_raw": "9秒", "avg_play_time_sec": 9.0, "reach": {"total": 5655, "paid": 0, "organic": 5655}, "shares": {"total": 26, "paid": 0, "organic": 26}, "reactions": {"total": 274, "paid": 0, "organic": 274}, "three_sec_views": {"total": 3597, "paid": 0, "organic": 3597}, "distribution_score": {"total": 0.7, "paid": 0, "organic": 0.7}, "interactions": {"total": 311, "paid": 0, "organic": 311}, "comments": {"total": 8, "paid": 0, "organic": 8}, "saves": {"total": 1, "paid": 0, "organic": 1}, "link_clicks": {"total": 20, "paid": 0, "organic": 20}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 2, "paid": 0, "organic": 2}, "views": {"total": 11845, "paid": 0, "organic": 11845}, "viewers": {"total": 6198, "paid": 0, "organic": 6198}}, {"id": 13, "title_raw": "趁著工廠停工的這一天，兩人拎著少許工具、手銬，以及一面巨大的白布，趁著廠方跟警察沒發現，爬上17層樓高的中油的廢氣燃燒塔。\n\n石化業煉油過程，會產生大量的有害氣體，燃燒塔幾乎終年都在高雄的上空燃燒有害氣體。他們拉開寫著「反五輕」的大布條，並將自己銬高塔上，媒體前的夥伴接力宣誓，他們要用這條命，反對中油五輕來到後勁。\n\n五輕離開了，現在台積電來了，當年爬上燃燒塔的劉永鈴與楊朝明前輩，如今已經過世，但高雄人對抗石化、對抗高污染的精神，我們都不會忘記。\n\n.\n \n5/30晚上，邀請您來後勁鳳屏宮前聽聽歌，一起回顧這段不可遺忘的土地記憶！\n\n▎《民主之眼》三部曲 #3 重聲　放映會\n　16:00－17:30 (地點：聖雲宮活動中心@鳳屏宮對面)\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　19:00－22:00 (地點：鳳屏宮)\n▎ 演出陣容\n　▸謝銘祐\n　▸生祥樂隊\n　▸農村武裝青年\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型 Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "趁著工廠停工的這一天，兩人拎著少許工具、手銬，以及一面巨大的白布，趁著廠方跟警察沒發現，爬上17層樓高的中油的廢氣燃燒塔。\n\n石化業煉油過程，會產生大量的有害氣體，燃燒塔幾乎終年都在高雄的上空燃燒有害氣體。他們拉開寫著「反五輕」的大布條，並將自己銬高塔上，媒體前的夥伴接力宣誓，他們要用這條命，反對中油五輕來到後勁。\n\n五輕離開了，現在台積電來了，當年爬上燃燒塔的劉永鈴與楊朝明前輩，如今已經過世，但高雄人對抗石化、對抗高污染的精神，我們都不會忘記。\n\n.\n \n5/30晚上，邀請您來後勁鳳屏宮前聽聽歌，一起回顧這段不可遺忘的土地記憶！\n\n▎《民主之眼》三部曲 #3 重聲　放映會\n　16:00－17:30 (地點：聖雲宮活動中心@鳳屏宮對面)\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　19:00－22:00 (地點：鳳屏宮)\n▎ 演出陣容\n　▸謝銘祐\n　▸生祥樂隊\n　▸農村武裝青年\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型", "date_raw": "5月21日 7:32", "date_ms": 1779319920000, "watch_time_raw": "12 小時 1 分", "watch_time_ms": 43260000, "avg_play_time_raw": "19 秒", "avg_play_time_sec": 19.0, "reach": {"total": 48711, "paid": 45980, "organic": 2731}, "shares": {"total": 37, "paid": 36, "organic": 1}, "reactions": {"total": 337, "paid": 286, "organic": 51}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 384, "paid": 323, "organic": 61}, "comments": {"total": 1, "paid": 1, "organic": 0}, "saves": {"total": 4, "paid": 0, "organic": 4}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 1, "paid": 1, "organic": 0}, "views": {"total": 43182, "paid": 40150, "organic": 3032}, "viewers": {"total": 0, "paid": 0, "organic": 0}}, {"id": 14, "title_raw": "主管說：「啊不是要賣500本」\n-\n馬上點擊主頁連結加入預購！\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！ Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "主管說：「啊不是要賣500本」\n-\n馬上點擊主頁連結加入預購！\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！", "date_raw": "1月21日 17:31", "date_ms": 1768987860000, "watch_time_raw": "11 小時 4 分", "watch_time_ms": 39840000, "avg_play_time_raw": "11 秒", "avg_play_time_sec": 11.0, "reach": {"total": 3510, "paid": 0, "organic": 3510}, "shares": {"total": 9, "paid": 0, "organic": 9}, "reactions": {"total": 130, "paid": 0, "organic": 130}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 144, "paid": 0, "organic": 144}, "comments": {"total": 0, "paid": 0, "organic": 0}, "saves": {"total": 1, "paid": 0, "organic": 1}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 6, "paid": 0, "organic": 6}, "views": {"total": 5171, "paid": 0, "organic": 5171}, "viewers": {"total": 0, "paid": 0, "organic": 0}}, {"id": 15, "title_raw": "機率極低的立筊，只要出現一次，通常就代表神明有重大指示。\n而在40年前的「後勁反五輕運動」前夕，地方廟宇竟在短短一個月內顯現了 6 次立筊！\n\n因為如此，爐主向保生大帝請示是否要反五輕，連續擲出 6 個聖筊。\n這份「連神明也反污染」的堅定信仰，讓廟方動用基金大力支援，成為後勁人堅持抗爭、並在 2015 年成功看見五輕關廠的最強後盾。\n\n5 月 30 日，我們在後勁鳳屏宮前，用音樂重溫這段土地與信仰交織的歷史！\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n▎ 演出陣容\n　▸農村武裝青年\n　▸謝銘祐\n　▸生祥樂隊\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型 Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "機率極低的立筊，只要出現一次，通常就代表神明有重大指示。\n而在40年前的「後勁反五輕運動」前夕，地方廟宇竟在短短一個月內顯現了 6 次立筊！\n\n因為如此，爐主向保生大帝請示是否要反五輕，連續擲出 6 個聖筊。\n這份「連神明也反污染」的堅定信仰，讓廟方動用基金大力支援，成為後勁人堅持抗爭、並在 2015 年成功看見五輕關廠的最強後盾。\n\n5 月 30 日，我們在後勁鳳屏宮前，用音樂重溫這段土地與信仰交織的歷史！\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n▎ 演出陣容\n　▸農村武裝青年\n　▸謝銘祐\n　▸生祥樂隊\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型", "date_raw": "5月25日 17:33", "date_ms": 1779701580000, "watch_time_raw": "8 小時 51 分", "watch_time_ms": 31860000, "avg_play_time_raw": "13 秒", "avg_play_time_sec": 13.0, "reach": {"total": 2118, "paid": 0, "organic": 2118}, "shares": {"total": 14, "paid": 0, "organic": 14}, "reactions": {"total": 98, "paid": 0, "organic": 98}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 123, "paid": 0, "organic": 123}, "comments": {"total": 0, "paid": 0, "organic": 0}, "saves": {"total": 4, "paid": 0, "organic": 4}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 1, "paid": 0, "organic": 1}, "views": {"total": 3315, "paid": 0, "organic": 3315}, "viewers": {"total": 0, "paid": 0, "organic": 0}}, {"id": 16, "title_raw": "有考慮到春聯是我一張張親筆寫的嗎！\n-\n馬上點擊連結加入預購！ https://cet.ngo/nBHM\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！\n\n※只要加入預購一定會寫給你不用擔心（by小編） Reel 已多文發佈 地球公民基金會、cettw 加強推廣 開啟下拉式功能表  開啟下拉式功能表 ", "title": "有考慮到春聯是我一張張親筆寫的嗎！\n-\n馬上點擊連結加入預購！ https://cet.ngo/nBHM\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！\n\n※只要加入預購一定會寫給你不用擔心（by小編）", "date_raw": "1月14日 17:30", "date_ms": 1768383000000, "watch_time_raw": "29,043,902", "watch_time_ms": 29043902, "avg_play_time_raw": "9秒", "avg_play_time_sec": 9.0, "reach": {"total": 3309, "paid": 0, "organic": 3309}, "shares": {"total": 24, "paid": 0, "organic": 24}, "reactions": {"total": 297, "paid": 0, "organic": 297}, "three_sec_views": {"total": 1406, "paid": 0, "organic": 1406}, "distribution_score": {"total": -0.6, "paid": 0, "organic": 0}, "interactions": {"total": 330, "paid": 0, "organic": 330}, "comments": {"total": 3, "paid": 0, "organic": 3}, "saves": {"total": 1, "paid": 0, "organic": 1}, "link_clicks": {"total": 16, "paid": 0, "organic": 16}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 8, "paid": 0, "organic": 8}, "views": {"total": 9877, "paid": 0, "organic": 9877}, "viewers": {"total": 2992, "paid": 0, "organic": 2992}}, {"id": 17, "title_raw": "這樣你知道我是誰了吧！\n-\n馬上點擊連結加入預購！ \nhttps://cet.ngo/nBHG\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！ Reel 地球公民基金會 加強推廣 開啟下拉式功能表 ", "title": "這樣你知道我是誰了吧！\n-\n馬上點擊連結加入預購！ \nhttps://cet.ngo/nBHG\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！", "date_raw": "1月7日 17:38", "date_ms": 1767778680000, "watch_time_raw": "24,363,568", "watch_time_ms": 24363568, "avg_play_time_raw": "8秒", "avg_play_time_sec": 8.0, "reach": {"total": 2723, "paid": 0, "organic": 2723}, "shares": {"total": 3, "paid": 0, "organic": 3}, "reactions": {"total": 115, "paid": 0, "organic": 115}, "three_sec_views": {"total": 1441, "paid": 0, "organic": 1441}, "distribution_score": {"total": -0.7, "paid": 0, "organic": 0}, "interactions": {"total": 120, "paid": 0, "organic": 120}, "comments": {"total": 2, "paid": 0, "organic": 2}, "saves": {"total": 0, "paid": 0, "organic": 0}, "link_clicks": {"total": 13, "paid": 0, "organic": 13}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 0, "paid": 0, "organic": 0}, "views": {"total": 3578, "paid": 0, "organic": 3578}, "viewers": {"total": 2642, "paid": 0, "organic": 2642}}, {"id": 18, "title_raw": "這樣你知道我是誰了吧！\n-\n馬上點擊主頁連結加入預購！\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！ Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "這樣你知道我是誰了吧！\n-\n馬上點擊主頁連結加入預購！\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！", "date_raw": "1月7日 17:31", "date_ms": 1767778260000, "watch_time_raw": "5 小時 53 分", "watch_time_ms": 21180000, "avg_play_time_raw": "8 秒", "avg_play_time_sec": 8.0, "reach": {"total": 2273, "paid": 0, "organic": 2273}, "shares": {"total": 12, "paid": 0, "organic": 12}, "reactions": {"total": 117, "paid": 0, "organic": 117}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 136, "paid": 0, "organic": 136}, "comments": {"total": 2, "paid": 0, "organic": 2}, "saves": {"total": 2, "paid": 0, "organic": 2}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 2, "paid": 0, "organic": 2}, "views": {"total": 3560, "paid": 0, "organic": 3560}, "viewers": {"total": 0, "paid": 0, "organic": 0}}, {"id": 19, "title_raw": "這麼多手寫春聯到底怎麼寫出來的？ \n根政老師春聯題字幕後大揭秘！\n-\n馬上點擊連結加入預購！ https://cet.ngo/nBHJ\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！\n\n※部分片段使用 Gemini 生成（應該很明顯） Reel 已多文發佈 地球公民基金會、cettw 加強推廣 開啟下拉式功能表  開啟下拉式功能表 ", "title": "這麼多手寫春聯到底怎麼寫出來的？ \n根政老師春聯題字幕後大揭秘！\n-\n馬上點擊連結加入預購！ https://cet.ngo/nBHJ\n李根政新書《此岸與彼岸》\n地球公民義賣通路獨家贈送作者親筆揮毫春聯\n數量有限要搶要快！\n\n※部分片段使用 Gemini 生成（應該很明顯）", "date_raw": "1月16日 17:32", "date_ms": 1768555920000, "watch_time_raw": "18,203,579", "watch_time_ms": 18203579, "avg_play_time_raw": "7秒", "avg_play_time_sec": 7.0, "reach": {"total": 2803, "paid": 0, "organic": 2803}, "shares": {"total": 10, "paid": 0, "organic": 10}, "reactions": {"total": 108, "paid": 0, "organic": 108}, "three_sec_views": {"total": 974, "paid": 0, "organic": 974}, "distribution_score": {"total": -1.4, "paid": 0, "organic": 0}, "interactions": {"total": 118, "paid": 0, "organic": 118}, "comments": {"total": 0, "paid": 0, "organic": 0}, "saves": {"total": 0, "paid": 0, "organic": 0}, "link_clicks": {"total": 11, "paid": 0, "organic": 11}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 0, "paid": 0, "organic": 0}, "views": {"total": 4597, "paid": 0, "organic": 4597}, "viewers": {"total": 2247, "paid": 0, "organic": 2247}}, {"id": 20, "title_raw": "在台積電高雄廠附近，藏著一處只有在地人才知道的盆栽秘境！\n\n早年礦區工人把「樹頭」帶回家種，意外發展出後勁的隱藏特色產業。在過去石化污染與反五輕抗爭的苦悶歲月裡，這片綠意成為了療癒居民身心的秘密基地。吸收了半屏山石灰質與獨特風土，這裡的盆栽別具特色，許多更是傳承兩代、照顧數十年的「植物家人」。\n\n想親自感受後勁的在地故事嗎？這個週末一起來聽音樂吧！🎧\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n　▸演出陣容：謝銘祐、生祥樂隊、農村武裝青年\n　▸報名連結： https://cet.ngo/vka3 Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "在台積電高雄廠附近，藏著一處只有在地人才知道的盆栽秘境！\n\n早年礦區工人把「樹頭」帶回家種，意外發展出後勁的隱藏特色產業。在過去石化污染與反五輕抗爭的苦悶歲月裡，這片綠意成為了療癒居民身心的秘密基地。吸收了半屏山石灰質與獨特風土，這裡的盆栽別具特色，許多更是傳承兩代、照顧數十年的「植物家人」。\n\n想親自感受後勁的在地故事嗎？這個週末一起來聽音樂吧！🎧\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n　▸演出陣容：謝銘祐、生祥樂隊、農村武裝青年\n　▸報名連結： https://cet.ngo/vka3", "date_raw": "5月26日 20:02", "date_ms": 1779796920000, "watch_time_raw": "4 小時 3 分", "watch_time_ms": 14580000, "avg_play_time_raw": "11 秒", "avg_play_time_sec": 11.0, "reach": {"total": 1227, "paid": 0, "organic": 1227}, "shares": {"total": 6, "paid": 0, "organic": 6}, "reactions": {"total": 26, "paid": 0, "organic": 26}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 36, "paid": 0, "organic": 36}, "comments": {"total": 0, "paid": 0, "organic": 0}, "saves": {"total": 3, "paid": 0, "organic": 3}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 1, "paid": 0, "organic": 1}, "views": {"total": 1751, "paid": 0, "organic": 1751}, "viewers": {"total": 0, "paid": 0, "organic": 0}}, {"id": 21, "title_raw": "來來來，你來！！！\n5/30晚上，邀請您來後勁鳳屏宮前聽聽歌，一起回顧這段不可遺忘的土地記憶！\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　19:00－22:00 (地點：鳳屏宮)\n▎ 演出陣容\n　▸農村武裝青年\n　▸謝銘祐\n　▸生祥樂隊\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型 Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "來來來，你來！！！\n5/30晚上，邀請您來後勁鳳屏宮前聽聽歌，一起回顧這段不可遺忘的土地記憶！\n\n▎《堅持●後勁--反五輕運動四十年音樂晚會》\n　19:00－22:00 (地點：鳳屏宮)\n▎ 演出陣容\n　▸農村武裝青年\n　▸謝銘祐\n　▸生祥樂隊\n【活動資訊】\n　▸時間：2026年5月30日（六）19:00–22:00\n　▸地點：高雄後勁鳳屏宮（高雄市楠梓區後勁東路22號）\n　▸主辦：後勁廟產管理委員會、後勁社會福利基金會\n　▸協辦：地球公民基金會、山下民謠有限公司\n\n#台積電設廠 #高雄後勁 #反五輕40週年 #環境保護 #半導體產業 #生祥樂隊 #謝銘祐 #農村武裝青年 #能源轉型", "date_raw": "5月22日 17:32", "date_ms": 1779442320000, "watch_time_raw": "2 小時 20 分", "watch_time_ms": 8400000, "avg_play_time_raw": "8 秒", "avg_play_time_sec": 8.0, "reach": {"total": 909, "paid": 0, "organic": 909}, "shares": {"total": 6, "paid": 0, "organic": 6}, "reactions": {"total": 36, "paid": 0, "organic": 36}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 45, "paid": 0, "organic": 45}, "comments": {"total": 0, "paid": 0, "organic": 0}, "saves": {"total": 0, "paid": 0, "organic": 0}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 5, "paid": 0, "organic": 5}, "views": {"total": 1307, "paid": 0, "organic": 1307}, "viewers": {"total": 0, "paid": 0, "organic": 0}}, {"id": 22, "title_raw": "＼週六一起上街 #為氣候而走／\n由10個公民團體發起的 #為氣候而走 遊行，就在本週六！這場遊行不只是街頭呼喊，也是文化的集結、永續的實踐。為了孩子的童年、為了勞工的尊嚴、為了弱勢家庭的安全、為了健康的生態，以及為了世代正義，我們一起「為氣候而走　打造韌性台灣」。\n-\n為 氣 候 而 走｜遊 行 資 訊\n.\n遊行時間｜2025年11月1日（六）12：30\n集合地點｜台北市政府東門廣場\n-\n更多活動資訊請點擊主頁連結或追蹤 @tw4climate\n—\n主辦單位：\n台灣氣候行動網絡 、綠色公民行動聯盟、地球公民基金會、環境權保障基金會、主婦聯盟環境保護基金會、媽媽氣候行動聯盟、台灣環境規劃協會、綠色和平、台灣青年氣候聯盟、國際特赦組織台灣分會\n.\n協辦單位：\n荒野保護協會、環境正義基金會、環境法律人協會、台灣再生能源推動聯盟、台灣河溪網協會、生態專業技術服務商業同業公會、自然保育與環境資訊基金會、台灣千里步道協會、人禾環境倫理發展基金會、台灣蠻野心足生態協會、台灣勞工陣線協會、台灣職業安全健康連線、消防員工作權益促進會、彩虹平權大平台、台灣人權促進會、民間司法改革基金會、壯闊台灣聯盟、台灣親子共學教育促進會、海線一家親環保協會、五角拌Ngóo-kak、浪人食堂、無家可歸者聯盟、萬華大水溝二手屋、台南新芽、苑裡掀海風、台灣原住民族政策協會、原住民族青年陣線、台灣基督長老教會總會、台灣行動柴棺龜淨零棄成長推動協會、臺灣社會科學種子實踐協會、台灣巴勒斯坦自由連線、台灣環境保護聯盟、臺灣蜻蜓學會、為野生動物而走行動聯盟、台北市新活力自立生活協會、黑熊學院、台灣伴侶權益推動聯盟、還路於民行人路權促進會、公民監督國會聯盟、台大濁水溪社、台大大陸社、台灣原住民族青年公共參與協會、Fridays for Future Taiwan、Protect Our Winters Taiwan、看守台灣協會、台灣樹人會、台灣公民自主發電行動聯盟、綠主張綠電合作社、RE-THINK 重新思考、全球綠人台灣之友會、TIWA台灣國際勞工協會、亞洲公民未來協會、台灣獨立建國聯盟、台灣身心障礙者自立生活聯盟、台大氣候行動社、政大Green24永續社、捍衛全台學權行動、350台灣、一切從小台灣 Everything Starts Small Taiwan Chapter、台灣永社、島港豐巢、竹塹社區大學、台大勞工社、高雄市瑞祥高中Zero Hunger Pioneers、台灣媽祖魚保育聯盟、好好愛牠協會 、抵抗者聯合、台師大人文學社、高中生的循環經濟、台北市紀錄片從業人員職業工會（陸續增加中…） Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "＼週六一起上街 #為氣候而走／\n由10個公民團體發起的 #為氣候而走 遊行，就在本週六！這場遊行不只是街頭呼喊，也是文化的集結、永續的實踐。為了孩子的童年、為了勞工的尊嚴、為了弱勢家庭的安全、為了健康的生態，以及為了世代正義，我們一起「為氣候而走　打造韌性台灣」。\n-\n為 氣 候 而 走｜遊 行 資 訊\n.\n遊行時間｜2025年11月1日（六）12：30\n集合地點｜台北市政府東門廣場\n-\n更多活動資訊請點擊主頁連結或追蹤 @tw4climate\n—\n主辦單位：\n台灣氣候行動網絡 、綠色公民行動聯盟、地球公民基金會、環境權保障基金會、主婦聯盟環境保護基金會、媽媽氣候行動聯盟、台灣環境規劃協會、綠色和平、台灣青年氣候聯盟、國際特赦組織台灣分會\n.\n協辦單位：\n荒野保護協會、環境正義基金會、環境法律人協會、台灣再生能源推動聯盟、台灣河溪網協會、生態專業技術服務商業同業公會、自然保育與環境資訊基金會、台灣千里步道協會、人禾環境倫理發展基金會、台灣蠻野心足生態協會、台灣勞工陣線協會、台灣職業安全健康連線、消防員工作權益促進會、彩虹平權大平台、台灣人權促進會、民間司法改革基金會、壯闊台灣聯盟、台灣親子共學教育促進會、海線一家親環保協會、五角拌Ngóo-kak、浪人食堂、無家可歸者聯盟、萬華大水溝二手屋、台南新芽、苑裡掀海風、台灣原住民族政策協會、原住民族青年陣線、台灣基督長老教會總會、台灣行動柴棺龜淨零棄成長推動協會、臺灣社會科學種子實踐協會、台灣巴勒斯坦自由連線、台灣環境保護聯盟、臺灣蜻蜓學會、為野生動物而走行動聯盟、台北市新活力自立生活協會、黑熊學院、台灣伴侶權益推動聯盟、還路於民行人路權促進會、公民監督國會聯盟、台大濁水溪社、台大大陸社、台灣原住民族青年公共參與協會、Fridays for Future Taiwan、Protect Our Winters Taiwan、看守台灣協會、台灣樹人會、台灣公民自主發電行動聯盟、綠主張綠電合作社、RE-THINK 重新思考、全球綠人台灣之友會、TIWA台灣國際勞工協會、亞洲公民未來協會、台灣獨立建國聯盟、台灣身心障礙者自立生活聯盟、台大氣候行動社、政大Green24永續社、捍衛全台學權行動、350台灣、一切從小台灣 Everything Starts Small Taiwan Chapter、台灣永社、島港豐巢、竹塹社區大學、台大勞工社、高雄市瑞祥高中Zero Hunger Pioneers、台灣媽祖魚保育聯盟、好好愛牠協會 、抵抗者聯合、台師大人文學社、高中生的循環經濟、台北市紀錄片從業人員職業工會（陸續增加中…）", "date_raw": "2025年10月30日", "date_ms": 1761753600000, "watch_time_raw": "2 小時 14 分", "watch_time_ms": 8040000, "avg_play_time_raw": "6 秒", "avg_play_time_sec": 6.0, "reach": {"total": 1362, "paid": 0, "organic": 1362}, "shares": {"total": 5, "paid": 0, "organic": 5}, "reactions": {"total": 41, "paid": 0, "organic": 41}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 47, "paid": 0, "organic": 47}, "comments": {"total": 0, "paid": 0, "organic": 0}, "saves": {"total": 1, "paid": 0, "organic": 1}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 4, "paid": 0, "organic": 4}, "views": {"total": 1812, "paid": 0, "organic": 1812}, "viewers": {"total": 0, "paid": 0, "organic": 0}}, {"id": 23, "title_raw": "為還沒發生的每一刻，都跨出至關重要的一步！\n.\n如果曾經被暴雨困住；為變動的菜價感到困擾；煩惱過長的夏天與過冷的寒流，就表示我們都無法忽視氣候對生活的影響，雖然「沒有人能置身至外」聽起來過分情勒，卻是扎實發生的事實。\n.\n那麽一起跨出改變的第一步吧！\n.\n11月1日「為氣候而走」我們一起走上街頭，帶隊的不是宣傳車，而是由一群孩子拉著現場共同創作的超大手繪布條領隊，破千人的遊行隊伍熱熱鬧鬧地在森巴鼓隊的強勁節奏下，穿越熱鬧的信義百貨商圈，感謝破百個團體跟破千公民到場支持。\n.\n遊行圓滿結束後一起走入生活，落實環境正義，打造韌性台灣。 Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "為還沒發生的每一刻，都跨出至關重要的一步！\n.\n如果曾經被暴雨困住；為變動的菜價感到困擾；煩惱過長的夏天與過冷的寒流，就表示我們都無法忽視氣候對生活的影響，雖然「沒有人能置身至外」聽起來過分情勒，卻是扎實發生的事實。\n.\n那麽一起跨出改變的第一步吧！\n.\n11月1日「為氣候而走」我們一起走上街頭，帶隊的不是宣傳車，而是由一群孩子拉著現場共同創作的超大手繪布條領隊，破千人的遊行隊伍熱熱鬧鬧地在森巴鼓隊的強勁節奏下，穿越熱鬧的信義百貨商圈，感謝破百個團體跟破千公民到場支持。\n.\n遊行圓滿結束後一起走入生活，落實環境正義，打造韌性台灣。", "date_raw": "2025年11月26日", "date_ms": 1764086400000, "watch_time_raw": "1 小時 24 分", "watch_time_ms": 5040000, "avg_play_time_raw": "7 秒", "avg_play_time_sec": 7.0, "reach": {"total": 660, "paid": 0, "organic": 660}, "shares": {"total": 0, "paid": 0, "organic": 0}, "reactions": {"total": 29, "paid": 0, "organic": 29}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 32, "paid": 0, "organic": 32}, "comments": {"total": 0, "paid": 0, "organic": 0}, "saves": {"total": 3, "paid": 0, "organic": 3}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 1, "paid": 0, "organic": 1}, "views": {"total": 1087, "paid": 0, "organic": 1087}, "viewers": {"total": 0, "paid": 0, "organic": 0}}, {"id": 24, "title_raw": "感謝有你：） Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "感謝有你：）", "date_raw": "1月28日 18:22", "date_ms": 1769595720000, "watch_time_raw": "1 小時 22 分", "watch_time_ms": 4920000, "avg_play_time_raw": "6 秒", "avg_play_time_sec": 6.0, "reach": {"total": 734, "paid": 0, "organic": 734}, "shares": {"total": 1, "paid": 0, "organic": 1}, "reactions": {"total": 23, "paid": 0, "organic": 23}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 24, "paid": 0, "organic": 24}, "comments": {"total": 0, "paid": 0, "organic": 0}, "saves": {"total": 0, "paid": 0, "organic": 0}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 2, "paid": 0, "organic": 2}, "views": {"total": 1167, "paid": 0, "organic": 1167}, "viewers": {"total": 0, "paid": 0, "organic": 0}}, {"id": 25, "title_raw": "今年，我們也與誠星青旅合作，在場館內的「備品購買區」設置小展覽，帶大家透過馬太鞍的經驗，了解台灣在面對氣候災害下，如何塑造社會韌性。\n\n音樂: Breathe slow 音樂家: Rook1e Reel cettw 加強推廣 開啟下拉式功能表 ", "title": "今年，我們也與誠星青旅合作，在場館內的「備品購買區」設置小展覽，帶大家透過馬太鞍的經驗，了解台灣在面對氣候災害下，如何塑造社會韌性。\n\n音樂: Breathe slow 音樂家: Rook1e", "date_raw": "6月9日 17:28", "date_ms": 1780997280000, "watch_time_raw": "1 小時 4 分", "watch_time_ms": 3840000, "avg_play_time_raw": "6 秒", "avg_play_time_sec": 6.0, "reach": {"total": 592, "paid": 0, "organic": 592}, "shares": {"total": 1, "paid": 0, "organic": 1}, "reactions": {"total": 22, "paid": 0, "organic": 22}, "three_sec_views": {"total": 0, "paid": 0, "organic": 0}, "distribution_score": {"total": 0, "paid": 0, "organic": 0}, "interactions": {"total": 26, "paid": 0, "organic": 26}, "comments": {"total": 2, "paid": 0, "organic": 2}, "saves": {"total": 0, "paid": 0, "organic": 0}, "link_clicks": {"total": 0, "paid": 0, "organic": 0}, "replies": {"total": 0, "paid": 0, "organic": 0}, "follows": {"total": 0, "paid": 0, "organic": 0}, "views": {"total": 950, "paid": 0, "organic": 950}, "viewers": {"total": 0, "paid": 0, "organic": 0}}];
+        
+        let displayData = [...originalData];
+        let currentFilter = 'all'; // 'all', 'high-watch', 'high-reach', 'has-ad'
+        let currentSearch = '';
+        let sortKey = 'watch_time_ms';
+        let sortDirection = 'desc';
+
+        // Initialize theme
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme === 'light') {
+            document.body.classList.add('light-theme');
+        }
+
+        document.getElementById('theme-toggle').addEventListener('click', () => {
+            document.body.classList.toggle('light-theme');
+            const isLight = document.body.classList.contains('light-theme');
+            localStorage.setItem('theme', isLight ? 'light' : 'dark');
+        });
+
+        // Search event listener
+        document.getElementById('search-input').addEventListener('input', (e) => {
+            currentSearch = e.target.value.toLowerCase().trim();
+            filterAndRender();
+        });
+
+        function setQuickFilter(filterType) {
+            currentFilter = filterType;
+            // Update button styles
+            const buttons = document.querySelectorAll('.quick-filters .btn-filter');
+            buttons.forEach(btn => btn.classList.remove('active'));
+            
+            // Find which button was clicked
+            const eventBtn = event.target;
+            eventBtn.classList.add('active');
+            
+            filterAndRender();
+        }
+
+        function getNestedValue(obj, keyPath) {
+            return keyPath.split('.').reduce((prev, curr) => {
+                return prev ? prev[curr] : null;
+            }, obj);
+        }
+
+        function sortBy(key) {
+            if (sortKey === key) {
+                // Flip direction
+                sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+            } else {
+                sortKey = key;
+                sortDirection = 'desc'; // default to desc for metrics
+            }
+            filterAndRender();
+        }
+
+        function filterAndRender() {
+            // 1. Filter
+            displayData = originalData.filter(item => {
+                // Title search
+                const matchesSearch = item.title.toLowerCase().includes(currentSearch);
+                if (!matchesSearch) return false;
+                
+                // Quick filter
+                if (currentFilter === 'high-watch') {
+                    return item.watch_time_ms > 10 * 3600 * 1000; // >10 hours
+                } else if (currentFilter === 'high-reach') {
+                    return item.reach.total > 5000;
+                } else if (currentFilter === 'has-ad') {
+                    return item.reach.paid > 0;
+                }
+                
+                return true;
+            });
+
+            // 2. Sort
+            displayData.sort((a, b) => {
+                let valA, valB;
+                if (sortKey === 'er') {
+                    valA = a.reach.total > 0 ? (a.interactions.total / a.reach.total) : 0;
+                    valB = b.reach.total > 0 ? (b.interactions.total / b.reach.total) : 0;
+                } else {
+                    valA = getNestedValue(a, sortKey);
+                    valB = getNestedValue(b, sortKey);
+                }
+
+                if (typeof valA === 'string') {
+                    return sortDirection === 'asc' 
+                        ? valA.localeCompare(valB, 'zh-Hans-CN') 
+                        : valB.localeCompare(valA, 'zh-Hans-CN');
+                } else {
+                    return sortDirection === 'asc' ? valA - valB : valB - valA;
+                }
+            });
+
+            // 3. Render
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('table-body');
+            tbody.innerHTML = '';
+
+            const maxWatchTime = Math.max(...originalData.map(x => x.watch_time_ms), 1);
+            const maxReach = Math.max(...originalData.map(x => x.reach.total), 1);
+
+            displayData.forEach((item, index) => {
+                const tr = document.createElement('tr');
+                tr.className = 'table-row';
+                tr.onclick = () => showModal(item);
+
+                const shortTitle = item.title.length > 55 ? item.title.substring(0, 55) + '...' : item.title;
+                const watchPct = (item.watch_time_ms / maxWatchTime) * 100;
+                
+                const reachObj = item.reach;
+                const reachPct = (reachObj.total / maxReach) * 100;
+                const organicPct = reachObj.total > 0 ? (reachObj.organic / reachObj.total) * 100 : 0;
+                const paidPct = reachObj.total > 0 ? (reachObj.paid / reachObj.total) * 100 : 0;
+
+                const er = reachObj.total > 0 ? ((item.interactions.total / reachObj.total) * 100).toFixed(2) : '0.00';
+
+                tr.innerHTML = `
+                    <td class="cell-no">${index + 1}</td>
+                    <td class="cell-title">
+                        <div class="title-text" title="${escapeHtml(item.title)}">${escapeHtml(shortTitle)}</div>
+                    </td>
+                    <td class="cell-date font-numeric">${escapeHtml(item.date_raw)}</td>
+                    <td class="cell-watch">
+                        <div class="val-container">
+                            <span class="val-text">${escapeHtml(item.watch_time_raw)}</span>
+                            <div class="bar-bg">
+                                <div class="bar-fill watch-bar" style="width: ${watchPct}%"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="cell-avg-play">${escapeHtml(item.avg_play_time_raw)}</td>
+                    <td class="cell-reach">
+                        <div class="val-container">
+                            <div style="display:flex; justify-content:space-between; align-items:center;">
+                                <span class="val-text font-numeric">${formatNumber(reachObj.total)}</span>
+                                ${reachObj.paid > 0 ? `<span class="ad-badge">${formatNumber(reachObj.paid)} 廣告</span>` : ''}
+                            </div>
+                            <div class="bar-bg dual-bar">
+                                <div class="bar-fill organic-bar" style="width: ${organicPct * reachPct / 100}%"></div>
+                                <div class="bar-fill paid-bar" style="width: ${paidPct * reachPct / 100}%"></div>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="cell-views font-numeric" style="font-weight: 500;">${formatNumber(item.views.total)}</td>
+                    <td class="cell-er font-numeric" style="font-weight: 600; color: var(--accent-orange);">${er}%</td>
+                    <td class="cell-engagements">
+                        <div class="eng-icons">
+                            <span title="按讚數/心情：${formatNumber(item.reactions.total)} (自然：${formatNumber(item.reactions.organic)} | 廣告：${formatNumber(item.reactions.paid)})">
+                                <i class="icon">👍</i> ${formatNumber(item.reactions.total)}
+                            </span>
+                            <span title="分享：${formatNumber(item.shares.total)}">
+                                <i class="icon">🔄</i> ${formatNumber(item.shares.total)}
+                            </span>
+                            <span title="留言：${formatNumber(item.comments.total)}">
+                                <i class="icon">💬</i> ${formatNumber(item.comments.total)}
+                            </span>
+                            <span title="儲存：${formatNumber(item.saves.total)}">
+                                <i class="icon">🔖</i> ${formatNumber(item.saves.total)}
+                            </span>
+                        </div>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            updateSortIndicators();
+        }
+
+        function updateSortIndicators() {
+            const headers = {
+                'title': 'th-title',
+                'date_ms': 'th-date',
+                'watch_time_ms': 'th-watch',
+                'avg_play_time_sec': 'th-avg',
+                'reach.total': 'th-reach',
+                'views.total': 'th-views',
+                'er': 'th-er'
+            };
+
+            // Reset all
+            for (const key in headers) {
+                const el = document.getElementById(headers[key]);
+                if (el) {
+                    el.className = '';
+                    const iconSpan = el.querySelector('.sort-icon');
+                    if (iconSpan) iconSpan.innerText = '▲';
+                }
+            }
+
+            // Set active
+            const activeId = headers[sortKey];
+            const activeEl = document.getElementById(activeId);
+            if (activeEl) {
+                activeEl.className = sortDirection === 'asc' ? 'sorted-asc' : 'sorted-desc';
+                const iconSpan = activeEl.querySelector('.sort-icon');
+                if (iconSpan) {
+                    iconSpan.innerText = sortDirection === 'asc' ? '▲' : '▼';
+                }
+            }
+        }
+
+        // Helper formatting functions
+        function formatNumber(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        }
+
+        function escapeHtml(text) {
+            if (!text) return '';
+            return text
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+        // Modal triggers
+        function showModal(item) {
+            document.getElementById('modal-title-display').innerText = item.title.substring(0, 45) + (item.title.length > 45 ? '...' : '');
+            document.getElementById('modal-date-display').innerText = '發佈日期：' + item.date_raw;
+            document.getElementById('modal-post-text').innerText = item.title_raw;
+
+            document.getElementById('md-watch-time').innerText = item.watch_time_raw;
+            document.getElementById('md-avg-play-time').innerText = item.avg_play_time_raw;
+
+            document.getElementById('md-reach-total').innerText = formatNumber(item.reach.total);
+            document.getElementById('md-reach-org').innerText = formatNumber(item.reach.organic);
+            document.getElementById('md-reach-paid').innerText = formatNumber(item.reach.paid);
+
+            document.getElementById('md-views-total').innerText = formatNumber(item.views.total);
+            document.getElementById('md-views-org').innerText = formatNumber(item.views.organic);
+            document.getElementById('md-views-paid').innerText = formatNumber(item.views.paid);
+
+            document.getElementById('md-reactions').innerText = formatNumber(item.reactions.total);
+            document.getElementById('md-reactions-org').innerText = formatNumber(item.reactions.organic);
+            document.getElementById('md-reactions-paid').innerText = formatNumber(item.reactions.paid);
+
+            document.getElementById('md-shares').innerText = formatNumber(item.shares.total);
+            document.getElementById('md-shares-org').innerText = formatNumber(item.shares.organic);
+            document.getElementById('md-shares-paid').innerText = formatNumber(item.shares.paid);
+
+            const er = item.reach.total > 0 ? ((item.interactions.total / item.reach.total) * 100).toFixed(2) : '0.00';
+            document.getElementById('md-er').innerText = er + '%';
+            document.getElementById('md-3s-views').innerText = formatNumber(item.three_sec_views.total);
+            document.getElementById('md-comments').innerText = formatNumber(item.comments.total);
+            document.getElementById('md-saves').innerText = formatNumber(item.saves.total);
+
+            document.getElementById('detail-modal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('detail-modal').classList.remove('active');
+        }
+
+        // Close on ESC
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Export to CSV
+        function exportCSV() {
+            let csvContent = "data:text/csv;charset=utf-8,\ufeff";
+            
+            // Header
+            csvContent += "No.,發佈日期,觀看時間,平均播放時間,觸及人數(總計),觸及人數(自然),觸及人數(廣告),瀏覽次數(總計),互動率,按讚心情,分享次數,留言數,儲存次數,貼文內容\n";
+            
+            displayData.forEach((item, index) => {
+                const er = item.reach.total > 0 ? ((item.interactions.total / item.reach.total) * 100).toFixed(2) : '0.00';
+                
+                // Clean title for CSV
+                const cleanContent = item.title_raw.replace(/"/g, '""').replace(/\n/g, ' ');
+                
+                const row = [
+                    index + 1,
+                    `"${item.date_raw}"`,
+                    `"${item.watch_time_raw}"`,
+                    `"${item.avg_play_time_raw}"`,
+                    item.reach.total,
+                    item.reach.organic,
+                    item.reach.paid,
+                    item.views.total,
+                    `"${er}%"`,
+                    item.reactions.total,
+                    item.shares.total,
+                    item.comments.total,
+                    item.saves.total,
+                    `"${cleanContent}"`
+                ].join(",");
+                
+                csvContent += row + "\n";
+            });
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "觀看時間成效分析_" + new Date().toISOString().split('T')[0] + ".csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Render on page load
+        filterAndRender();
+    </script>
+</body>
+</html>
