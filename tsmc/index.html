@@ -1,0 +1,696 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GIS 雙地點動態外擴緩衝區地圖</title>
+    
+    <meta name="description" content="高雄楠梓與臺南仁德雙地點 3 公里 GIS 緩衝區範疇分析與內政部國土測繪中心圖資視覺化">
+    
+    <!-- Leaflet CSS & JS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    
+    <!-- Turf.js for Client-Side Real-time Buffer & Convex Hull Calculation -->
+    <script src="https://cdn.jsdelivr.net/npm/@turf/turf@6/turf.min.js"></script>
+
+    <!-- FontAwesome & Google Fonts -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+        }
+        
+        body {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+            overflow: hidden;
+            background: #0f172a;
+            color: #f8fafc;
+        }
+        
+        #sidebar {
+            width: 420px;
+            height: 100%;
+            background: rgba(15, 23, 42, 0.96);
+            backdrop-filter: blur(16px);
+            border-right: 1px solid rgba(255, 255, 255, 0.1);
+            display: flex;
+            flex-direction: column;
+            z-index: 1000;
+            box-shadow: 4px 0 24px rgba(0, 0, 0, 0.4);
+            overflow-y: auto;
+        }
+        
+        #map {
+            flex: 1;
+            height: 100%;
+            z-index: 1;
+        }
+        
+        .header {
+            padding: 22px 24px;
+            background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            background: rgba(59, 130, 246, 0.15);
+            color: #60a5fa;
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        .header h1 {
+            font-size: 1.25rem;
+            font-weight: 700;
+            line-height: 1.3;
+            color: #ffffff;
+            margin-bottom: 4px;
+        }
+        
+        .header p {
+            font-size: 0.8rem;
+            color: #94a3b8;
+            line-height: 1.4;
+        }
+
+        .switcher-section {
+            padding: 16px 24px 0 24px;
+        }
+        
+        .tab-group {
+            display: flex;
+            background: rgba(30, 41, 59, 0.8);
+            padding: 4px;
+            border-radius: 10px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            gap: 4px;
+        }
+        
+        .tab-btn {
+            flex: 1;
+            padding: 10px 8px;
+            border-radius: 8px;
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: #94a3b8;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+        
+        .tab-btn.active {
+            background: linear-gradient(135deg, #3b82f6 0%, #2563eb 100%);
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
+        }
+
+        .tab-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: #f1f5f9;
+        }
+
+        .content {
+            padding: 16px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        
+        .card {
+            background: rgba(30, 41, 59, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 12px;
+            padding: 16px;
+        }
+        
+        .card-title {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        
+        .stat-item {
+            background: rgba(15, 23, 42, 0.5);
+            padding: 10px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.04);
+        }
+        
+        .stat-label {
+            font-size: 0.72rem;
+            color: #64748b;
+            margin-bottom: 2px;
+        }
+        
+        .stat-value {
+            font-size: 1.05rem;
+            font-weight: 700;
+            color: #f1f5f9;
+        }
+        
+        .stat-unit {
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #94a3b8;
+        }
+
+        .dist-control-box {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .dist-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .input-number {
+            width: 100px;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: #60a5fa;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 700;
+            font-size: 1.05rem;
+            text-align: center;
+            outline: none;
+        }
+        .input-number:focus {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+
+        .preset-btn-group {
+            display: flex;
+            gap: 6px;
+        }
+
+        .preset-btn {
+            flex: 1;
+            padding: 6px 4px;
+            background: rgba(255, 255, 255, 0.06);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.78rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .preset-btn:hover, .preset-btn.active {
+            background: rgba(59, 130, 246, 0.25);
+            border-color: #3b82f6;
+            color: #60a5fa;
+        }
+
+        .toggle-switch-box {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(15, 23, 42, 0.6);
+            padding: 8px 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            margin-top: 4px;
+        }
+
+        .toggle-label {
+            font-size: 0.8rem;
+            color: #cbd5e1;
+            font-weight: 500;
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 40px;
+            height: 22px;
+        }
+
+        .switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0.2);
+            transition: .3s;
+            border-radius: 22px;
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .3s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider {
+            background-color: #3b82f6;
+        }
+
+        input:checked + .slider:before {
+            transform: translateX(18px);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .legend-item:last-child { border-bottom: none; }
+
+        .legend-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .color-box {
+            width: 14px;
+            height: 14px;
+            border-radius: 4px;
+            flex-shrink: 0;
+        }
+
+        .leaflet-popup-content-wrapper {
+            background: rgba(15, 23, 42, 0.95);
+            backdrop-filter: blur(8px);
+            color: #f8fafc;
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 12px;
+        }
+        .leaflet-popup-tip { background: rgba(15, 23, 42, 0.95); }
+        
+        .popup-card h4 { color: #60a5fa; margin-bottom: 4px; font-size: 0.9rem; }
+        .popup-card p { color: #cbd5e1; font-size: 0.8rem; margin-bottom: 3px; }
+
+        #sidebar::-webkit-scrollbar { width: 6px; }
+        #sidebar::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.15); border-radius: 3px; }
+
+        @media (max-width: 768px) {
+            body { flex-direction: column; }
+            #sidebar { width: 100%; height: 50vh; }
+            #map { height: 50vh; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Panel -->
+    <div id="sidebar">
+        <div class="header">
+            <div class="badge">
+                <i class="fa-solid fa-layer-group"></i> GIS 空間幾何緩衝區
+            </div>
+            <h1>多邊形動態外擴緩衝區範疇</h1>
+            <p>包含精準邊界緩衝區 (帶凹灣) 與平滑包覆模式。</p>
+        </div>
+
+        <!-- Location Switcher Tabs -->
+        <div class="switcher-section">
+            <div class="tab-group">
+                <button class="tab-btn active" id="tab-loc1" onclick="switchLocation(1)">
+                    <i class="fa-solid fa-location-dot" style="color:#ef4444;"></i> 地點一 (高雄)
+                </button>
+                <button class="tab-btn" id="tab-loc2" onclick="switchLocation(2)">
+                    <i class="fa-solid fa-location-dot" style="color:#38bdf8;"></i> 地點二 (臺南)
+                </button>
+                <button class="tab-btn" id="tab-both" onclick="switchLocation('both')">
+                    <i class="fa-solid fa-cubes" style="color:#a855f7;"></i> 雙地點全覽
+                </button>
+            </div>
+        </div>
+        
+        <div class="content">
+            <!-- Distance Adjustment Control Card -->
+            <div class="card" style="border-left: 3px solid #3b82f6;">
+                <div class="card-title">
+                    <span><i class="fa-solid fa-ruler-combined" style="color: #60a5fa;"></i> 調整外擴距離 (Buffer Distance)</span>
+                </div>
+                <div class="dist-control-box">
+                    <div class="dist-input-group">
+                        <label style="font-size:0.82rem; color:#cbd5e1; font-weight:500;">外擴距離:</label>
+                        <input type="number" id="buffer-dist-input" class="input-number" value="3.0" min="0.1" max="50" step="0.5" onchange="updateBufferCalculation()" onkeyup="updateBufferCalculation()">
+                        <span style="font-size:0.85rem; font-weight:600; color:#94a3b8;">公里 (km)</span>
+                    </div>
+                    <div class="preset-btn-group">
+                        <button class="preset-btn" onclick="setPresetDist(1.0)">1 km</button>
+                        <button class="preset-btn active" id="btn-p3" onclick="setPresetDist(3.0)">3 km</button>
+                        <button class="preset-btn" onclick="setPresetDist(5.0)">5 km</button>
+                        <button class="preset-btn" onclick="setPresetDist(10.0)">10 km</button>
+                    </div>
+
+                    <div class="toggle-switch-box">
+                        <span class="toggle-label"><i class="fa-solid fa-wand-magic-sparkles" style="color:#f59e0b;"></i> 填平幾何凹缺口 (凸包外擴)</span>
+                        <label class="switch">
+                            <input type="checkbox" id="smooth-hull-toggle" onchange="updateBufferCalculation()">
+                            <span class="slider"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Location Info -->
+            <div class="card">
+                <div class="card-title">
+                    <span><i class="fa-solid fa-compass" style="color: #ef4444;"></i> 地理位置資訊</span>
+                </div>
+                <p id="loc-city-desc" style="font-size: 0.85rem; color: #e2e8f0; font-weight: 600; margin-bottom: 8px;">
+                    高雄市楠梓區（台積電廠區/楠梓科技產業園區周邊）
+                </p>
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">WGS84 中心座標</div>
+                        <div class="stat-value" id="loc-wgs84" style="font-size:0.8rem;">
+                            120.316833, 22.710741
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">TWD97 (X, Y)</div>
+                        <div class="stat-value" id="loc-twd97" style="font-size:0.8rem;">
+                            179817.44, 2512414.74
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Spatial Stats Card -->
+            <div class="card">
+                <div class="card-title">
+                    <span><i class="fa-solid fa-chart-pie" style="color: #60a5fa;"></i> 空間指標數據</span>
+                </div>
+                <div class="stat-grid">
+                    <div class="stat-item">
+                        <div class="stat-label">原始手繪面積</div>
+                        <div class="stat-value" id="loc-orig-area">
+                            2.2532 <span class="stat-unit">km²</span>
+                        </div>
+                        <div id="loc-orig-ha" style="font-size:0.68rem; color:#94a3b8; margin-top:2px;">
+                            (225.32 公頃)
+                        </div>
+                    </div>
+                    <div class="stat-item">
+                        <div class="stat-label">原始邊界周長</div>
+                        <div class="stat-value" id="loc-orig-perimeter">
+                            8.653 <span class="stat-unit">km</span>
+                        </div>
+                    </div>
+                    <div class="stat-item" style="grid-column: span 2; border-left: 4px solid #3b82f6; background: rgba(59, 130, 246, 0.08);">
+                        <div class="stat-label" id="label-buffer-title" style="color: #93c5fd; font-weight: 600;">多邊形外擴 3 km 緩衝區總面積</div>
+                        <div class="stat-value" id="loc-buffer-area" style="color: #60a5fa; font-size: 1.3rem;">
+                            51.96 <span class="stat-unit">km²</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Legend Card -->
+            <div class="card">
+                <div class="card-title">
+                    <span><i class="fa-solid fa-layer-group" style="color: #f59e0b;"></i> 圖層符號說明</span>
+                </div>
+                
+                <div class="legend-item">
+                    <div class="legend-info">
+                        <div class="color-box" style="background: rgba(239, 68, 68, 0.6); border: 2px solid #ef4444;"></div>
+                        <div>
+                            <div style="font-size:0.83rem; font-weight:600;">原始手繪範圍 (Red)</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">使用者劃設之多邊形區域</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="legend-item">
+                    <div class="legend-info">
+                        <div class="color-box" style="background: rgba(59, 130, 246, 0.3); border: 2px solid #3b82f6;"></div>
+                        <div>
+                            <div style="font-size:0.83rem; font-weight:600;" id="legend-buffer-name">多邊形外擴 3km 緩衝區 (Blue)</div>
+                            <div style="font-size:0.75rem; color:#94a3b8;">多邊形邊界向外等距延伸</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Map Container -->
+    <div id="map"></div>
+
+    <script>
+        const dualDataset = {"location_1": {"name": "地點一 (高雄楠梓)", "city_desc": "高雄市楠梓區（台積電晶圓廠 / 楠梓科技產業園區周邊）", "centroid_wgs84": [120.316833, 22.710741], "centroid_twd97": [179817.44, 2512414.74], "geojson": {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "地點一 (高雄楠梓) 原始手繪範圍", "loc_id": 1}, "geometry": {"type": "Polygon", "coordinates": [[[120.3068565, 22.7084783], [120.31021689999999, 22.703143499999996], [120.3119361, 22.704224900000003], [120.312952, 22.705666799999996], [120.31349910000002, 22.704513299999995], [120.3169376, 22.705883000000007], [120.3174065, 22.7056668], [120.318188, 22.705882999999996], [120.3206105, 22.705450500000005], [120.3206105, 22.703648199999996], [120.3192039, 22.703143499999996], [120.3174065, 22.701196999999997], [120.3200635, 22.699610899999993], [120.3227205, 22.703431899999998], [120.3240491, 22.707036500000005], [120.3234239, 22.7129478], [120.3218609, 22.718498399999998], [120.3215483, 22.720300499999997], [120.3224079, 22.721886399999995], [120.3192039, 22.7234722], [120.3175628, 22.7228235], [120.3181098, 22.716191700000007], [120.3132646, 22.713236199999997], [120.3092791, 22.7146779], [120.3067784, 22.7084783], [120.3068565, 22.7084783]]]}}]}}, "location_2": {"name": "地點二 (臺南仁德)", "city_desc": "臺南市仁德區/歸仁區（奇美博物館 / 沙崙高鐵綠能城周邊）", "centroid_wgs84": [120.307182, 22.917797], "centroid_twd97": [178933.51, 2535347.87], "geojson": {"type": "FeatureCollection", "features": [{"type": "Feature", "properties": {"name": "地點二 (臺南仁德) 原始手繪範圍", "loc_id": 2}, "geometry": {"type": "Polygon", "coordinates": [[[120.28972909999999, 22.9193126], [120.2928882, 22.911414800000003], [120.29499419999999, 22.911622699999995], [120.29792750000001, 22.910860599999996], [120.29875490000002, 22.9124541], [120.3001839, 22.912938999999994], [120.30056, 22.912938999999998], [120.3013874, 22.912800499999996], [120.3021395, 22.912661900000003], [120.30379420000001, 22.911761299999995], [120.3031925, 22.911484100000003], [120.30304209999998, 22.910929899999996], [120.3029669, 22.910583499999994], [120.30206430000001, 22.90989069999999], [120.3018387, 22.908920699999996], [120.30229, 22.908920700000003], [120.3031173, 22.909267099999997], [120.30462160000002, 22.91037559999999], [120.30559940000002, 22.910306399999993], [120.30559940000002, 22.909474999999997], [120.30379420000001, 22.908435799999996], [120.30379420000001, 22.9066344], [120.3053737, 22.9069808], [120.30657720000002, 22.9071194], [120.3101122, 22.9066344], [120.31093960000001, 22.908089299999997], [120.31236870000001, 22.907812199999995], [120.31221830000001, 22.906911499999993], [120.31409860000001, 22.906426599999996], [120.3179345, 22.906634399999998], [120.318461, 22.906980799999996], [120.3179345, 22.9076044], [120.3185363, 22.908020099999998], [120.3189875, 22.9074658], [120.32049180000001, 22.907950800000002], [120.32101830000002, 22.9088514], [120.3206423, 22.910999200000003], [120.3211688, 22.910999200000003], [120.3208679, 22.9165415], [120.31958930000002, 22.917164999999994], [120.319138, 22.92249929999999], [120.3175585, 22.9253395], [120.31417380000002, 22.924369700000003], [120.31146610000002, 22.930465699999996], [120.3085327, 22.929426599999996], [120.307555, 22.930811999999996], [120.29920620000001, 22.927694800000005], [120.2998079, 22.926032299999992], [120.29476850000002, 22.924231099999997], [120.2961224, 22.921390899999995], [120.28972909999999, 22.9193126]]]}}]}}};
+
+        let map;
+        let activeLocationMode = 1; // 1, 2, or 'both'
+        let currentBufferGroup = null;
+        let currentOriginalGroup = null;
+
+        // Base Maps
+        const nlscEmap = L.tileLayer('https://wmts.nlsc.gov.tw/wmts/EMAP/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://maps.nlsc.gov.tw/" target="_blank">內政部國土測繪中心 NLSC</a>'
+        });
+
+        const nlscPhoto = L.tileLayer('https://wmts.nlsc.gov.tw/wmts/PHOTO2/default/GoogleMapsCompatible/{z}/{y}/{x}', {
+            maxZoom: 19,
+            attribution: '&copy; <a href="https://maps.nlsc.gov.tw/" target="_blank">內政部國土測繪中心 NLSC 正射影像</a>'
+        });
+
+        const osmMap = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap'
+        });
+
+        const darkMap = L.tileLayer('https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png', {
+            maxZoom: 19,
+            attribution: '&copy; CARTO'
+        });
+
+        function initMap() {
+            map = L.map('map', {
+                center: [22.710741, 120.316833],
+                zoom: 13,
+                zoomControl: false
+            });
+
+            L.control.zoom({ position: 'topright' }).addTo(map);
+
+            nlscEmap.addTo(map);
+
+            const baseMaps = {
+                "🇹🇼 台灣通用版電子地圖 (NLSC)": nlscEmap,
+                "🛰️ 國土測繪衛星航照圖 (NLSC)": nlscPhoto,
+                "🗺️ OpenStreetMap": osmMap,
+                "🌙 暗色質感地圖": darkMap
+            };
+
+            L.control.layers(baseMaps, null, { position: 'topright', collapsed: false }).addTo(map);
+            L.control.scale({ metric: true, imperial: false, position: 'bottomright' }).addTo(map);
+
+            switchLocation(1);
+        }
+
+        function setPresetDist(dist) {
+            document.getElementById('buffer-dist-input').value = dist;
+            
+            document.querySelectorAll('.preset-btn').forEach(btn => btn.classList.remove('active'));
+            if (event && event.target) {
+                event.target.classList.add('active');
+            }
+            updateBufferCalculation();
+        }
+
+        function switchLocation(loc) {
+            activeLocationMode = loc;
+
+            document.getElementById('tab-loc1').classList.remove('active');
+            document.getElementById('tab-loc2').classList.remove('active');
+            document.getElementById('tab-both').classList.remove('active');
+
+            if (loc === 1) {
+                document.getElementById('tab-loc1').classList.add('active');
+            } else if (loc === 2) {
+                document.getElementById('tab-loc2').classList.add('active');
+            } else if (loc === 'both') {
+                document.getElementById('tab-both').classList.add('active');
+            }
+
+            updateBufferCalculation();
+            
+            // Auto fit bounds
+            if (loc === 1) {
+                const bounds = L.geoJSON(dualDataset.location_1.geojson).getBounds();
+                map.fitBounds(bounds, { padding: [40, 40] });
+            } else if (loc === 2) {
+                const bounds = L.geoJSON(dualDataset.location_2.geojson).getBounds();
+                map.fitBounds(bounds, { padding: [40, 40] });
+            } else if (loc === 'both') {
+                const bounds1 = L.geoJSON(dualDataset.location_1.geojson).getBounds();
+                const bounds2 = L.geoJSON(dualDataset.location_2.geojson).getBounds();
+                map.fitBounds(bounds1.extend(bounds2), { padding: [50, 50] });
+            }
+        }
+
+        function computeBuffer(feature, distKm, fillHull) {
+            let targetGeom = feature;
+            if (fillHull) {
+                // Compute Convex Hull to fill concave bays
+                targetGeom = turf.convex(feature);
+            }
+            const bufferPoly = turf.buffer(targetGeom, distKm, { units: 'kilometers', steps: 64 });
+            const origArea = turf.area(feature) / 1e6;
+            const bufferArea = turf.area(bufferPoly) / 1e6;
+            const origPeri = turf.length(feature, { units: 'kilometers' });
+            return {
+                bufferPoly: bufferPoly,
+                origAreaSqKm: origArea,
+                bufferAreaSqKm: bufferArea,
+                origPeriKm: origPeri
+            };
+        }
+
+        function updateBufferCalculation() {
+            const distKm = parseFloat(document.getElementById('buffer-dist-input').value) || 3.0;
+            const fillHull = document.getElementById('smooth-hull-toggle').checked;
+
+            if (currentBufferGroup) map.removeLayer(currentBufferGroup);
+            if (currentOriginalGroup) map.removeLayer(currentOriginalGroup);
+
+            currentBufferGroup = L.layerGroup().addTo(map);
+            currentOriginalGroup = L.layerGroup().addTo(map);
+
+            document.getElementById('label-buffer-title').innerText = `多邊形外擴 ${distKm} km 緩衝區總面積${fillHull ? ' (填平凹缺口)' : ''}`;
+            document.getElementById('legend-buffer-name').innerText = `多邊形外擴 ${distKm}km 緩衝區 (Blue)`;
+
+            let totalBufferArea = 0;
+            let origAreaText = "";
+            let origHaText = "";
+            let origPeriText = "";
+
+            if (activeLocationMode === 1) {
+                const m1 = dualDataset.location_1;
+                document.getElementById('loc-city-desc').innerText = m1.city_desc;
+                document.getElementById('loc-wgs84').innerText = `${m1.centroid_wgs84[0]}, ${m1.centroid_wgs84[1]}`;
+                document.getElementById('loc-twd97').innerText = `${m1.centroid_twd97[0]}, ${m1.centroid_twd97[1]}`;
+
+                const origFeature = m1.geojson.features[0];
+                const res = computeBuffer(origFeature, distKm, fillHull);
+
+                origAreaText = `${res.origAreaSqKm.toFixed(4)} <span class="stat-unit">km²</span>`;
+                origHaText = `(${(res.origAreaSqKm * 100).toFixed(2)} 公頃)`;
+                origPeriText = `${res.origPeriKm.toFixed(3)} <span class="stat-unit">km</span>`;
+
+                totalBufferArea = res.bufferAreaSqKm;
+
+                L.geoJSON(res.bufferPoly, {
+                    style: { color: "#3b82f6", weight: 2.5, opacity: 0.9, fillColor: "#3b82f6", fillOpacity: 0.25 }
+                }).bindPopup(`<div class="popup-card"><h4>🔵 地點一 (${distKm}km 外擴緩衝區)</h4><p><strong>緩衝區總面積:</strong> ${totalBufferArea.toFixed(2)} km²</p></div>`).addTo(currentBufferGroup);
+
+                L.geoJSON(origFeature, {
+                    style: { color: "#ef4444", weight: 3, opacity: 1, fillColor: "#ef4444", fillOpacity: 0.45 }
+                }).bindPopup(`<div class="popup-card"><h4>🔴 地點一 (原始手繪範圍)</h4><p><strong>原始面積:</strong> ${res.origAreaSqKm.toFixed(4)} km²</p></div>`).addTo(currentOriginalGroup);
+
+            } else if (activeLocationMode === 2) {
+                const m2 = dualDataset.location_2;
+                document.getElementById('loc-city-desc').innerText = m2.city_desc;
+                document.getElementById('loc-wgs84').innerText = `${m2.centroid_wgs84[0]}, ${m2.centroid_wgs84[1]}`;
+                document.getElementById('loc-twd97').innerText = `${m2.centroid_twd97[0]}, ${m2.centroid_twd97[1]}`;
+
+                const origFeature = m2.geojson.features[0];
+                const res = computeBuffer(origFeature, distKm, fillHull);
+
+                origAreaText = `${res.origAreaSqKm.toFixed(4)} <span class="stat-unit">km²</span>`;
+                origHaText = `(${(res.origAreaSqKm * 100).toFixed(2)} 公頃)`;
+                origPeriText = `${res.origPeriKm.toFixed(3)} <span class="stat-unit">km</span>`;
+
+                totalBufferArea = res.bufferAreaSqKm;
+
+                L.geoJSON(res.bufferPoly, {
+                    style: { color: "#8b5cf6", weight: 2.5, opacity: 0.9, fillColor: "#8b5cf6", fillOpacity: 0.25 }
+                }).bindPopup(`<div class="popup-card"><h4>🟣 地點二 (${distKm}km 外擴緩衝區)</h4><p><strong>緩衝區總面積:</strong> ${totalBufferArea.toFixed(2)} km²</p></div>`).addTo(currentBufferGroup);
+
+                L.geoJSON(origFeature, {
+                    style: { color: "#f59e0b", weight: 3, opacity: 1, fillColor: "#f59e0b", fillOpacity: 0.45 }
+                }).bindPopup(`<div class="popup-card"><h4>🟠 地點二 (原始手繪範圍)</h4><p><strong>原始面積:</strong> ${res.origAreaSqKm.toFixed(4)} km²</p></div>`).addTo(currentOriginalGroup);
+
+            } else if (activeLocationMode === 'both') {
+                document.getElementById('loc-city-desc').innerText = "雙地點全覽 (地點一：高雄楠梓 ｜ 地點二：臺南仁德)";
+                document.getElementById('loc-wgs84').innerText = "多點視角";
+                document.getElementById('loc-twd97').innerText = "多點視角";
+
+                const orig1 = dualDataset.location_1.geojson.features[0];
+                const orig2 = dualDataset.location_2.geojson.features[0];
+
+                const res1 = computeBuffer(orig1, distKm, fillHull);
+                const res2 = computeBuffer(orig2, distKm, fillHull);
+
+                totalBufferArea = res1.bufferAreaSqKm + res2.bufferAreaSqKm;
+
+                origAreaText = `${(res1.origAreaSqKm + res2.origAreaSqKm).toFixed(4)} <span class="stat-unit">km² (合計)</span>`;
+                origHaText = `(地點一: ${res1.origAreaSqKm.toFixed(2)} km² ｜ 地點二: ${res2.origAreaSqKm.toFixed(2)} km²)`;
+                origPeriText = `${(res1.origPeriKm + res2.origPeriKm).toFixed(3)} <span class="stat-unit">km (合計)</span>`;
+
+                L.geoJSON(res1.bufferPoly, { style: { color: "#3b82f6", weight: 2.5, opacity: 0.9, fillColor: "#3b82f6", fillOpacity: 0.22 } }).addTo(currentBufferGroup);
+                L.geoJSON(res2.bufferPoly, { style: { color: "#8b5cf6", weight: 2.5, opacity: 0.9, fillColor: "#8b5cf6", fillOpacity: 0.22 } }).addTo(currentBufferGroup);
+
+                L.geoJSON(orig1, { style: { color: "#ef4444", weight: 3, opacity: 1, fillColor: "#ef4444", fillOpacity: 0.45 } }).addTo(currentOriginalGroup);
+                L.geoJSON(orig2, { style: { color: "#f59e0b", weight: 3, opacity: 1, fillColor: "#f59e0b", fillOpacity: 0.45 } }).addTo(currentOriginalGroup);
+            }
+
+            document.getElementById('loc-orig-area').innerHTML = origAreaText;
+            document.getElementById('loc-orig-ha').innerText = origHaText;
+            document.getElementById('loc-orig-perimeter').innerHTML = origPeriText;
+            document.getElementById('loc-buffer-area').innerHTML = `${totalBufferArea.toFixed(2)} <span class="stat-unit">km²</span>`;
+        }
+
+        window.onload = initMap;
+    </script>
+</body>
+</html>

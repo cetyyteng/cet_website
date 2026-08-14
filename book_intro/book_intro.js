@@ -217,6 +217,14 @@
                     location: "城鄉潮間帶書店（宜蘭市民權新路37號）",
                     time: "7/25 (六) 14:00-16:00",
                     link: "https://forms.gle/BYcRTUSww7Sf9ivA9"
+                },
+                {
+                    area: "北部",
+                    region: "台北",
+                    name: "街階書店x眾森《此岸與彼岸 》新書分享",
+                    location: "Coffee Commons 蟾蜍山食聚所（臺北市大安區羅斯福路四段119巷78弄9號）",
+                    time: "10/31 (六) 14:00-16:00",
+                    link: ""
                 }
 
             ];
