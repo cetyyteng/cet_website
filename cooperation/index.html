@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="zh-Hant" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>地球公民基金會｜異業合作對焦問卷分析儀表板 (去識別化)</title>
+  <meta name="description" content="地球公民協會 (CET) 內部異業合作對焦問卷 21 份回覆分析，包含核心考量原則、合作夥伴敏感度光譜、7大實務案例深度探討與決策SOP建議。">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;600;700;800&family=Outfit:wght@500;600;700;800&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <!-- Chart.js CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Stylesheet -->
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <nav class="navbar" id="top-navbar">
+    <div class="nav-container">
+      <a href="#overview" class="nav-brand">
+        <span class="nav-logo-badge">CET</span>
+        <div class="nav-brand-text">
+          <span class="nav-brand-title">異業合作對焦問卷分析</span>
+          <span class="nav-brand-subtitle">地球公民基金會 · 2026 工作坊對焦報告</span>
+        </div>
+      </a>
+
+      <ul class="nav-links">
+        <li><a href="#overview" class="nav-link active">📌 總覽洞察</a></li>
+        <li><a href="#principles" class="nav-link">⚖️ 核心原則</a></li>
+        <li><a href="#spectrum" class="nav-link">🚦 夥伴光譜</a></li>
+        <li><a href="#cases" class="nav-link">🎯 7大案例深探</a></li>
+        <li><a href="#sop" class="nav-link">⚙️ 決策程序SOP</a></li>
+        <li><a href="#matrix" class="nav-link">👥 去識別矩陣</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <button class="btn-icon" id="theme-toggle-btn" title="切換深淺色模式">
+          <span id="theme-icon">☀️</span>
+        </button>
+        <button class="btn-icon" onclick="window.print()" title="列印或匯出報告">
+          <span>🖨️</span>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Content Wrapper -->
+  <main class="main-wrapper">
+
+    <!-- Hero & Executive Overview -->
+    <section class="hero-section" id="overview">
+      <div class="hero-badge-row">
+        <span class="badge badge-green">🛡️ 100% 去識別化處理</span>
+        <span class="badge badge-blue">📊 21 位全會同仁填答</span>
+        <span class="badge badge-purple">🎯 年度工作坊定調依據</span>
+      </div>
+
+      <h1 class="hero-title">異業合作對焦問卷<br>全會回覆結果與共識分析</h1>
+      <p class="hero-desc">
+        為釐清本會與營利企業連結的範疇、建立分層授權與檢核清單，本問卷彙整了全會 21 位同仁針對核心考量原則、夥伴類型敏感度、7 大實務案例與決策流程的真實回饋，作為制定未來執行 SOP 的重要對齊基礎。
+      </p>
+
+      <!-- Metric Grid -->
+      <div class="metrics-grid">
+        <div class="metric-card">
+          <span class="metric-label">👥 總填答人數</span>
+          <span class="metric-val" id="metric-total">21 位</span>
+          <span class="metric-sub">全數同仁匿名參與</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">⭐ 最高共識原則</span>
+          <span class="metric-val" style="font-size:1.3rem; color:var(--cet-green-light);" id="metric-top-principle">確認監督對象 (4.81)</span>
+          <span class="metric-sub">86% 同仁勾選非常重要</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">🟢 最具合作共識類型</span>
+          <span class="metric-val" style="font-size:1.25rem; color:var(--status-support);" id="metric-top-green">同類 NGO/合作社</span>
+          <span class="metric-sub">90.5% 同仁認同最可以合作</span>
+        </div>
+        <div class="metric-card">
+          <span class="metric-label">⚡ 最具討論度案例</span>
+          <span class="metric-val" style="font-size:1.2rem; color:var(--status-discuss);" id="metric-controversy">超商零錢捐 & 點數兌換</span>
+          <span class="metric-sub">超過 60% 認為需進一步討論</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Strategic Takeaways Banner -->
+    <div class="takeaway-grid">
+      <div class="takeaway-card">
+        <h3 class="takeaway-title" style="color:var(--cet-green-light);">🛡️ 核心防線共識明確</h3>
+        <p class="takeaway-text">
+          同仁對「監督對象」與「避免漂綠」具有壓倒性共識（平均 4.81 與 4.43 分）。高污染製造業與直接利害對象（水泥、炒地建商等）有超過 80% 同仁列為絕對禁止合作。
+        </p>
+      </div>
+      <div class="takeaway-card warn">
+        <h3 class="takeaway-title" style="color:var(--status-discuss);">📢 形式要求比產業更敏感</h3>
+        <p class="takeaway-text">
+          即使是友善商品或大廠資助，一旦涉及「要求官方粉專幫忙賣/導購/團購/過度聯名」，同仁普遍高度排斥。粉專定位為倡議核心，不能淪為廠商導購通路。
+        </p>
+      </div>
+      <div class="takeaway-card danger">
+        <h3 class="takeaway-title" style="color:var(--status-oppose);">📋 SOP 期待「前置工具與倫理界線」</h3>
+        <p class="takeaway-text">
+          多位同仁建議在提案第 1 步前增加「自我檢核雷達圖」以節省全會評估成本，並高度呼籲規範「非金錢往來、私人關係諮詢議題」的檯面下互動倫理防線。
+        </p>
+      </div>
+    </div>
+
+    <!-- Section 1: Core Principles -->
+    <section class="section-block" id="principles">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-num">PART 01</span>
+          <h2 class="section-title">第一部分：核心考量原則評估</h2>
+          <p class="section-subtitle">當新的異業合作進來時，8 大組織評估項目的重要程度排序（1分：非常不重要 ～ 5分：非常重要）</p>
+        </div>
+      </div>
+
+      <div class="grid-2col">
+        <!-- Ranking Bar Chart Card -->
+        <div class="card">
+          <h3 style="font-size:1.1rem; margin-bottom:1rem; font-weight:700;">📊 核心項目平均重要度排行</h3>
+          <div class="chart-wrapper" style="height:350px;">
+            <canvas id="part1RankingChart"></canvas>
+          </div>
+          <div style="margin-top:0.75rem; font-size:0.8rem; color:var(--text-muted); text-align:right;">
+            💡 綠色柱狀表示平均達 4.5 分以上之最高共識原則
+          </div>
+        </div>
+
+        <!-- Radar Chart Card -->
+        <div class="card">
+          <h3 style="font-size:1.1rem; margin-bottom:1rem; font-weight:700;">🕸️ 評估面向全景雷達</h3>
+          <div class="chart-wrapper" style="height:350px;">
+            <canvas id="part1RadarChart"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- Qualitative Feedback on Principles -->
+      <div class="card">
+        <h3 style="font-size:1.05rem; margin-bottom:1rem; font-weight:700;">💬 第一部分同仁補充觀點與備註 (5 則)</h3>
+        <div class="grid-3col" id="part1-notes-list">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 2: Partner Spectrum -->
+    <section class="section-block" id="spectrum">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-num">PART 02</span>
+          <h2 class="section-title">第二部分：合作夥伴類型敏感度光譜</h2>
+          <p class="section-subtitle">8 類企業/組織類型的合作接受度分佈（最可以合作 🟢 / 需要個別討論 🟡 / 絕對不能合作 🔴）</p>
+        </div>
+      </div>
+
+      <!-- 100% Stacked Spectrum Bars -->
+      <div class="card">
+        <h3 style="font-size:1.1rem; margin-bottom:1.25rem; font-weight:700;">🚦 合作對象類型敏感度光譜條</h3>
+        <div style="display:flex; flex-direction:column; gap:1rem;" id="spectrum-bars-container">
+          <!-- Dynamically generated bars -->
+        </div>
+      </div>
+
+      <!-- Spectrum Summary Breakdown -->
+      <div class="grid-3col">
+        <div class="card" style="border-top: 4px solid var(--status-support);">
+          <h4 style="color:var(--status-support); margin-bottom:0.5rem; font-size:1rem;">🟢 綠燈開放區 (高度共識)</h4>
+          <ul style="font-size:0.88rem; color:var(--text-muted); padding-left:1.2rem; line-height:1.7;">
+            <li><strong>同類 NGO / 合作社</strong>：90.5% 最可以合作</li>
+            <li><strong>環境友善非製造業 (如誠星)</strong>：47.6% 最可以 / 52.4% 個別討論，無人反對</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-top: 4px solid var(--status-discuss);">
+          <h4 style="color:var(--status-discuss); margin-bottom:0.5rem; font-size:1rem;">🟡 黃燈個案區 (高度需專案討論)</h4>
+          <ul style="font-size:0.88rem; color:var(--text-muted); padding-left:1.2rem; line-height:1.7;">
+            <li><strong>中性非污染企業 (金融/代理)</strong>：90.5% 需個別討論</li>
+            <li><strong>社企 / B型企業 (綠藤/肯夢)</strong>：76.2% 需個別討論</li>
+            <li><strong>新興綠能 / 政治商業媒體</strong>：76.2% 需個別討論</li>
+          </ul>
+        </div>
+
+        <div class="card" style="border-top: 4px solid var(--status-oppose);">
+          <h4 style="color:var(--status-oppose); margin-bottom:0.5rem; font-size:1rem;">🔴 紅燈嚴禁區 (高風險防線)</h4>
+          <ul style="font-size:0.88rem; color:var(--text-muted); padding-left:1.2rem; line-height:1.7;">
+            <li><strong>議題直接相關監督對象</strong>：81.0% 絕對不能合作</li>
+            <li><strong>難查核之污染製造業</strong>：81.0% 絕對不能合作</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Part 2 Qualitative notes -->
+      <div class="card">
+        <h3 style="font-size:1.05rem; margin-bottom:1rem; font-weight:700;">💬 第二部分夥伴光譜補充意見 (4 則)</h3>
+        <div class="grid-2col" id="part2-notes-list">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 3: Case Studies Explorer -->
+    <section class="section-block" id="cases">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-num">PART 03</span>
+          <h2 class="section-title">第三部分：7 大具體情境案例深度探討</h2>
+          <p class="section-subtitle">點選切換不同案例，查看全會投票分佈與同仁質性考量深度剖析</p>
+        </div>
+      </div>
+
+      <!-- Case Tabs Navigation -->
+      <div class="case-tabs" id="case-tabs-container">
+        <!-- Dynamically generated buttons -->
+      </div>
+
+      <!-- Case Detail Container -->
+      <div class="case-detail-card" id="case-detail-container">
+        <!-- Banner & Description -->
+        <div class="case-header-banner">
+          <div>
+            <div style="display:flex; align-items:center; gap:0.6rem; margin-bottom:0.35rem;">
+              <h3 class="case-title" id="case-display-title">案例 1：無農藥小農花生醬提撥捐助</h3>
+              <span class="badge badge-green" id="case-display-type">小農 / 倡議提撥</span>
+            </div>
+            <p class="case-desc-text" id="case-display-desc"></p>
+          </div>
+          <div id="case-risk-tags" style="display:flex; flex-wrap:wrap; gap:0.4rem;">
+            <!-- Risk factor badges -->
+          </div>
+        </div>
+
+        <!-- Stance Stats Row & Donut Chart -->
+        <div class="grid-2col" style="align-items:center;">
+          <!-- Pill numbers -->
+          <div class="stance-stats-row" style="flex-direction:column; gap:0.85rem;">
+            <div class="stance-pill support">
+              <div>
+                <div class="stance-pill-label">🟢 可以合作</div>
+                <small style="opacity:0.8;">認同理念且公關風險低</small>
+              </div>
+              <div class="stance-pill-num" id="case-val-support">0 票</div>
+            </div>
+            <div class="stance-pill discuss">
+              <div>
+                <div class="stance-pill-label">🟡 需進一步討論</div>
+                <small style="opacity:0.8;">需釐清條件、效益與邊界</small>
+              </div>
+              <div class="stance-pill-num" id="case-val-discuss">0 票</div>
+            </div>
+            <div class="stance-pill oppose">
+              <div>
+                <div class="stance-pill-label">🔴 反對合作</div>
+                <small style="opacity:0.8;">涉及監督領域或漂綠風險</small>
+              </div>
+              <div class="stance-pill-num" id="case-val-oppose">0 票</div>
+            </div>
+          </div>
+
+          <!-- Donut chart -->
+          <div style="height:220px; position:relative;">
+            <canvas id="caseDonutChart"></canvas>
+          </div>
+        </div>
+
+        <!-- Comments & Qualitative Feedback Section -->
+        <div class="comments-container">
+          <div class="filter-bar">
+            <div class="filter-group">
+              <span style="font-size:0.85rem; font-weight:600; color:var(--text-muted);">立場篩選：</span>
+              <button class="filter-chip active" data-stance-filter="ALL">全部留言</button>
+              <button class="filter-chip" data-stance-filter="可以合作">🟢 可以合作</button>
+              <button class="filter-chip" data-stance-filter="需進一步討論">🟡 需討論</button>
+              <button class="filter-chip" data-stance-filter="反對合作">🔴 反對合作</button>
+            </div>
+
+            <div class="search-input-box">
+              <span>🔍</span>
+              <input type="text" id="case-comment-search" placeholder="搜尋同仁考量關鍵字...">
+            </div>
+          </div>
+
+          <!-- Comments Waterfall -->
+          <div style="display:flex; flex-direction:column; gap:0.85rem;" id="case-comments-list">
+            <!-- Dynamically populated comments -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Section 5: SOP & Strategic Considerations -->
+    <section class="section-block" id="sop">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-num">PART 05</span>
+          <h2 class="section-title">第五部分：決策程序與未來 SOP 期待</h2>
+          <p class="section-subtitle">現行 4 步驟流程檢視、同仁優化建議與異業合作戰略思考</p>
+        </div>
+      </div>
+
+      <!-- Current 4 Step SOP Visual Flow -->
+      <div class="card">
+        <h3 style="font-size:1.1rem; margin-bottom:1rem; font-weight:700;">🔄 現行異業合作決策流程 (4 步驟)</h3>
+        <div class="sop-timeline" id="sop-steps-timeline">
+          <!-- Dynamically populated -->
+        </div>
+      </div>
+
+      <!-- SOP Feedback & Suggestions Cards -->
+      <div class="grid-2col">
+        <!-- SOP Refinement Feedback -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3 style="font-size:1.1rem; font-weight:700;">🛠️ SOP 流程具體調整建議 (11 則)</h3>
+            <span class="badge badge-green">程序優化</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.85rem; max-height:550px; overflow-y:auto; padding-right:0.4rem;" id="sop-feedback-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+
+        <!-- General Strategy Reflections -->
+        <div class="card">
+          <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem;">
+            <h3 style="font-size:1.1rem; font-weight:700;">💡 整體戰略建言與倫理防線 (6 則)</h3>
+            <span class="badge badge-purple">邊界與倫理</span>
+          </div>
+          <div style="display:flex; flex-direction:column; gap:0.85rem; max-height:550px; overflow-y:auto; padding-right:0.4rem;" id="general-suggestions-list">
+            <!-- Dynamically populated -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cross Matrix & De-identified Respondent Explorer -->
+    <section class="section-block" id="matrix">
+      <div class="section-header">
+        <div class="section-title-wrap">
+          <span class="section-num">MATRIX & EXPLORER</span>
+          <h2 class="section-title">去識別化同仁回覆交叉矩陣</h2>
+          <p class="section-subtitle">點選任一同仁代號（同仁 A～U），即可查看該位同仁的完整問卷思考全貌</p>
+        </div>
+
+        <div style="display:flex; align-items:center; gap:0.75rem;">
+          <select id="respondent-select" style="background:var(--bg-surface); color:var(--text-main); border:1px solid var(--border-strong); padding:0.5rem 0.85rem; border-radius:var(--radius-md); font-size:0.88rem; outline:none; cursor:pointer;">
+            <!-- Generated options -->
+          </select>
+        </div>
+      </div>
+
+      <div class="card" style="padding:1rem;">
+        <div class="matrix-table-wrap">
+          <table class="matrix-table">
+            <thead>
+              <tr>
+                <th>同仁代號</th>
+                <th>案例 1 (小農花生醬)</th>
+                <th>案例 2 (旅宿備品)</th>
+                <th>案例 3 (婚紗聯名T)</th>
+                <th>案例 4 (充電線團購)</th>
+                <th>案例 5 (高額永續獎)</th>
+                <th>案例 6 (超商零錢捐)</th>
+                <th>案例 7 (點數捐款)</th>
+                <th>SOP建議</th>
+              </tr>
+            </thead>
+            <tbody id="matrix-table-body">
+              <!-- Dynamically populated rows -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Respondent Detail Modal -->
+  <div class="modal-overlay" id="respondent-modal">
+    <div class="modal-container">
+      <div class="modal-header">
+        <h3 class="modal-title" id="modal-respondent-title">去識別化檔案</h3>
+        <button class="btn-close" onclick="closeModal()">✕</button>
+      </div>
+      <div id="modal-respondent-body">
+        <!-- Populated on open -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div style="max-width:1440px; margin:0 auto; display:flex; flex-direction:column; gap:0.5rem;">
+      <p>地球公民基金會 (CET) · 異業合作對焦問卷分析報告 · 2026 年度工作坊</p>
+      <p style="font-size:0.75rem; color:var(--text-dim);">本儀表板已完成 100% 去識別化處理，保障全體 21 位同仁之填答隱私。</p>
+    </div>
+  </footer>
+
+  <!-- Survey Data & Scripts -->
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
